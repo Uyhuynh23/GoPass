@@ -47,7 +47,14 @@ export default function TeacherDashboard() {
             </button>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div className="bg-indigo-50 p-6 rounded-lg border border-indigo-200">
+              <div className="text-indigo-600 text-sm font-semibold mb-2">
+                Họ và tên
+              </div>
+              <div className="text-gray-800 font-medium">{user.name}</div>
+            </div>
+
             <div className="bg-blue-50 p-6 rounded-lg border border-blue-200">
               <div className="text-blue-600 text-sm font-semibold mb-2">
                 Email
