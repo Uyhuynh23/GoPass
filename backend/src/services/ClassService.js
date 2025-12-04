@@ -6,6 +6,14 @@ const ExamSubmissionRepository = require('../repositories/ExamSubmissionReposito
 const MailProvider = require('../providers/MailProvider');
 
 class ClassService {
+  // Get all classes
+  async getAllClasses() {
+    return await ClassRepository.find({}, {
+      populate: 'teacherId',
+      sort: { createdAt: -1 },
+    });
+  }
+
   // Create new class
   async createClass(teacherId, dto) {
     const { name, description, requireApproval = false } = dto;

@@ -6,6 +6,9 @@ const { authenticate, authorize } = require('../middleware');
 // All routes require authentication
 router.use(authenticate);
 
+// Public class routes (for all authenticated users)
+router.get('/', ClassController.getAllClasses);
+
 // Teacher routes
 router.post('/', authorize('teacher'), ClassController.createClass);
 router.get('/my-teaching', authorize('teacher'), ClassController.getTeachingClasses);

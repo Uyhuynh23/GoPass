@@ -1,6 +1,22 @@
 const ClassService = require('../services/ClassService');
 
 class ClassController {
+  // GET /classes - Get all classes
+  async getAllClasses(req, res) {
+    try {
+      const classes = await ClassService.getAllClasses();
+      res.status(200).json({
+        success: true,
+        data: classes,
+      });
+    } catch (error) {
+      res.status(400).json({
+        success: false,
+        message: error.message,
+      });
+    }
+  }
+
   // POST /classes
   async createClass(req, res) {
     try {
