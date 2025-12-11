@@ -2,21 +2,17 @@
 "use client";
 
 import React from "react";
-import Button from "@/components/ui/Button";
+import Button from "@/components/ui/Button"; // Giả định bạn có component này
 
 interface ExamHeaderProps {
   examTitle: string;
   examSubject: string;
-  timeRemaining: number; // seconds
+  timeRemaining: number;
   onSubmit: () => void;
   onExit: () => void;
   isSubmitting?: boolean;
 }
 
-/**
- * Fixed header for exam taking interface
- * Shows title, timer, and action buttons
- */
 const ExamHeader: React.FC<ExamHeaderProps> = ({
   examTitle,
   examSubject,
@@ -29,49 +25,60 @@ const ExamHeader: React.FC<ExamHeaderProps> = ({
     const hours = Math.floor(seconds / 3600);
     const minutes = Math.floor((seconds % 3600) / 60);
     const secs = seconds % 60;
-
     return `${hours.toString().padStart(2, "0")}:${minutes
       .toString()
       .padStart(2, "0")}:${secs.toString().padStart(2, "0")}`;
   };
 
   const getTimerColor = (): string => {
-    if (timeRemaining > 1800) return "text-gray-700"; // > 30 min
-    if (timeRemaining > 600) return "text-orange-600"; // 10-30 min
-    return "text-red-600"; // < 10 min
+    if (timeRemaining > 1800) return "text-gray-700 bg-gray-50 border-gray-200";
+    if (timeRemaining > 600)
+      return "text-orange-600 bg-orange-50 border-orange-200";
+    return "text-red-600 bg-red-50 border-red-200 animate-pulse";
   };
 
   return (
-    <header className="bg-white border-b border-gray-200 px-4 py-2 flex-shrink-0 shadow-sm">
-      <div className="flex items-center justify-between max-w-full">
-        {/* Left: Logo & Title */}
-        <div className="flex items-center gap-2 min-w-0">
-          <div className="w-8 h-8 bg-teal-600 rounded flex items-center justify-center flex-shrink-0">
+    <header className="fixed top-0 left-0 right-0 z-50 bg-white border-b border-gray-200 shadow-sm h-16">
+      <div className="h-full px-4 md:px-6 flex items-center justify-between max-w-[1920px] mx-auto">
+        {/* Left: Branding & Info */}
+        <div className="flex items-center gap-3 md:gap-4 overflow-hidden">
+          <div className="w-10 h-10 bg-[#00747F] rounded-xl flex items-center justify-center flex-shrink-0 shadow-sm text-white">
+            {/* Logo Icon */}
             <svg
-              className="w-5 h-5 text-white"
-              fill="currentColor"
-              viewBox="0 0 20 20"
+              className="w-6 h-6"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              strokeWidth={2}
             >
-              <path d="M10.394 2.08a1 1 0 00-.788 0l-7 3a1 1 0 000 1.84L5.25 8.051a.999.999 0 01.356-.257l4-1.714a1 1 0 11.788 1.838L7.667 9.088l1.94.831a1 1 0 00.787 0l7-3a1 1 0 000-1.838l-7-3zM3.31 9.397L5 10.12v4.102a8.969 8.969 0 00-1.05-.174 1 1 0 01-.89-.89 11.115 11.115 0 01.25-3.762zM9.3 16.573A9.026 9.026 0 007 14.935v-3.957l1.818.78a3 3 0 002.364 0l5.508-2.361a11.026 11.026 0 01.25 3.762 1 1 0 01-.89.89 8.968 8.968 0 00-5.35 2.524 1 1 0 01-1.4 0zM6 18a1 1 0 001-1v-2.065a8.935 8.935 0 00-2-.712V17a1 1 0 001 1z" />
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"
+              />
             </svg>
           </div>
-          <div className="min-w-0">
-            <h1 className="text-xs font-semibold text-gray-900 truncate">
+          <div className="flex flex-col justify-center min-w-0">
+            <h1 className="text-sm md:text-base font-bold text-gray-900 truncate max-w-[200px] md:max-w-md">
               {examTitle}
             </h1>
-            <p className="text-[10px] text-gray-500">Môn: {examSubject}</p>
+            <p className="text-xs text-gray-500 font-medium truncate">
+              Môn thi: {examSubject}
+            </p>
           </div>
         </div>
 
         {/* Right: Timer & Actions */}
-        <div className="flex items-center gap-2 flex-shrink-0">
-          {/* Timer */}
-          <div className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg border border-gray-300 bg-white">
+        <div className="flex items-center gap-3">
+          {/* Timer Badge */}
+          <div
+            className={`hidden md:flex items-center gap-2 px-4 py-2 rounded-xl border ${getTimerColor()} transition-colors`}
+          >
             <svg
-              className={`w-5 h-5 ${getTimerColor()}`}
+              className="w-5 h-5"
               fill="none"
-              stroke="currentColor"
               viewBox="0 0 24 24"
+              stroke="currentColor"
             >
               <path
                 strokeLinecap="round"
@@ -80,31 +87,32 @@ const ExamHeader: React.FC<ExamHeaderProps> = ({
                 d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
               />
             </svg>
-            <span
-              className={`font-mono text-sm font-semibold ${getTimerColor()}`}
-            >
+            <span className="font-mono text-lg font-bold tracking-wider">
               {formatTime(timeRemaining)}
             </span>
           </div>
 
-          {/* Exit button */}
-          <Button
-            variant="secondary"
-            onClick={onExit}
-            className="px-3 py-1.5 text-xs"
-          >
-            Thoát
-          </Button>
+          <div className="h-8 w-px bg-gray-200 mx-1 hidden md:block"></div>
 
-          {/* Submit button */}
-          <Button
-            variant="primary"
-            onClick={onSubmit}
-            disabled={isSubmitting}
-            className="px-4 py-1.5 text-xs bg-teal-600 hover:bg-teal-700"
-          >
-            {isSubmitting ? "Đang nộp..." : "Nộp bài"}
-          </Button>
+          {/* Action Buttons */}
+          <div className="flex items-center gap-2">
+            <Button
+              variant="outline"
+              onClick={onExit}
+              className="px-4 py-2 h-10 text-sm font-medium border-gray-300 text-gray-700 hover:bg-gray-50 rounded-xl"
+            >
+              Thoát
+            </Button>
+
+            <Button
+              variant="primary"
+              onClick={onSubmit}
+              disabled={isSubmitting}
+              className="px-6 py-2 h-10 text-sm font-bold bg-[#00747F] hover:bg-[#005f68] text-white rounded-xl shadow-md shadow-teal-200"
+            >
+              {isSubmitting ? "Đang nộp..." : "Nộp bài"}
+            </Button>
+          </div>
         </div>
       </div>
     </header>

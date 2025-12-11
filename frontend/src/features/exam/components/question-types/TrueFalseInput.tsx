@@ -34,136 +34,112 @@ const TrueFalseInput: React.FC<TrueFalseInputProps> = ({
   // Multi-part true/false (like in Math exam image)
   if (subQuestions && onSubQuestionChange) {
     return (
-      <div className="space-y-3">
-        {subQuestions.map((subQ) => (
-          <div
-            key={subQ.id}
-            className="flex items-start gap-3 p-3 rounded-lg border border-gray-200 bg-gray-50 text-sm"
-          >
-            {/* Sub-question label */}
-            <div className="w-7 h-7 rounded-full bg-purple-500 text-white flex items-center justify-center text-sm font-semibold flex-shrink-0">
-              {subQ.id}
-            </div>
+      <div className="space-y-4">
+        {subQuestions.map((sq) => {
+          const value = sq.selectedValue;
 
-            {/* Sub-question text */}
-            <div className="flex-1">
-              <p className="text-sm text-gray-800 mb-2">{subQ.text}</p>
-
-              {/* Toggle buttons */}
-              <div className="flex gap-2">
-                <button
-                  onClick={() => onSubQuestionChange(subQ.id, "Đúng")}
-                  className={`
-                    px-4 py-1.5 rounded-lg text-sm font-medium transition-all
-                    ${
-                      subQ.selectedValue === "Đúng"
-                        ? "bg-green-500 text-white shadow-sm"
-                        : "bg-white border-2 border-gray-300 text-gray-700 hover:border-gray-400"
-                    }
-                  `}
-                >
-                  <div className="flex items-center gap-1.5">
-                    {subQ.selectedValue === "Đúng" && (
-                      <svg
-                        className="w-3.5 h-3.5"
-                        fill="currentColor"
-                        viewBox="0 0 20 20"
-                      >
-                        <path
-                          fillRule="evenodd"
-                          d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                          clipRule="evenodd"
-                        />
-                      </svg>
-                    )}
-                    <span>Đúng</span>
-                  </div>
-                </button>
-
-                <button
-                  onClick={() => onSubQuestionChange(subQ.id, "Sai")}
-                  className={`
-                    px-4 py-1.5 rounded-lg text-sm font-medium transition-all
-                    ${
-                      subQ.selectedValue === "Sai"
-                        ? "bg-red-500 text-white shadow-sm"
-                        : "bg-white border-2 border-gray-300 text-gray-700 hover:border-gray-400"
-                    }
-                  `}
-                >
-                  <div className="flex items-center gap-1.5">
-                    {subQ.selectedValue === "Sai" && (
-                      <svg
-                        className="w-3.5 h-3.5"
-                        fill="currentColor"
-                        viewBox="0 0 20 20"
-                      >
-                        <path
-                          fillRule="evenodd"
-                          d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
-                          clipRule="evenodd"
-                        />
-                      </svg>
-                    )}
-                    <span>Sai</span>
-                  </div>
-                </button>
+          return (
+            <div
+              key={sq.id}
+              className={`bg-white rounded-2xl border-2 p-6 shadow-sm transition-all ${
+                value
+                  ? value === "Đúng"
+                    ? "border-green-400 ring-2 ring-green-200/50"
+                    : "border-red-400 ring-2 ring-red-200/50"
+                  : "border-gray-200 hover:border-purple-300"
+              }`}
+            >
+              <div className="flex items-start gap-4 mb-4">
+                <div className="flex-shrink-0 w-10 h-10 bg-gradient-to-br from-purple-100 to-purple-200 text-purple-700 rounded-xl flex items-center justify-center text-base shadow-sm border-2 border-purple-300">
+                  <span className="font-bold">{sq.id})</span>
+                </div>
+                <p className="flex-1 text-base text-gray-800 leading-relaxed pt-1.5">
+                  {sq.text}
+                </p>
               </div>
-            </div>
 
-            {/* Check/Cross indicator */}
-            {subQ.selectedValue && (
-              <div
-                className={`w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0 ${
-                  subQ.selectedValue === "Đúng" ? "bg-green-100" : "bg-red-100"
-                }`}
-              >
-                <svg
-                  className={`w-3.5 h-3.5 ${
-                    subQ.selectedValue === "Đúng"
-                      ? "text-green-600"
-                      : "text-red-600"
+              <div className="ml-14 flex items-center gap-3 flex-wrap">
+                {/* True Button */}
+                <button
+                  onClick={() => onSubQuestionChange(sq.id, "Đúng")}
+                  className={`group flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm transition-all ${
+                    value === "Đúng"
+                      ? "bg-gradient-to-r from-green-500 to-emerald-500 text-white shadow-lg ring-2 ring-green-400/50 scale-105"
+                      : "bg-white border-2 border-gray-300 text-gray-700 hover:border-green-400 hover:bg-green-50 shadow-sm"
                   }`}
-                  fill="currentColor"
-                  viewBox="0 0 20 20"
                 >
-                  {subQ.selectedValue === "Đúng" ? (
-                    <path
-                      fillRule="evenodd"
-                      d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                      clipRule="evenodd"
-                    />
-                  ) : (
-                    <path
-                      fillRule="evenodd"
-                      d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
-                      clipRule="evenodd"
-                    />
-                  )}
-                </svg>
+                  <svg
+                    className={`h-4 w-4 ${
+                      value === "Đúng"
+                        ? "fill-current"
+                        : "group-hover:text-green-500"
+                    }`}
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                    <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                  </svg>
+                  <span className="font-medium">Đúng</span>
+                </button>
+
+                {/* False Button */}
+                <button
+                  onClick={() => onSubQuestionChange(sq.id, "Sai")}
+                  className={`group flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm transition-all ${
+                    value === "Sai"
+                      ? "bg-gradient-to-r from-red-500 to-rose-500 text-white shadow-lg ring-2 ring-red-400/50 scale-105"
+                      : "bg-white border-2 border-gray-300 text-gray-700 hover:border-red-400 hover:bg-red-50 shadow-sm"
+                  }`}
+                >
+                  <svg
+                    className={`h-4 w-4 ${
+                      value === "Sai"
+                        ? "fill-current"
+                        : "group-hover:text-red-500"
+                    }`}
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <line x1="15" y1="9" x2="9" y2="15"></line>
+                    <line x1="9" y1="9" x2="15" y2="15"></line>
+                  </svg>
+                  <span className="font-medium">Sai</span>
+                </button>
+
+                {value && (
+                  <span
+                    className={`text-xs ml-2 font-medium ${
+                      value === "Đúng" ? "text-green-600" : "text-red-600"
+                    }`}
+                  >
+                    ✓ Đã chọn
+                  </span>
+                )}
               </div>
-            )}
-          </div>
-        ))}
+            </div>
+          );
+        })}
 
         {/* Hint */}
-        <p className="text-xs text-purple-600 mt-3 flex items-start gap-1.5">
-          <svg
-            className="w-3.5 h-3.5 mt-0.5 flex-shrink-0"
-            fill="currentColor"
-            viewBox="0 0 20 20"
-          >
-            <path
-              fillRule="evenodd"
-              d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"
-              clipRule="evenodd"
-            />
-          </svg>
-          <span>
-            Hướng dẫn: Trong mỗi ý a), b), c), d), thí sinh chọn{" "}
-            <strong>Đúng</strong> hoặc <strong>Sai</strong>.
-          </span>
-        </p>
+        <div className="bg-purple-50 border-l-4 border-purple-500 rounded-r p-4 flex items-start gap-3">
+          <div className="w-2 h-2 bg-purple-600 rounded-full mt-1.5"></div>
+          <div className="text-sm text-gray-700">
+            <p>
+              <strong>Hướng dẫn:</strong> Trong mỗi ý a), b), c), d), thí sinh
+              chọn <strong>Đúng</strong> hoặc <strong>Sai</strong>.
+            </p>
+          </div>
+        </div>
       </div>
     );
   }

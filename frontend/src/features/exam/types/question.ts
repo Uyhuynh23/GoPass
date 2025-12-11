@@ -25,6 +25,10 @@ export interface Question {
   isPublic: boolean;
   createdAt: string;
   updatedAt: string;
+  // Extended properties for Math exam
+  subQuestions?: { id: string; text: string }[]; // For multi-part true/false
+  fillInBlanks?: { id: string }[]; // For short answer with multiple inputs
+  hint?: string; // For short answer hint
 }
 
 export interface ExamQuestion {
