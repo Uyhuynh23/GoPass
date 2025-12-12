@@ -1,14 +1,29 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import SectionHeader from "@/components/ui/SectionHeader";
 import Button from "@/components/ui/Button";
 import { mockQuestionBankData } from "@/features/dashboard/data/mock-questionbank";
 import QuestionTopicList from "./QuestionTopicList";
 import SubjectTabs from "./SubjectTabs";
+import CreateQuestionModal from "./CreateQuestionModal";
 
 const QuestionBankView: React.FC = () => {
   const [activeSubject, setActiveSubject] = useState("Toán");
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  // Keyboard shortcut: Ctrl+N to open modal
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.ctrlKey && e.key === "n") {
+        e.preventDefault();
+        setIsModalOpen(true);
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, []);
 
   const handleImportFile = () => {
     console.log("Import file");
@@ -16,8 +31,17 @@ const QuestionBankView: React.FC = () => {
   };
 
   const handleAddQuestion = () => {
-    console.log("Add question");
-    // TODO: Navigate to add question page
+    setIsModalOpen(true);
+  };
+
+  const handleModalClose = () => {
+    setIsModalOpen(false);
+  };
+
+  const handleQuestionSave = (question: any) => {
+    console.log("Saved question:", question);
+    // TODO: Implement save logic (call API)
+    setIsModalOpen(false);
   };
 
   return (
@@ -92,6 +116,14 @@ const QuestionBankView: React.FC = () => {
 
       {/* Topic List */}
       <QuestionTopicList topics={mockQuestionBankData.topics} />
+
+      {/* Create Question Modal */}
+      {isModalOpen && (
+        <CreateQuestionModal
+          onClose={handleModalClose}
+          onSave={handleQuestionSave}
+        />
+      )}
     </div>
   );
 };

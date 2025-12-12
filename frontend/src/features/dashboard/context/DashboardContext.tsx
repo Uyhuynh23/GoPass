@@ -31,8 +31,8 @@ export const DashboardProvider: React.FC<DashboardProviderProps> = ({
 }) => {
   // TODO: Replace with actual user data from auth context/session
   const [activeTab, setActiveTab] = useState("exams");
-  const [userRole] = useState<UserRole>("student");
-  const [userName] = useState("Student");
+  const [userRole] = useState<UserRole>("admin");
+  const [userName] = useState("Admin");
 
   return (
     <DashboardContext.Provider
