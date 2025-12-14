@@ -13,6 +13,8 @@ interface StartExamPanelProps {
   totalQuestions: number;
   totalPoints: number;
   onStartExam: () => void;
+  onContinueExam?: () => void;
+  hasProgress?: boolean;
   onCancel: () => void;
 }
 
@@ -34,6 +36,8 @@ const StartExamPanel: React.FC<StartExamPanelProps> = ({
   totalQuestions,
   totalPoints,
   onStartExam,
+  onContinueExam,
+  hasProgress,
   onCancel,
 }) => {
   // 1. Lấy cấu hình tĩnh dựa trên môn học
@@ -226,21 +230,38 @@ const StartExamPanel: React.FC<StartExamPanelProps> = ({
             </div>
 
             {/* Action Buttons */}
-            <div className="flex gap-4 pt-2">
-              <Button
-                variant="secondary"
-                onClick={onCancel}
-                className="flex-1 py-3 text-sm font-medium"
-              >
-                Hủy bỏ
-              </Button>
-              <Button
-                variant="primary"
-                onClick={onStartExam}
-                className="flex-1 py-3 text-sm font-bold bg-teal-600 hover:bg-teal-700 shadow-lg shadow-teal-700/20"
-              >
-                Bắt đầu làm bài
-              </Button>
+            <div className="flex flex-col gap-3 pt-2">
+              {/* Nút Tiếp tục (Chỉ hiện nếu có progress) */}
+              {hasProgress && onContinueExam && (
+                <Button
+                  variant="primary"
+                  onClick={onContinueExam}
+                  className="w-full py-3 text-sm font-bold bg-orange-600 hover:bg-orange-700 shadow-lg shadow-orange-700/20"
+                >
+                  Tiếp tục làm bài cũ
+                </Button>
+              )}
+
+              <div className="flex gap-4">
+                <Button
+                  variant="secondary"
+                  onClick={onCancel}
+                  className="flex-1 py-3 text-sm font-medium"
+                >
+                  Hủy bỏ
+                </Button>
+                <Button
+                  variant={hasProgress ? "secondary" : "primary"}
+                  onClick={onStartExam}
+                  className={`flex-1 py-3 text-sm font-bold ${
+                    !hasProgress
+                      ? "bg-teal-600 hover:bg-teal-700 shadow-lg shadow-teal-700/20"
+                      : "border-teal-600 text-teal-700 hover:bg-teal-50"
+                  }`}
+                >
+                  {hasProgress ? "Làm lại từ đầu" : "Bắt đầu làm bài"}
+                </Button>
+              </div>
             </div>
           </div>
         </div>
