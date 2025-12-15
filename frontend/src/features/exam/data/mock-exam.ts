@@ -334,7 +334,6 @@ export const mockExamMath: ExamWithDetails = {
         isPublic: true,
         createdAt: "2025-12-01T00:00:00Z",
         updatedAt: "2025-12-01T00:00:00Z",
-        // ✅ LỜI GIẢI CHI TIẾT (cho các câu tự động sinh)
         explanation: `Lời giải cho câu ${
           idx + 18
         }: Công thức tính diện tích mặt cầu là $S = 4\\pi R^2$. Với $R=3$, ta có $S = 4\\pi (3)^2 = 36\\pi$.`,
@@ -2203,4 +2202,4 @@ export const getMockExamById = (examId: string): ExamWithDetails | null => {
 };
 
 // Export mặc định
-export const mockExam = mockExamMath;
+export const mockExam = exams;
