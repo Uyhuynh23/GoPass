@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import { Button, Input } from "@/components/ui";
-import { mockTeacherData } from "@/features/dashboard/data/mock-teacher";
+import { useTeacherData } from "@/features/dashboard/context/TeacherDataContext";
 
 interface CreateExamModalProps {
     isOpen: boolean;
@@ -20,11 +20,10 @@ interface ExamFormData {
     startTime: string;
     endDate: string;
     endTime: string;
-    examName: string;
-    language: string;
-    topics: number;
+    totalQuestions: string;
     duration: string;
-    timeFormat: string;
+    showAnswers: boolean;
+    showLeaderboard: boolean;
 }
 
 const CreateExamModal: React.FC<CreateExamModalProps> = ({
@@ -32,6 +31,7 @@ const CreateExamModal: React.FC<CreateExamModalProps> = ({
     onClose,
     onSubmit,
 }) => {
+    const { teacherData, addExam } = useTeacherData();
     const [currentStep, setCurrentStep] = useState(1);
     const [formData, setFormData] = useState<ExamFormData>({
         title: "",
@@ -43,14 +43,13 @@ const CreateExamModal: React.FC<CreateExamModalProps> = ({
         startTime: "",
         endDate: "",
         endTime: "",
-        examName: "",
-        language: "vi",
-        topics: 1,
-        duration: "",
-        timeFormat: "phút",
+        totalQuestions: "50",
+        duration: "90",
+        showAnswers: false,
+        showLeaderboard: false,
     });
 
-    const classes = mockTeacherData.classes;
+    const classes = teacherData.classes;
 
     const handleNext = () => {
         if (currentStep < 3) {
@@ -78,18 +77,35 @@ const CreateExamModal: React.FC<CreateExamModalProps> = ({
     };
 
     const handleSubmit = () => {
-        onSubmit({
-            ...formData,
-            id: Date.now().toString(),
-            createdAt: new Date().toISOString(),
-            status: "upcoming",
-            totalStudents: formData.classIds.reduce((acc, classId) => {
-                const cls = classes.find(c => c.id === classId);
-                return acc + (cls ? cls.studentCount : 0);
-            }, 0),
-            totalSubmissions: 0,
-            averageScore: 0,
+        // Add to context
+        addExam(formData);
+
+        // Call parent onSubmit
+        onSubmit(formData);
+    };
+
+    const resetForm = () => {
+        setFormData({
+            title: "",
+            subject: "",
+            description: "",
+            createMethod: "",
+            classIds: [],
+            startDate: "",
+            startTime: "",
+            endDate: "",
+            endTime: "",
+            totalQuestions: "50",
+            duration: "90",
+            showAnswers: false,
+            showLeaderboard: false,
         });
+        setCurrentStep(1);
+    };
+
+    const handleClose = () => {
+        resetForm();
+        onClose();
     };
 
     if (!isOpen) return null;
@@ -100,8 +116,8 @@ const CreateExamModal: React.FC<CreateExamModalProps> = ({
                 <React.Fragment key={step}>
                     <div
                         className={`w-10 h-10 rounded-full flex items-center justify-center text-sm font-medium ${step <= currentStep
-                                ? "bg-teal-500 text-white"
-                                : "bg-gray-200 text-gray-600"
+                            ? "bg-teal-500 text-white"
+                            : "bg-gray-200 text-gray-600"
                             }`}
                     >
                         {step}
@@ -172,6 +188,32 @@ const CreateExamModal: React.FC<CreateExamModalProps> = ({
                         rows={3}
                     />
                 </div>
+
+                {/* Total Questions & Duration */}
+                <div className="grid grid-cols-2 gap-4">
+                    <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                            Số câu hỏi
+                        </label>
+                        <Input
+                            type="number"
+                            placeholder="50"
+                            value={formData.totalQuestions}
+                            onChange={(e) => handleInputChange("totalQuestions", e.target.value)}
+                        />
+                    </div>
+                    <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                            Thời gian (phút)
+                        </label>
+                        <Input
+                            type="number"
+                            placeholder="90"
+                            value={formData.duration}
+                            onChange={(e) => handleInputChange("duration", e.target.value)}
+                        />
+                    </div>
+                </div>
             </div>
 
             {/* Create Method */}
@@ -181,10 +223,11 @@ const CreateExamModal: React.FC<CreateExamModalProps> = ({
                 </label>
                 <div className="grid grid-cols-2 gap-4">
                     <button
+                        type="button"
                         onClick={() => handleInputChange("createMethod", "upload")}
                         className={`p-4 border rounded-lg text-center transition-colors ${formData.createMethod === "upload"
-                                ? "border-teal-500 bg-teal-50"
-                                : "border-gray-200 hover:border-gray-300"
+                            ? "border-teal-500 bg-teal-50"
+                            : "border-gray-200 hover:border-gray-300"
                             }`}
                     >
                         <div className="text-2xl mb-2">📤</div>
@@ -195,10 +238,11 @@ const CreateExamModal: React.FC<CreateExamModalProps> = ({
                     </button>
 
                     <button
+                        type="button"
                         onClick={() => handleInputChange("createMethod", "auto")}
                         className={`p-4 border rounded-lg text-center transition-colors ${formData.createMethod === "auto"
-                                ? "border-teal-500 bg-teal-50"
-                                : "border-gray-200 hover:border-gray-300"
+                            ? "border-teal-500 bg-teal-50"
+                            : "border-gray-200 hover:border-gray-300"
                             }`}
                     >
                         <div className="text-2xl mb-2">⚙️</div>
@@ -244,8 +288,8 @@ const CreateExamModal: React.FC<CreateExamModalProps> = ({
                         <label
                             key={classItem.id}
                             className={`flex items-center p-3 border rounded-lg cursor-pointer transition-colors ${formData.classIds.includes(classItem.id)
-                                    ? "border-teal-500 bg-teal-50"
-                                    : "border-gray-200 hover:bg-gray-50"
+                                ? "border-teal-500 bg-teal-50"
+                                : "border-gray-200 hover:bg-gray-50"
                                 }`}
                         >
                             <input
@@ -329,20 +373,13 @@ const CreateExamModal: React.FC<CreateExamModalProps> = ({
                     </label>
                     <div className="flex items-center gap-4">
                         <label className="flex items-center">
-                            <input type="checkbox" className="rounded border-gray-300 text-teal-600 focus:ring-teal-500 mr-2" />
+                            <input
+                                type="checkbox"
+                                checked={formData.showAnswers}
+                                onChange={(e) => handleInputChange("showAnswers", e.target.checked)}
+                                className="rounded border-gray-300 text-teal-600 focus:ring-teal-500 mr-2"
+                            />
                             <span className="text-sm text-gray-700">Học sinh có thể xem đáp án đề thi sau khi hoàn thành bài thi</span>
-                        </label>
-                    </div>
-                </div>
-
-                <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                        Hiển thị bảng xếp hạng
-                    </label>
-                    <div className="flex items-center gap-4">
-                        <label className="flex items-center">
-                            <input type="checkbox" className="rounded border-gray-300 text-teal-600 focus:ring-teal-500 mr-2" />
-                            <span className="text-sm text-gray-700">Bảng xếp hạng theo điểm số và thời gian hoàn thành</span>
                         </label>
                     </div>
                 </div>
@@ -365,6 +402,10 @@ const CreateExamModal: React.FC<CreateExamModalProps> = ({
                         <span className="text-gray-900">{formData.classIds.length} lớp</span>
                     </div>
                     <div className="flex justify-between">
+                        <span className="text-gray-600">Số câu hỏi:</span>
+                        <span className="text-gray-900">{formData.totalQuestions} câu</span>
+                    </div>
+                    <div className="flex justify-between">
                         <span className="text-gray-600">Thời gian:</span>
                         <span className="text-gray-900">
                             {formData.startDate && formData.endDate
@@ -375,7 +416,7 @@ const CreateExamModal: React.FC<CreateExamModalProps> = ({
                     </div>
                     <div className="flex justify-between">
                         <span className="text-gray-600">Thời gian làm bài:</span>
-                        <span className="text-gray-900">{formData.duration || "90"} phút</span>
+                        <span className="text-gray-900">{formData.duration} phút</span>
                     </div>
                 </div>
             </div>
@@ -396,7 +437,7 @@ const CreateExamModal: React.FC<CreateExamModalProps> = ({
                         </p>
                     </div>
                     <button
-                        onClick={onClose}
+                        onClick={handleClose}
                         className="text-gray-400 hover:text-gray-600"
                     >
                         ✕

@@ -1,0 +1,64 @@
+{
+    "classes": [
+        {
+            "id": "class-1",
+            "teacher_user_id": "teacher-1",
+            "class_name": "Lớp 12A1 - THPT Nguyễn Huệ",
+            "description": "Lớp chuyên Toán - Lý, chuẩn bị thi THPT Quốc Gia 2025",
+            "class_code": "12A1-NH-2025",
+            "created_at": "2025-09-01T00:00:00Z"
+        },
+        {
+            "id": "class-2",
+            "teacher_user_id": "teacher-1",
+            "class_name": "Khóa Luyện Thi Đại Học 2025",
+            "description": "Khóa ôn thi đại học chuyên sâu",
+            "class_code": "LTH-2025",
+            "created_at": "2025-09-15T00:00:00Z"
+        }
+    ],
+    "exams": [
+        {
+            "exam_id": "exam-1",
+            "title": "Đề thi thử THPT QG lần 1 - Toán",
+            "description": "Đề thi thử theo cấu trúc mới",
+            "subject": "Toán",
+            "duration_min": 90,
+            "total_score": 10.0,
+            "created_by": "teacher-1",
+            "totalQuestions": 50,
+            "readingPassages": []
+        },
+        {
+            "exam_id": "exam-2",
+            "title": "Kiểm tra Văn - Nghị luận xã hội",
+            "description": "Kiểm tra 45 phút",
+            "subject": "Văn",
+            "duration_min": 120,
+            "total_score": 10.0,
+            "created_by": "teacher-1",
+            "totalQuestions": 1,
+            "readingPassages": []
+        }
+    ],
+    "examAssignments": [
+        {
+            "assignment_id": "assign-1",
+            "exam_id": "exam-1",
+            "class_id": "class-1",
+            "start_time": "2025-12-20T09:00:00Z",
+            "end_time": "2025-12-20T10:30:00Z",
+            "attempt_limit": 1
+        }
+    ],
+    "users": [
+        {
+            "user_id": "teacher-1",
+            "full_name": "Thầy Nguyễn Văn A",
+            "email": "teacher@gopass.com",
+            "role": "teacher",
+            "status": "active",
+            "created_at": "2025-01-01T00:00:00Z"
+        }
+    ]
+}

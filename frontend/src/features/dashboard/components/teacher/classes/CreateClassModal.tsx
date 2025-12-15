@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import { Button, Input } from "@/components/ui";
+import { useTeacherData } from "@/features/dashboard/context/TeacherDataContext";
 
 interface CreateClassModalProps {
     isOpen: boolean;
@@ -9,176 +10,163 @@ interface CreateClassModalProps {
     onSubmit: (classData: any) => void;
 }
 
+interface ClassFormData {
+    name: string;
+    subject: string;
+    grade: string;
+    description: string;
+}
+
 const CreateClassModal: React.FC<CreateClassModalProps> = ({
     isOpen,
     onClose,
     onSubmit,
 }) => {
-    const [formData, setFormData] = useState({
+    const { addClass } = useTeacherData();
+    const [formData, setFormData] = useState<ClassFormData>({
         name: "",
         subject: "",
         grade: "",
         description: "",
     });
 
-    const [errors, setErrors] = useState<{ [key: string]: string }>({});
-
-    const subjects = ["Toán", "Lý", "Hóa", "Sinh", "Anh", "Văn", "Sử", "Địa"];
-    const grades = ["10", "11", "12"];
-
-    const validateForm = () => {
-        const newErrors: { [key: string]: string } = {};
-
-        if (!formData.name.trim()) {
-            newErrors.name = "Tên lớp học là bắt buộc";
-        }
-
-        if (!formData.subject) {
-            newErrors.subject = "Vui lòng chọn môn học";
-        }
-
-        if (!formData.grade) {
-            newErrors.grade = "Vui lòng chọn khối lớp";
-        }
-
-        setErrors(newErrors);
-        return Object.keys(newErrors).length === 0;
-    };
-
-    const handleSubmit = (e: React.FormEvent) => {
-        e.preventDefault();
-        if (validateForm()) {
-            onSubmit({
-                ...formData,
-                id: Date.now().toString(), // Temporary ID
-                studentCount: 0,
-                examCount: 0,
-                createdAt: new Date().toISOString(),
-            });
-            setFormData({ name: "", subject: "", grade: "", description: "" });
-            setErrors({});
-        }
-    };
-
-    const handleInputChange = (field: string, value: string) => {
+    const handleInputChange = (field: keyof ClassFormData, value: string) => {
         setFormData(prev => ({ ...prev, [field]: value }));
-        if (errors[field]) {
-            setErrors(prev => ({ ...prev, [field]: "" }));
-        }
+    };
+
+    const handleSubmit = () => {
+        // Add to context
+        addClass(formData);
+
+        // Call parent onSubmit
+        onSubmit(formData);
+
+        // Reset form
+        setFormData({
+            name: "",
+            subject: "",
+            grade: "",
+            description: "",
+        });
+    };
+
+    const handleClose = () => {
+        setFormData({
+            name: "",
+            subject: "",
+            grade: "",
+            description: "",
+        });
+        onClose();
     };
 
     if (!isOpen) return null;
 
     return (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-            <div className="bg-white rounded-lg p-6 w-full max-w-md mx-4">
+            <div className="bg-white rounded-lg w-full max-w-md mx-4">
                 {/* Header */}
-                <div className="flex items-center justify-between mb-6">
-                    <h2 className="text-xl font-semibold text-gray-900">
-                        Tạo lớp học mới
-                    </h2>
+                <div className="flex items-center justify-between p-6 border-b border-gray-200">
+                    <div>
+                        <h2 className="text-xl font-semibold text-gray-900">
+                            Tạo lớp học mới
+                        </h2>
+                        <p className="text-sm text-gray-600 mt-1">
+                            Điền thông tin để tạo lớp học của bạn
+                        </p>
+                    </div>
                     <button
-                        onClick={onClose}
+                        onClick={handleClose}
                         className="text-gray-400 hover:text-gray-600"
                     >
                         ✕
                     </button>
                 </div>
 
-                {/* Form */}
-                <form onSubmit={handleSubmit} className="space-y-4">
-                    {/* Class Name */}
+                {/* Content */}
+                <div className="p-6 space-y-4">
                     <div>
                         <label className="block text-sm font-medium text-gray-700 mb-1">
-                            Tên lớp học *
+                            Tên lớp học
                         </label>
                         <Input
-                            type="text"
-                            placeholder="VD: Lớp 12A1 - Toán"
+                            placeholder="Ví dụ: Lớp 12A1 - Toán"
                             value={formData.name}
                             onChange={(e) => handleInputChange("name", e.target.value)}
-                            className={errors.name ? "border-red-500" : ""}
                         />
-                        {errors.name && (
-                            <p className="text-sm text-red-500 mt-1">{errors.name}</p>
-                        )}
                     </div>
 
-                    {/* Subject */}
-                    <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">
-                            Môn học *
-                        </label>
-                        <select
-                            value={formData.subject}
-                            onChange={(e) => handleInputChange("subject", e.target.value)}
-                            className={`w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 ${errors.subject ? "border-red-500" : ""
-                                }`}
-                        >
-                            <option value="">Chọn môn học</option>
-                            {subjects.map((subject) => (
-                                <option key={subject} value={subject}>
-                                    {subject}
-                                </option>
-                            ))}
-                        </select>
-                        {errors.subject && (
-                            <p className="text-sm text-red-500 mt-1">{errors.subject}</p>
-                        )}
+                    <div className="grid grid-cols-2 gap-4">
+                        <div>
+                            <label className="block text-sm font-medium text-gray-700 mb-1">
+                                Môn học
+                            </label>
+                            <select
+                                value={formData.subject}
+                                onChange={(e) => handleInputChange("subject", e.target.value)}
+                                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 text-gray-900"
+                            >
+                                <option value="">Chọn môn học</option>
+                                <option value="Toán">Toán</option>
+                                <option value="Lý">Lý</option>
+                                <option value="Hóa">Hóa</option>
+                                <option value="Sinh">Sinh</option>
+                                <option value="Anh">Tiếng Anh</option>
+                                <option value="Văn">Văn</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <label className="block text-sm font-medium text-gray-700 mb-1">
+                                Khối lớp
+                            </label>
+                            <select
+                                value={formData.grade}
+                                onChange={(e) => handleInputChange("grade", e.target.value)}
+                                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 text-gray-900"
+                            >
+                                <option value="">Chọn khối</option>
+                                <option value="Lớp 10">Lớp 10</option>
+                                <option value="Lớp 11">Lớp 11</option>
+                                <option value="Lớp 12">Lớp 12</option>
+                            </select>
+                        </div>
                     </div>
 
-                    {/* Grade */}
                     <div>
                         <label className="block text-sm font-medium text-gray-700 mb-1">
-                            Khối lớp *
-                        </label>
-                        <select
-                            value={formData.grade}
-                            onChange={(e) => handleInputChange("grade", e.target.value)}
-                            className={`w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 ${errors.grade ? "border-red-500" : ""
-                                }`}
-                        >
-                            <option value="">Chọn khối lớp</option>
-                            {grades.map((grade) => (
-                                <option key={grade} value={grade}>
-                                    Lớp {grade}
-                                </option>
-                            ))}
-                        </select>
-                        {errors.grade && (
-                            <p className="text-sm text-red-500 mt-1">{errors.grade}</p>
-                        )}
-                    </div>
-
-                    {/* Description */}
-                    <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">
-                            Mô tả (Tùy chọn)
+                            Mô tả
                         </label>
                         <textarea
-                            placeholder="Mô tả về lớp học..."
+                            placeholder="Mô tả ngắn về lớp học..."
                             value={formData.description}
                             onChange={(e) => handleInputChange("description", e.target.value)}
-                            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 resize-none"
+                            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 text-gray-900 resize-none"
                             rows={3}
                         />
                     </div>
+                </div>
 
-                    {/* Actions */}
-                    <div className="flex gap-3 pt-4">
+                {/* Footer */}
+                <div className="p-6 border-t border-gray-200">
+                    <div className="flex gap-3">
                         <Button
-                            type="button"
                             variant="secondary"
-                            onClick={onClose}
+                            onClick={handleClose}
                             className="flex-1"
                         >
                             Hủy
                         </Button>
-                        <Button type="submit" variant="primary" className="flex-1">
+                        <Button
+                            variant="primary"
+                            onClick={handleSubmit}
+                            className="flex-1"
+                            disabled={!formData.name || !formData.subject || !formData.grade}
+                        >
                             Tạo lớp học
                         </Button>
                     </div>
-                </form>
+                </div>
             </div>
         </div>
     );

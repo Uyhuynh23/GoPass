@@ -2,23 +2,26 @@
 
 import React, { useState } from "react";
 import { useDashboard } from "@/features/dashboard/context/DashboardContext";
+import { useTeacherData } from "@/features/dashboard/context/TeacherDataContext";
 import SectionHeader from "@/components/ui/SectionHeader";
 import { Button, Badge, Input } from "@/components/ui";
-import { mockTeacherData } from "@/features/dashboard/data/mock-teacher";
 import CreateExamModal from "./CreateExamModal";
+import AssignExamModal from "./AssignExamModal";
 import DeleteExamModal from "./DeleteExamModal";
 import QuestionPreviewModal from "./QuestionPreviewModal";
 
 const TeacherExamsView: React.FC = () => {
     const { userRole } = useDashboard();
+    const { teacherData, deleteExam } = useTeacherData();
     const [showCreateModal, setShowCreateModal] = useState(false);
+    const [showAssignModal, setShowAssignModal] = useState(false);
     const [showDeleteModal, setShowDeleteModal] = useState(false);
     const [showPreviewModal, setShowPreviewModal] = useState(false);
     const [selectedExam, setSelectedExam] = useState<any>(null);
     const [searchTerm, setSearchTerm] = useState("");
     const [statusFilter, setStatusFilter] = useState("all");
 
-    const exams = mockTeacherData.exams;
+    const exams = teacherData.exams;
 
     const filteredExams = exams.filter(exam => {
         const matchesSearch = exam.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -29,12 +32,22 @@ const TeacherExamsView: React.FC = () => {
 
     const handleCreateExam = (examData: any) => {
         console.log("Creating exam:", examData);
-        // TODO: API call to create exam
         setShowCreateModal(false);
     };
 
+    const handleAssignExam = (exam: any) => {
+        setSelectedExam(exam);
+        setShowAssignModal(true);
+    };
+
+    const handleAssignExamSubmit = (assignmentData: any) => {
+        console.log("Assigning exam:", assignmentData);
+        setShowAssignModal(false);
+        setSelectedExam(null);
+    };
+
     const handleDeleteExam = (examId: string) => {
-        console.log("Deleting exam:", examId);
+        deleteExam(examId);
         setShowDeleteModal(false);
         setSelectedExam(null);
     };
@@ -156,13 +169,14 @@ const TeacherExamsView: React.FC = () => {
                                                 </svg>
                                             </button>
 
-                                            {/* Share Button */}
+                                            {/* Assignment Button */}
                                             <button
+                                                onClick={() => handleAssignExam(exam)}
                                                 className="p-2 text-gray-400 hover:text-blue-600 transition-colors"
-                                                title="Chia sẻ"
+                                                title="Gán đề thi"
                                             >
                                                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.367 2.684 3 3 0 00-5.367-2.684z" />
+                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" />
                                                 </svg>
                                             </button>
 
@@ -198,6 +212,15 @@ const TeacherExamsView: React.FC = () => {
                     isOpen={showCreateModal}
                     onClose={() => setShowCreateModal(false)}
                     onSubmit={handleCreateExam}
+                />
+            )}
+
+            {showAssignModal && selectedExam && (
+                <AssignExamModal
+                    isOpen={showAssignModal}
+                    onClose={() => setShowAssignModal(false)}
+                    onSubmit={handleAssignExamSubmit}
+                    exam={selectedExam}
                 />
             )}
 

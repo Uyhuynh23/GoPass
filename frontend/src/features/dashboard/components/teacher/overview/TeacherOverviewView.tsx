@@ -2,13 +2,13 @@
 
 import React from "react";
 import { SectionHeader, Button } from "@/components/ui";
-import { mockTeacherData } from "../../../data/mock-teacher";
+import { useTeacherData } from "@/features/dashboard/context/TeacherDataContext";
 import TeacherStatsGrid from "./TeacherStatsGrid";
 import TeacherClassList from "./TeacherClassList";
 import RecentActivityFeed from "./RecentActivityFeed";
 
 const TeacherOverviewView: React.FC = () => {
-    const data = mockTeacherData;
+    const { teacherData } = useTeacherData();
 
     return (
         <div className="space-y-6">
@@ -19,7 +19,7 @@ const TeacherOverviewView: React.FC = () => {
             />
 
             {/* Stats Grid */}
-            <TeacherStatsGrid stats={data.stats} />
+            <TeacherStatsGrid stats={teacherData.stats} />
 
             {/* Quick Actions */}
             <div className="bg-white border border-gray-200 rounded-lg p-6">
@@ -80,7 +80,7 @@ const TeacherOverviewView: React.FC = () => {
                             <h3 className="text-lg font-semibold text-gray-800">Đề thi gần đây</h3>
                         </div>
                         <div className="divide-y divide-gray-200">
-                            {data.recentExams.map((exam) => (
+                            {teacherData.recentExams.slice(0, 3).map((exam) => (
                                 <div key={exam.id} className="p-4">
                                     <div className="flex justify-between items-start mb-2">
                                         <div>
@@ -109,7 +109,7 @@ const TeacherOverviewView: React.FC = () => {
                 {/* Right Column */}
                 <div className="space-y-6">
                     {/* Recent Activity */}
-                    <RecentActivityFeed activities={data.recentActivity} />
+                    <RecentActivityFeed activities={teacherData.recentActivity.slice(0, 5)} />
 
                     {/* Top Students */}
                     <div className="bg-white border border-gray-200 rounded-lg">
@@ -117,7 +117,7 @@ const TeacherOverviewView: React.FC = () => {
                             <h3 className="text-lg font-semibold text-gray-800">Học sinh nổi bật</h3>
                         </div>
                         <div className="divide-y divide-gray-200">
-                            {data.topStudents.map((student) => (
+                            {teacherData.topStudents.map((student) => (
                                 <div key={student.id} className="p-4">
                                     <div className="flex justify-between items-center">
                                         <div>
@@ -144,7 +144,7 @@ const TeacherOverviewView: React.FC = () => {
             </div>
 
             {/* Classes Section */}
-            <TeacherClassList classes={data.classes} />
+            <TeacherClassList classes={teacherData.classes} />
         </div>
     );
 };
