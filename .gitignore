@@ -96,3 +96,22 @@ public/
 # Vercel
 /backend/.vercel
 /frontend/.vercel
+
+# Storybook
+/storybook-static
+/storybook-build
+/frontend/storybook-static
+/frontend/storybook-build
+/backend/storybook-static
+/backend/storybook-build
+/.storybook-static
+/.storybook-build
+/storybook/
+/frontend/.storybook/
+/frontend/src/stories
+
+# Code Markdown
+*.code-md
+ExamImages/
+/ExamImages
+

@@ -1,6 +1,11 @@
 import React from "react";
 
-export type ButtonVariant = "primary" | "secondary" | "danger" | "ghost";
+export type ButtonVariant =
+  | "primary"
+  | "secondary"
+  | "danger"
+  | "ghost"
+  | "outline";
 export type ButtonSize = "sm" | "md" | "lg";
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
@@ -22,20 +27,25 @@ const Button: React.FC<ButtonProps> = ({
   ...props
 }) => {
   const baseStyles =
-    "inline-flex items-center justify-center font-medium rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed";
+    "inline-flex items-center justify-center font-bold rounded-xl transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed";
 
   const variantStyles: Record<ButtonVariant, string> = {
-    primary: "bg-teal-500 text-white hover:bg-teal-600 focus:ring-teal-500",
+    primary:
+      "bg-[#00747F] text-white hover:bg-[#005f68] focus:ring-teal-500 shadow-sm hover:shadow-md",
     secondary:
-      "bg-gray-200 text-gray-800 hover:bg-gray-300 focus:ring-gray-400",
-    danger: "bg-red-500 text-white hover:bg-red-600 focus:ring-red-500",
-    ghost: "bg-transparent text-gray-700 hover:bg-gray-100 focus:ring-gray-300",
+      "bg-gray-100 text-gray-800 hover:bg-gray-200 focus:ring-gray-400",
+    danger:
+      "bg-red-500 text-white hover:bg-red-600 focus:ring-red-500 shadow-sm",
+    ghost:
+      "bg-transparent text-gray-600 hover:bg-gray-100 hover:text-gray-900 focus:ring-gray-300",
+    outline:
+      "bg-transparent border-2 border-gray-200 text-gray-600 hover:border-gray-300 hover:bg-gray-50 focus:ring-gray-200",
   };
 
   const sizeStyles: Record<ButtonSize, string> = {
-    sm: "px-3 py-1.5 text-sm",
-    md: "px-4 py-2 text-base",
-    lg: "px-6 py-3 text-lg",
+    sm: "px-3 py-1.5 text-xs",
+    md: "px-5 py-2.5 text-sm",
+    lg: "px-8 py-3.5 text-base",
   };
 
   const widthStyle = fullWidth ? "w-full" : "";
