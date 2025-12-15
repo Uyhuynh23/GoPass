@@ -2079,6 +2079,18 @@
           "feedback": "Sai. Đáp án đúng là: A"
         }
       ]
+    },
+    {
+      "id": "3c01",
+      "examId": "exam-003",
+      "studentId": "student-01",
+      "status": "graded",
+      "startedAt": "2025-12-15T12:16:26.995Z",
+      "submittedAt": "2025-12-15T13:16:26.995Z",
+      "totalScore": 0,
+      "maxScore": 10,
+      "attemptNumber": 1,
+      "answers": []
     }
   ]
 }
