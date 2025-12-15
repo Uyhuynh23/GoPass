@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { MOCK_HISTORY_ITEMS, MOCK_HISTORY_STATS } from "@/features/dashboard/data/mock-history";
+import { MOCK_HISTORY_ITEMS, MOCK_HISTORY_STATS } from "@/features/dashboard/data/student/mock-history";
 import HistoryItemCard from "./HistoryItemCard"; // 1. Import Card
 import HistoryStatsOverview from "./HistoryStatsOverview"; // 2. Import Stats
 

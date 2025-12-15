@@ -1,5 +1,5 @@
 // src/features/dashboard/data/mock-history.ts
-import { HistoryItem, HistoryStats } from "../types/student";
+import { HistoryItem, HistoryStats } from "../../types/student";
 
 export const MOCK_HISTORY_STATS: HistoryStats = {
   totalExams: 12,

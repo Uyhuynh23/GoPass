@@ -12,16 +12,17 @@ export interface StudentExam {
   dueDate: string;
 }
 
-export type ClassStatus = 'active' | 'pending';
+export type ClassStatus = 'active' | 'pending' | 'rejected';
 
 export interface ClassSummary {
-  id: string;
+  id: string;            // ID của lớp (VD: c_math_01)
   name: string;
   code: string;
   students: number;
-  status: ClassStatus; // Status: Active (Studying) or Pending approval
-  teacher?: string;    // Teacher name (displayed on pending cards)
-  requestDate?: string; // Date the join request was sent
+  status: ClassStatus;
+  teacher?: string;      // Tên giáo viên
+  requestDate?: string;  // Ngày tham gia/yêu cầu
+  requestId?: string;   // ID của yêu cầu tham gia lớp (nếu có)
 }
 
 

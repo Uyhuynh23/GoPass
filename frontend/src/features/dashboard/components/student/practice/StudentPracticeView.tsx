@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 // import { useRouter } from "next/navigation"; 
-import { MOCK_PRACTICE_EXAMS } from "@/features/dashboard/data/mock-practice-exams";
+import { MOCK_PRACTICE_EXAMS } from "@/features/dashboard/data/student/mock-practice-exams";
 import PracticeExamCard from "./PracticeExamCard"; // Import component vừa tách
 
 const StudentPracticeView = () => {

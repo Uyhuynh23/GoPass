@@ -1,19 +1,21 @@
 import React from "react";
 import StudentClassDetailView from "@/features/dashboard/components/student/class/StudentClassDetailView";
-// Import the Mock Data Helper
-import { getClassDetailById } from "@/features/dashboard/data/mock-class-details";
+
+// [UPDATE 1] Import từ API mới thay vì mock data cũ
+import { getClassDetailById } from "@/services/student/classApi";
 
 export default async function ClassDetailsPage({
   params,
 }: {
   params: Promise<{ classId: string }>;
 }) {
+  // Trong Next.js 15+, params là một Promise nên cần await
   const { classId } = await params;
 
-  // 1. Fetch data based on the ID from URL
-  const classData = getClassDetailById(classId);
+  // [UPDATE 2] Thêm 'await' vì hàm bây giờ là bất đồng bộ (Async)
+  const classData = await getClassDetailById(classId);
 
-  // 2. Handle Case: Class Not Found
+  // 3. Handle Case: Class Not Found
   if (!classData) {
     return (
       <div className="flex flex-col items-center justify-center min-h-[60vh] text-center">
@@ -24,6 +26,6 @@ export default async function ClassDetailsPage({
     );
   }
 
-  // 3. Render View with Data
+  // 4. Render View with Data
   return <StudentClassDetailView classData={classData} />;
 }

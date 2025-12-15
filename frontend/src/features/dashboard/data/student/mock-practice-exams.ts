@@ -1,4 +1,4 @@
-import { PracticeExam } from "../types/student";
+import { PracticeExam } from "../../types/student";
 
 export const MOCK_PRACTICE_EXAMS: PracticeExam[] = [
   {

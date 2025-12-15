@@ -1,5 +1,5 @@
 // src/features/dashboard/data/mock-class-details.ts
-import { ClassDetail } from "../types/class";
+import { ClassDetail } from "../../types/class";
 
 const MOCK_CLASSES_DB: ClassDetail[] = [
   {

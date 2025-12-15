@@ -6,7 +6,7 @@ import StudentStatsGrid from "./StudentStatsGrid";
 import MyClassesWidget from "./MyClassesWidget";
 import SubjectPerformanceWidget from "./SubjectPerformanceWidget";
 import ActivityChartWidget from "./ActivityChartWidget";
-import { mockStudentData } from "@/features/dashboard/data/mock-student";
+import { mockStudentData } from "@/features/dashboard/data/student/mock-student";
 
 const StudentDashboardView: React.FC = () => {
   return (

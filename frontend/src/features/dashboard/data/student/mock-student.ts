@@ -1,5 +1,5 @@
 // src/features/dashboard/data/mock-student.ts
-import { StudentDashboardData } from "../types/student";
+import { StudentDashboardData } from "../../types/student";
 
 export const mockStudentData: StudentDashboardData = {
   stats: {

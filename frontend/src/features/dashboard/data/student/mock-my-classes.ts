@@ -1,5 +1,5 @@
 // src/features/dashboard/data/mock-my-classes.ts
-import { ClassSummary } from "../types/student";
+import { ClassSummary } from "../../types/student";
 
 export const MOCK_MY_CLASSES: ClassSummary[] = [
   // --- ACTIVE CLASSES (15 Classes) ---

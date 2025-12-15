@@ -1,31 +1,47 @@
 // src/features/dashboard/types/class.ts
 
+// Cập nhật trạng thái để cover đủ các trường hợp logic
+export type AssignmentStatus = "completed" | "incomplete" | "ongoing" | "upcoming";
+
 export interface ClassAssignment {
-  id: number;
+  id: number | string;
+  examId: string;
   title: string;
-  deadline: string;
-  duration: number; // minutes
-  status: "upcoming" | "completed" | "late" | "ongoing";
+  
+  startTime: string;
+  endTime: string;
+  deadlineDisplay: string;
+  
+  duration: number;
+  questionCount: number;
+  
+  status: AssignmentStatus;
+  
   score: number | null;
   maxScore: number;
+  
+  attemptLimit: number;    // -1 là vô hạn, >0 là số lượt tối đa
+  myAttemptCount: number;  // Số lần user hiện tại đã làm
+ 
+  submittedCount: number;  // Tổng số HS trong lớp đã nộp
+  totalStudents: number;
 }
 
 export interface ClassStats {
   rank: number;
-  totalStudents: number; // For rank context (e.g., 8/45)
+  totalStudents: number;
   assignmentsDone: number;
   totalAssignments: number;
   avgScore: number;
 }
 
 export interface ClassDetail {
-  id: string; // e.g., "C01"
-  code: string; // e.g., "CLASS001"
-  name: string; // e.g., "Lớp 12A1..."
-  subject: string; // e.g., "Toán học"
+  id: string;
+  code: string;
+  name: string;
+  subject: string;
   teacher: string;
   studentsCount: number;
-  startDate: string;
   description: string;
   stats: ClassStats;
   assignments: ClassAssignment[];
