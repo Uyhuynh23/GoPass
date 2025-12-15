@@ -1,10 +1,10 @@
 import React from "react";
-import { HistoryItem, HistoryType } from "@/features/dashboard/types/student";
+import { HistoryItem, HistoryType } from "@/features/dashboard/types/student/";
 
 interface HistoryItemCardProps {
   item: HistoryItem;
-  onReview: (id: number) => void;
-  onLeaderboard: (id: number) => void;
+  onReview: (id: string | number) => void;
+  onLeaderboard: (id: string | number) => void;
 }
 
 const HistoryItemCard: React.FC<HistoryItemCardProps> = ({ item, onReview, onLeaderboard }) => {

@@ -1,13 +1,38 @@
-import React from "react";
-// Ensure you have this component created (using Recharts or similar library)
-import PerformanceChart from "./PerformanceChart"; 
+// src/features/dashboard/components/student/ActivityChartWidget.tsx
+"use client";
+
+import React, { useEffect, useState } from "react";
+import PerformanceChart from "./PerformanceChart";
 import { PerformanceDataPoint } from "@/features/dashboard/types/student";
+import { fetchStudentActivity } from "@/services/student/studentStatsApi"; // Import API
 
-interface ActivityChartWidgetProps {
-  data: PerformanceDataPoint[];
-}
+// Không cần Props nữa
+const ActivityChartWidget: React.FC = () => {
+  const [data, setData] = useState<PerformanceDataPoint[]>([]);
+  const [loading, setLoading] = useState(true);
+  
+  // Hardcode ID
+  const currentStudentId = "u_student_01";
 
-const ActivityChartWidget: React.FC<ActivityChartWidgetProps> = ({ data }) => {
+  useEffect(() => {
+    const loadData = async () => {
+      setLoading(true);
+      const activityData = await fetchStudentActivity(currentStudentId);
+      setData(activityData);
+      setLoading(false);
+    };
+    loadData();
+  }, []);
+
+  if (loading) {
+    return (
+      <div className="bg-white p-6 rounded-xl border border-teal-50 shadow-sm h-full flex flex-col min-h-[350px]">
+        <div className="h-6 w-1/3 bg-gray-200 rounded mb-4 animate-pulse"></div>
+        <div className="flex-1 bg-gray-100 rounded animate-pulse"></div>
+      </div>
+    );
+  }
+
   return (
     <div className="bg-white p-6 rounded-xl border border-teal-50 shadow-sm h-full flex flex-col">
       {/* Header */}
@@ -21,8 +46,9 @@ const ActivityChartWidget: React.FC<ActivityChartWidgetProps> = ({ data }) => {
         </p>
       </div>
       
-      {/* Chart Container - flex-1 ensures it fills remaining vertical space */}
+      {/* Chart Container */}
       <div className="flex-1 min-h-[250px] w-full">
+        {/* Truyền data thật vào chart */}
         <PerformanceChart data={data} />
       </div>
     </div>

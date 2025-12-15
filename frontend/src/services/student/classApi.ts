@@ -1,5 +1,5 @@
 // src/services/student/classApi.ts
-import { ClassDetail, ClassAssignment, AssignmentStatus } from "@/features/dashboard/types/class";
+import { ClassDetail, ClassAssignment, AssignmentStatus } from "@/features/dashboard/types/student/";
 
 const BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001";
 

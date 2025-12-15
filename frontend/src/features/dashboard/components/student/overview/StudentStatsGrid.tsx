@@ -1,8 +1,11 @@
-// src/features/dashboard/components/student/StudentStatsGrid.tsx
-import React from "react";
-import { StudentStats } from "@/features/dashboard/types/student";
+"use client";
 
-// --- 1. Internal Component: SolidCard (Static Display) ---
+import React, { useEffect, useState } from "react";
+import { StudentStats } from "@/features/dashboard/types/student";
+// Import hàm API vừa tạo thay vì import db trực tiếp
+import { fetchStudentStats } from "@/services/student/studentStatsApi";
+
+// --- Internal Component: SolidCard (Giữ nguyên không đổi) ---
 interface SolidCardProps {
   title: string;
   value: string | number;
@@ -23,48 +26,68 @@ const SolidCard: React.FC<SolidCardProps> = ({
       className={`
         ${bgColorClass} 
         rounded-lg p-6 relative overflow-hidden text-white shadow-sm
-        cursor-default select-none
+        cursor-default select-none transition-transform hover:-translate-y-1
       `}
     >
-      {/* Note: 
-         - 'cursor-default': Đảm bảo con trỏ chuột là hình mũi tên bình thường.
-         - 'select-none': Ngăn người dùng bôi đen text (tùy chọn, giúp UI giống app hơn).
-         - Đã xóa hoàn toàn hover:scale, active:scale, transition.
-      */}
-
-      {/* Faded icon in top-right corner */}
-      <div className="absolute top-4 right-4 opacity-20">
-        {icon}
-      </div>
-      
-      {/* Main content */}
+      <div className="absolute top-4 right-4 opacity-20">{icon}</div>
       <div className="relative z-10">
-        <p className="text-xs font-medium uppercase tracking-wider opacity-90">
-          {title}
-        </p>
+        <p className="text-xs font-medium uppercase tracking-wider opacity-90">{title}</p>
         <p className="text-3xl md:text-4xl font-bold mt-2">{value}</p>
-        {subtitle && (
-          <p className="text-sm font-medium mt-1 opacity-80">{subtitle}</p>
-        )}
+        {subtitle && <p className="text-sm font-medium mt-1 opacity-80">{subtitle}</p>}
       </div>
     </div>
   );
 };
 
-// --- 2. Main Component: StudentStatsGrid ---
-interface StudentStatsGridProps {
-  stats: StudentStats;
-}
+// --- Main Component: StudentStatsGrid ---
+const StudentStatsGrid: React.FC = () => {
+  const [stats, setStats] = useState<StudentStats | null>(null);
+  const [loading, setLoading] = useState(true);
 
-const StudentStatsGrid: React.FC<StudentStatsGridProps> = ({ stats }) => {
+  // Hardcode ID (Sau này lấy từ Context/Auth)
+  const currentStudentId = "u_student_01"; 
   const iconClasses = "w-12 h-12";
+
+  useEffect(() => {
+    const loadData = async () => {
+      try {
+        setLoading(true);
+        // GỌI API TỪ SERVICE
+        const data = await fetchStudentStats(currentStudentId);
+        setStats(data);
+      } catch (error) {
+        // Xử lý lỗi (ví dụ: hiện thông báo)
+        console.error("Failed to load stats");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadData();
+  }, []);
+
+  // --- Render Loading State (Skeleton) ---
+  if (loading || !stats) {
+    return (
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+        {[1, 2, 3, 4].map((i) => (
+          <div key={i} className="h-32 bg-gray-200 rounded-lg animate-pulse"></div>
+        ))}
+      </div>
+    );
+  }
+
+  // Format điểm số
+  const displayScore = Number.isInteger(stats.averageScore) 
+    ? stats.averageScore 
+    : stats.averageScore.toFixed(1);
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-      {/* --- Card 1: JOINED CLASSES (Teal) --- */}
+      {/* --- Card 1: LỚP HỌC --- */}
       <SolidCard
         title="Lớp đã tham gia"
-        value={stats.joinedClasses || 0}
+        value={stats.joinedClasses}
         bgColorClass="bg-teal-500"
         icon={
           <svg className={iconClasses} fill="currentColor" viewBox="0 0 20 20">
@@ -73,10 +96,10 @@ const StudentStatsGrid: React.FC<StudentStatsGridProps> = ({ stats }) => {
         }
       />
 
-      {/* --- Card 2: EXAMS TAKEN (Emerald) --- */}
+      {/* --- Card 2: BÀI THI --- */}
       <SolidCard
         title="Bài thi đã làm"
-        value={stats.examsTaken || 0}
+        value={stats.examsTaken}
         bgColorClass="bg-emerald-500"
         icon={
           <svg className={iconClasses} fill="currentColor" viewBox="0 0 20 20">
@@ -85,10 +108,10 @@ const StudentStatsGrid: React.FC<StudentStatsGridProps> = ({ stats }) => {
         }
       />
 
-      {/* --- Card 3: AVERAGE SCORE (Blue) --- */}
+      {/* --- Card 3: ĐIỂM TRUNG BÌNH --- */}
       <SolidCard
         title="Điểm trung bình"
-        value={stats.averageScore?.toFixed(1) || "0.0"}
+        value={displayScore}
         bgColorClass="bg-blue-500"
         icon={
           <svg className={iconClasses} fill="currentColor" viewBox="0 0 20 20">
@@ -98,10 +121,10 @@ const StudentStatsGrid: React.FC<StudentStatsGridProps> = ({ stats }) => {
         }
       />
 
-      {/* --- Card 4: THPT QG 2026 (Rose) --- */}
+      {/* --- Card 4: ĐẾM NGƯỢC --- */}
       <SolidCard
         title="THPT QG 2026"
-        value={stats.daysUntilExam || 0}
+        value={stats.daysUntilExam}
         subtitle="ngày nữa"
         bgColorClass="bg-rose-500"
         icon={

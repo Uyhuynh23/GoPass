@@ -1,4 +1,4 @@
-import { ClassSummary, ClassStatus } from "../../features/dashboard/types/student";
+import { StudentStats, ClassSummary } from "@/features/dashboard/types/student/";
 
 // URL của JSON Server (hoặc Backend thật sau này)
 const BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001";

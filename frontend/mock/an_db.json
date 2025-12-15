@@ -441,6 +441,15 @@
       "duration_min": 20,
       "total_score": 10,
       "created_by": "u_teacher_03"
+    },
+    {
+      "exam_id": "ex_global_iq",
+      "title": "Test IQ & Tư duy logic (Global)",
+      "description": "Bài kiểm tra đánh giá năng lực tư duy logic, tính toán nhanh và nhận diện quy luật hình ảnh.",
+      "subject": "Kỹ năng mềm",
+      "duration_min": 45,
+      "total_score": 150,
+      "created_by": "u_admin_01"
     }
   ],
   "ExamAssignment": [
@@ -575,6 +584,58 @@
       "status": "completed",
       "objective_score": 7.0,
       "final_score": 7.0
+    },
+    {
+    "submission_id": "sub_contest_01",
+    "exam_id": "ex_contest_math_final",
+    "student_user_id": "u_student_01",
+    "class_id": null, 
+    "started_at": "2025-12-10T09:00:00Z",
+    "submitted_at": "2025-12-10T10:30:00Z",
+    "status": "completed",
+    "objective_score": 9.5,
+    "final_score": 9.5
+    },
+    {
+      "submission_id": "sub_global_01",
+      "exam_id": "ex_global_iq",
+      "student_user_id": "u_student_01",
+      "class_id": null,
+      "started_at": "2025-12-12T14:00:00Z",
+      "submitted_at": "2025-12-12T14:30:00Z",
+      "status": "completed",
+      "objective_score": 85,
+      "final_score": 85
+    },
+    {
+      "submission_id": "sub_class_01",
+      "exam_id": "ex_phys_01",
+      "student_user_id": "u_student_01",
+      "class_id": "c_phys_02",
+      "started_at": "2025-12-14T08:00:00Z",
+      "submitted_at": "2025-12-14T09:00:00Z",
+      "status": "completed",
+      "objective_score": 8.0,
+      "final_score": 8.0
+    }
+  ],
+  "Contest": [
+  {
+    "contest_id": "ct_01",
+    "title": "Olympic Toán Học Mùa Xuân",
+    "description": "Cuộc thi toán học thường niên.",
+    "start_time": "2025-12-01T00:00:00Z",
+    "end_time": "2025-12-30T00:00:00Z",
+    "status": "ongoing"
+  }
+  ],
+  "ContestExam": [
+    {
+      "id": "ce_01",
+      "contest_id": "ct_01",
+      "exam_id": "ex_contest_math_final",
+      "order": 1,
+      "weight": 1.0
     }
   ]
 }
