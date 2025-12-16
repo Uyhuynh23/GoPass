@@ -72,3 +72,46 @@ export interface TeacherDashboardData {
     topStudents: TopStudent[];
     recentExams: RecentExam[];
 }
+
+
+// Add new interfaces for Class Detail functionality
+export interface ClassDetailStats {
+    totalMembers: number;
+    pendingRequests: number;
+    activeAssignments: number;
+    averageScore: number;
+}
+
+export interface ClassMemberProgress {
+    memberId: string;
+    studentName: string;
+    email: string;
+    joinDate: string;
+    completedAssignments: number;
+    totalAssignments: number;
+    averageScore: number;
+    lastActivity: string;
+    trend: "up" | "down" | "stable";
+    recentScores: number[];
+}
+
+export interface ClassProgressSummary {
+    totalAssignments: number;
+    completedAssignments: number;
+    averageCompletionRate: number;
+    classAverageScore: number;
+    topPerformer: {
+        name: string;
+        score: number;
+    };
+    strugglingStudents: {
+        name: string;
+        completionRate: number;
+        avgScore: number;
+    }[];
+    recentTrends: {
+        week: string;
+        averageScore: number;
+        completionRate: number;
+    }[];
+}

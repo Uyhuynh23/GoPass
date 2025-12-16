@@ -1,500 +1,354 @@
 "use client";
 
 import React, { useState } from "react";
-import { Button, Input } from "@/components/ui";
-import { useTeacherData } from "@/features/dashboard/context/TeacherDataContext";
+import { Button } from "@/components/ui";
 
 interface CreateExamModalProps {
-    isOpen: boolean;
-    onClose: () => void;
-    onSubmit: (examData: any) => void;
-}
-
-interface ExamFormData {
-    title: string;
-    subject: string;
-    description: string;
-    createMethod: "upload" | "auto" | "";
-    classIds: string[];
-    startDate: string;
-    startTime: string;
-    endDate: string;
-    endTime: string;
-    totalQuestions: string;
-    duration: string;
-    showAnswers: boolean;
-    showLeaderboard: boolean;
+  isOpen: boolean;
+  onClose: () => void;
+  onSubmit: (examData: any) => void;
 }
 
 const CreateExamModal: React.FC<CreateExamModalProps> = ({
-    isOpen,
-    onClose,
-    onSubmit,
+  isOpen,
+  onClose,
+  onSubmit,
 }) => {
-    const { teacherData, addExam } = useTeacherData();
-    const [currentStep, setCurrentStep] = useState(1);
-    const [formData, setFormData] = useState<ExamFormData>({
+  const [currentStep, setCurrentStep] = useState(1);
+  const [formData, setFormData] = useState({
+    title: "",
+    description: "",
+    subject: "",
+    totalQuestions: "",
+    duration: "",
+    difficulty: "medium",
+    showAnswers: false,
+  });
+
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+    
+    try {
+      await onSubmit(formData);
+      setFormData({
         title: "",
-        subject: "",
         description: "",
-        createMethod: "",
-        classIds: [],
-        startDate: "",
-        startTime: "",
-        endDate: "",
-        endTime: "",
-        totalQuestions: "50",
-        duration: "90",
+        subject: "",
+        totalQuestions: "",
+        duration: "",
+        difficulty: "medium",
         showAnswers: false,
-        showLeaderboard: false,
-    });
+      });
+      setCurrentStep(1);
+    } catch (error) {
+      console.error("Error creating exam:", error);
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
-    const classes = teacherData.classes;
+  const nextStep = () => setCurrentStep(prev => Math.min(prev + 1, 3));
+  const prevStep = () => setCurrentStep(prev => Math.max(prev - 1, 1));
 
-    const handleNext = () => {
-        if (currentStep < 3) {
-            setCurrentStep(currentStep + 1);
-        }
-    };
+  if (!isOpen) return null;
 
-    const handlePrev = () => {
-        if (currentStep > 1) {
-            setCurrentStep(currentStep - 1);
-        }
-    };
+  return (
+    <>
+      {/* Backdrop with blur */}
+      <div className="fixed inset-0 bg-black/20 backdrop-blur-sm z-40" onClick={onClose} />
+      
+      {/* Modal */}
+      <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+        <div className="bg-white rounded-2xl shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-hidden transform transition-all">
+          {/* Header */}
+          <div className="px-6 py-4 border-b border-gray-100">
+            <div className="flex items-center justify-between">
+              <div>
+                <h2 className="text-xl font-semibold text-gray-900">Tạo đề thi mới</h2>
+                <p className="text-sm text-gray-500 mt-1">Bước {currentStep} / 3</p>
+              </div>
+              <button
+                onClick={onClose}
+                className="text-gray-400 hover:text-gray-600 transition-colors p-2 hover:bg-gray-100 rounded-lg"
+              >
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
 
-    const handleInputChange = (field: keyof ExamFormData, value: any) => {
-        setFormData(prev => ({ ...prev, [field]: value }));
-    };
-
-    const handleClassToggle = (classId: string) => {
-        setFormData(prev => ({
-            ...prev,
-            classIds: prev.classIds.includes(classId)
-                ? prev.classIds.filter(id => id !== classId)
-                : [...prev.classIds, classId]
-        }));
-    };
-
-    const handleSubmit = () => {
-        // Add to context
-        addExam(formData);
-
-        // Call parent onSubmit
-        onSubmit(formData);
-    };
-
-    const resetForm = () => {
-        setFormData({
-            title: "",
-            subject: "",
-            description: "",
-            createMethod: "",
-            classIds: [],
-            startDate: "",
-            startTime: "",
-            endDate: "",
-            endTime: "",
-            totalQuestions: "50",
-            duration: "90",
-            showAnswers: false,
-            showLeaderboard: false,
-        });
-        setCurrentStep(1);
-    };
-
-    const handleClose = () => {
-        resetForm();
-        onClose();
-    };
-
-    if (!isOpen) return null;
-
-    const renderStepIndicator = () => (
-        <div className="flex items-center justify-center mb-6">
-            {[1, 2, 3].map((step) => (
-                <React.Fragment key={step}>
-                    <div
-                        className={`w-10 h-10 rounded-full flex items-center justify-center text-sm font-medium ${step <= currentStep
-                            ? "bg-teal-500 text-white"
-                            : "bg-gray-200 text-gray-600"
-                            }`}
-                    >
-                        {step}
+            {/* Progress Bar */}
+            <div className="mt-4">
+              <div className="flex items-center">
+                {[1, 2, 3].map((step) => (
+                  <React.Fragment key={step}>
+                    <div className={`flex items-center justify-center w-8 h-8 rounded-full text-sm font-medium transition-colors ${
+                      step <= currentStep
+                        ? "bg-teal-600 text-white"
+                        : "bg-gray-200 text-gray-500"
+                    }`}>
+                      {step}
                     </div>
                     {step < 3 && (
-                        <div
-                            className={`w-12 h-1 mx-2 ${step < currentStep ? "bg-teal-500" : "bg-gray-200"
-                                }`}
-                        />
+                      <div className={`flex-1 h-1 mx-2 rounded transition-colors ${
+                        step < currentStep ? "bg-teal-600" : "bg-gray-200"
+                      }`} />
                     )}
-                </React.Fragment>
-            ))}
-        </div>
-    );
-
-    const renderStep1 = () => (
-        <div className="space-y-6">
-            <div className="text-center mb-6">
-                <h3 className="text-lg font-semibold text-gray-900 mb-2">
-                    Thông tin cơ bản
-                </h3>
-                <p className="text-sm text-gray-600">
-                    Tạo đề thi theo dùng quy chế thi THPT Quốc Gia 2025
-                </p>
+                  </React.Fragment>
+                ))}
+              </div>
+              <div className="flex justify-between mt-2 text-xs text-gray-500">
+                <span>Thông tin cơ bản</span>
+                <span>Cấu hình đề thi</span>
+                <span>Xác nhận</span>
+              </div>
             </div>
+          </div>
 
-            {/* Basic Info */}
-            <div className="space-y-4">
-                <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                        Tên đề thi
+          {/* Content */}
+          <form onSubmit={handleSubmit} className="overflow-y-auto max-h-[calc(90vh-200px)]">
+            <div className="p-6">
+              {/* Step 1: Basic Info */}
+              {currentStep === 1 && (
+                <div className="space-y-4">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Tên đề thi <span className="text-red-500">*</span>
                     </label>
-                    <Input
-                        placeholder="Ví dụ: Đề thi thử THPT QG 2025 - Toán"
-                        value={formData.title}
-                        onChange={(e) => handleInputChange("title", e.target.value)}
+                    <input
+                      type="text"
+                      required
+                      value={formData.title}
+                      onChange={(e) => setFormData({ ...formData, title: e.target.value })}
+                      placeholder="VD: Đề thi thử THPT QG lần 1 - Toán"
+                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent transition-all text-gray-900 placeholder-gray-500"
                     />
-                </div>
+                  </div>
 
-                <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                        Môn học
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Môn học <span className="text-red-500">*</span>
                     </label>
                     <select
-                        value={formData.subject}
-                        onChange={(e) => handleInputChange("subject", e.target.value)}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 text-gray-900"
+                      required
+                      value={formData.subject}
+                      onChange={(e) => setFormData({ ...formData, subject: e.target.value })}
+                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent transition-all text-gray-900"
                     >
-                        <option value="">Chọn môn học</option>
-                        <option value="Toán">Toán</option>
-                        <option value="Lý">Lý</option>
-                        <option value="Hóa">Hóa</option>
-                        <option value="Sinh">Sinh</option>
-                        <option value="Anh">Tiếng Anh</option>
-                        <option value="Văn">Văn</option>
+                      <option value="" className="text-gray-500">Chọn môn học</option>
+                      <option value="Toán" className="text-gray-900">Toán</option>
+                      <option value="Ngữ Văn" className="text-gray-900">Ngữ Văn</option>
+                      <option value="Tiếng Anh" className="text-gray-900">Tiếng Anh</option>
+                      <option value="Vật Lý" className="text-gray-900">Vật Lý</option>
+                      <option value="Hóa Học" className="text-gray-900">Hóa Học</option>
+                      <option value="Sinh Học" className="text-gray-900">Sinh Học</option>
+                      <option value="Lịch Sử" className="text-gray-900">Lịch Sử</option>
+                      <option value="Địa Lý" className="text-gray-900">Địa Lý</option>
+                      <option value="GDCD" className="text-gray-900">GDCD</option>
                     </select>
-                </div>
+                  </div>
 
-                <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                        Mô tả
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Mô tả đề thi
                     </label>
                     <textarea
-                        placeholder="Mô tả ngắn về đề thi..."
-                        value={formData.description}
-                        onChange={(e) => handleInputChange("description", e.target.value)}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 text-gray-900 resize-none"
-                        rows={3}
+                      value={formData.description}
+                      onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+                      placeholder="Mô tả về đề thi, yêu cầu, mục tiêu..."
+                      rows={4}
+                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent transition-all resize-none text-gray-900 placeholder-gray-500"
                     />
+                  </div>
                 </div>
+              )}
 
-                {/* Total Questions & Duration */}
-                <div className="grid grid-cols-2 gap-4">
+              {/* Step 2: Configuration */}
+              {currentStep === 2 && (
+                <div className="space-y-4">
+                  <div className="grid grid-cols-2 gap-4">
                     <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">
-                            Số câu hỏi
-                        </label>
-                        <Input
-                            type="number"
-                            placeholder="50"
-                            value={formData.totalQuestions}
-                            onChange={(e) => handleInputChange("totalQuestions", e.target.value)}
-                        />
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        Số câu hỏi <span className="text-red-500">*</span>
+                      </label>
+                      <input
+                        type="number"
+                        required
+                        min="1"
+                        value={formData.totalQuestions}
+                        onChange={(e) => setFormData({ ...formData, totalQuestions: e.target.value })}
+                        placeholder="50"
+                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent transition-all text-gray-900 placeholder-gray-500"
+                      />
                     </div>
+
                     <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">
-                            Thời gian (phút)
-                        </label>
-                        <Input
-                            type="number"
-                            placeholder="90"
-                            value={formData.duration}
-                            onChange={(e) => handleInputChange("duration", e.target.value)}
-                        />
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        Thời gian (phút) <span className="text-red-500">*</span>
+                      </label>
+                      <input
+                        type="number"
+                        required
+                        min="1"
+                        value={formData.duration}
+                        onChange={(e) => setFormData({ ...formData, duration: e.target.value })}
+                        placeholder="90"
+                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent transition-all text-gray-900 placeholder-gray-500"
+                      />
                     </div>
-                </div>
-            </div>
+                  </div>
 
-            {/* Create Method */}
-            <div>
-                <label className="block text-sm font-medium text-gray-700 mb-3">
-                    Chọn cách tạo đề
-                </label>
-                <div className="grid grid-cols-2 gap-4">
-                    <button
-                        type="button"
-                        onClick={() => handleInputChange("createMethod", "upload")}
-                        className={`p-4 border rounded-lg text-center transition-colors ${formData.createMethod === "upload"
-                            ? "border-teal-500 bg-teal-50"
-                            : "border-gray-200 hover:border-gray-300"
-                            }`}
-                    >
-                        <div className="text-2xl mb-2">📤</div>
-                        <div className="font-medium text-gray-900">Tải lên file</div>
-                        <div className="text-sm text-gray-600">
-                            Tải lên đề thi theo template chuẩn
-                        </div>
-                    </button>
-
-                    <button
-                        type="button"
-                        onClick={() => handleInputChange("createMethod", "auto")}
-                        className={`p-4 border rounded-lg text-center transition-colors ${formData.createMethod === "auto"
-                            ? "border-teal-500 bg-teal-50"
-                            : "border-gray-200 hover:border-gray-300"
-                            }`}
-                    >
-                        <div className="text-2xl mb-2">⚙️</div>
-                        <div className="font-medium text-gray-900">Tạo tự động</div>
-                        <div className="text-sm text-gray-600">
-                            Tạo tự ngẫu nhiên câu hỏi theo ma trận
-                        </div>
-                    </button>
-                </div>
-            </div>
-
-            {/* File Upload Section */}
-            {formData.createMethod === "upload" && (
-                <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center">
-                    <div className="text-2xl mb-2">📁</div>
-                    <div className="text-sm text-gray-600 mb-2">
-                        Kéo thả file hoặc click để chọn
-                    </div>
-                    <div className="text-xs text-gray-500">
-                        Định dạng: .doc, .docx (Tối đa 15MB)
-                    </div>
-                    <input type="file" className="hidden" accept=".doc,.docx" />
-                </div>
-            )}
-        </div>
-    );
-
-    const renderStep2 = () => (
-        <div className="space-y-6">
-            <div className="text-center mb-6">
-                <h3 className="text-lg font-semibold text-gray-900">
-                    Gán cho lớp học
-                </h3>
-            </div>
-
-            <div>
-                <div className="text-sm text-gray-600 mb-4">
-                    Đã chọn: {formData.classIds.length} lớp
-                </div>
-
-                <div className="space-y-2 max-h-64 overflow-y-auto">
-                    {classes.map((classItem) => (
-                        <label
-                            key={classItem.id}
-                            className={`flex items-center p-3 border rounded-lg cursor-pointer transition-colors ${formData.classIds.includes(classItem.id)
-                                ? "border-teal-500 bg-teal-50"
-                                : "border-gray-200 hover:bg-gray-50"
-                                }`}
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Độ khó
+                    </label>
+                    <div className="grid grid-cols-3 gap-3">
+                      {[
+                        { value: "easy", label: "Dễ", color: "green" },
+                        { value: "medium", label: "Trung bình", color: "orange" },
+                        { value: "hard", label: "Khó", color: "red" },
+                      ].map((option) => (
+                        <button
+                          key={option.value}
+                          type="button"
+                          onClick={() => setFormData({ ...formData, difficulty: option.value })}
+                          className={`p-3 border rounded-lg text-sm font-medium transition-all ${
+                            formData.difficulty === option.value
+                              ? `border-${option.color}-500 bg-${option.color}-50 text-${option.color}-700`
+                              : "border-gray-300 text-gray-700 hover:border-gray-400"
+                          }`}
                         >
-                            <input
-                                type="checkbox"
-                                checked={formData.classIds.includes(classItem.id)}
-                                onChange={() => handleClassToggle(classItem.id)}
-                                className="rounded border-gray-300 text-teal-600 focus:ring-teal-500 mr-3"
-                            />
-                            <div className="flex-1">
-                                <div className="font-medium text-gray-900">
-                                    {classItem.name}
-                                </div>
-                                <div className="text-sm text-gray-500">
-                                    {classItem.studentCount} học sinh
-                                </div>
-                            </div>
-                        </label>
-                    ))}
-                </div>
-            </div>
-
-            {/* Time Settings */}
-            <div className="grid grid-cols-2 gap-4">
-                <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                        Ngày bắt đầu
-                    </label>
-                    <Input
-                        type="date"
-                        value={formData.startDate}
-                        onChange={(e) => handleInputChange("startDate", e.target.value)}
-                    />
-                </div>
-                <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                        Giờ bắt đầu
-                    </label>
-                    <Input
-                        type="time"
-                        value={formData.startTime}
-                        onChange={(e) => handleInputChange("startTime", e.target.value)}
-                    />
-                </div>
-                <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                        Ngày kết thúc
-                    </label>
-                    <Input
-                        type="date"
-                        value={formData.endDate}
-                        onChange={(e) => handleInputChange("endDate", e.target.value)}
-                    />
-                </div>
-                <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                        Giờ kết thúc
-                    </label>
-                    <Input
-                        type="time"
-                        value={formData.endTime}
-                        onChange={(e) => handleInputChange("endTime", e.target.value)}
-                    />
-                </div>
-            </div>
-        </div>
-    );
-
-    const renderStep3 = () => (
-        <div className="space-y-6">
-            <div className="text-center mb-6">
-                <h3 className="text-lg font-semibold text-gray-900">
-                    Cài đặt đề thi
-                </h3>
-            </div>
-
-            {/* Settings */}
-            <div className="space-y-4">
-                <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                        Hiển thị đáp án sau khi thi
-                    </label>
-                    <div className="flex items-center gap-4">
-                        <label className="flex items-center">
-                            <input
-                                type="checkbox"
-                                checked={formData.showAnswers}
-                                onChange={(e) => handleInputChange("showAnswers", e.target.checked)}
-                                className="rounded border-gray-300 text-teal-600 focus:ring-teal-500 mr-2"
-                            />
-                            <span className="text-sm text-gray-700">Học sinh có thể xem đáp án đề thi sau khi hoàn thành bài thi</span>
-                        </label>
+                          {option.label}
+                        </button>
+                      ))}
                     </div>
-                </div>
-            </div>
+                  </div>
 
-            {/* Summary */}
-            <div className="bg-gray-50 rounded-lg p-4">
-                <h4 className="font-medium text-gray-900 mb-3">Tóm tắt đề thi</h4>
-                <div className="space-y-2 text-sm">
-                    <div className="flex justify-between">
+                  <div>
+                    <label className="flex items-center gap-3">
+                      <input
+                        type="checkbox"
+                        checked={formData.showAnswers}
+                        onChange={(e) => setFormData({ ...formData, showAnswers: e.target.checked })}
+                        className="rounded border-gray-300 text-teal-600 focus:ring-teal-500"
+                      />
+                      <span className="text-sm font-medium text-gray-700">
+                        Hiển thị đáp án sau khi hoàn thành
+                      </span>
+                    </label>
+                  </div>
+                </div>
+              )}
+
+              {/* Step 3: Confirmation */}
+              {currentStep === 3 && (
+                <div className="space-y-4">
+                  <div className="bg-gray-50 rounded-lg p-4">
+                    <h4 className="font-medium text-gray-900 mb-3">Xác nhận thông tin đề thi</h4>
+                    <div className="space-y-2 text-sm">
+                      <div className="flex justify-between">
                         <span className="text-gray-600">Tên đề thi:</span>
-                        <span className="text-gray-900">{formData.title || "Chưa nhập"}</span>
-                    </div>
-                    <div className="flex justify-between">
+                        <span className="font-medium text-gray-900">{formData.title}</span>
+                      </div>
+                      <div className="flex justify-between">
                         <span className="text-gray-600">Môn học:</span>
-                        <span className="text-gray-900">{formData.subject || "Chưa chọn"}</span>
-                    </div>
-                    <div className="flex justify-between">
-                        <span className="text-gray-600">Số lớp:</span>
-                        <span className="text-gray-900">{formData.classIds.length} lớp</span>
-                    </div>
-                    <div className="flex justify-between">
+                        <span className="font-medium text-gray-900">{formData.subject}</span>
+                      </div>
+                      <div className="flex justify-between">
                         <span className="text-gray-600">Số câu hỏi:</span>
-                        <span className="text-gray-900">{formData.totalQuestions} câu</span>
-                    </div>
-                    <div className="flex justify-between">
+                        <span className="font-medium text-gray-900">{formData.totalQuestions} câu</span>
+                      </div>
+                      <div className="flex justify-between">
                         <span className="text-gray-600">Thời gian:</span>
-                        <span className="text-gray-900">
-                            {formData.startDate && formData.endDate
-                                ? `${formData.startDate} - ${formData.endDate}`
-                                : "Chưa cài đặt"
-                            }
-                        </span>
+                        <span className="font-medium text-gray-900">{formData.duration} phút</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-gray-600">Độ khó:</span>
+                        <span className="font-medium text-gray-900 capitalize">{formData.difficulty}</span>
+                      </div>
                     </div>
-                    <div className="flex justify-between">
-                        <span className="text-gray-600">Thời gian làm bài:</span>
-                        <span className="text-gray-900">{formData.duration} phút</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    );
+                  </div>
 
-    return (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-            <div className="bg-white rounded-lg w-full max-w-2xl max-h-[90vh] mx-4 flex flex-col">
-                {/* Header */}
-                <div className="flex items-center justify-between p-6 border-b border-gray-200">
-                    <div>
-                        <h2 className="text-xl font-semibold text-gray-900">
-                            Tạo đề thi mới
-                        </h2>
-                        <p className="text-sm text-gray-600 mt-1">
-                            Tạo đề thi theo dùng quy chế thi THPT Quốc Gia 2025
-                        </p>
-                    </div>
-                    <button
-                        onClick={handleClose}
-                        className="text-gray-400 hover:text-gray-600"
-                    >
-                        ✕
-                    </button>
-                </div>
-
-                {/* Content */}
-                <div className="flex-1 overflow-y-auto p-6">
-                    {renderStepIndicator()}
-
-                    {currentStep === 1 && renderStep1()}
-                    {currentStep === 2 && renderStep2()}
-                    {currentStep === 3 && renderStep3()}
-                </div>
-
-                {/* Footer */}
-                <div className="p-6 border-t border-gray-200">
+                  <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
                     <div className="flex gap-3">
-                        {currentStep > 1 && (
-                            <Button
-                                type="button"
-                                variant="secondary"
-                                onClick={handlePrev}
-                                className="flex-1"
-                            >
-                                Quay lại
-                            </Button>
-                        )}
-
-                        {currentStep < 3 ? (
-                            <Button
-                                type="button"
-                                variant="primary"
-                                onClick={handleNext}
-                                className="flex-1"
-                                disabled={
-                                    (currentStep === 1 && (!formData.title || !formData.subject || !formData.createMethod)) ||
-                                    (currentStep === 2 && formData.classIds.length === 0)
-                                }
-                            >
-                                Tiếp theo
-                            </Button>
-                        ) : (
-                            <Button
-                                type="button"
-                                variant="primary"
-                                onClick={handleSubmit}
-                                className="flex-1"
-                            >
-                                Tạo đề thi
-                            </Button>
-                        )}
+                      <svg className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                      </svg>
+                      <div>
+                        <h5 className="font-medium text-blue-900">Lưu ý</h5>
+                        <p className="text-sm text-blue-800 mt-1">
+                          Sau khi tạo đề thi, bạn có thể thêm câu hỏi và gán đề thi cho các lớp học.
+                        </p>
+                      </div>
                     </div>
+                  </div>
                 </div>
+              )}
             </div>
+
+            {/* Actions */}
+            <div className="p-6 border-t border-gray-100">
+              <div className="flex gap-3">
+                {currentStep > 1 && (
+                  <Button
+                    type="button"
+                    variant="secondary"
+                    onClick={prevStep}
+                    className="flex-1"
+                  >
+                    ← Quay lại
+                  </Button>
+                )}
+                
+                {currentStep < 3 ? (
+                  <Button
+                    type="button"
+                    variant="primary"
+                    onClick={nextStep}
+                    className="flex-1 bg-teal-600 hover:bg-teal-700"
+                    disabled={
+                      (currentStep === 1 && (!formData.title || !formData.subject)) ||
+                      (currentStep === 2 && (!formData.totalQuestions || !formData.duration))
+                    }
+                  >
+                    Tiếp tục →
+                  </Button>
+                ) : (
+                  <Button
+                    type="submit"
+                    variant="primary"
+                    className="flex-1 bg-teal-600 hover:bg-teal-700"
+                    disabled={isSubmitting}
+                  >
+                    {isSubmitting ? (
+                      <div className="flex items-center gap-2">
+                        <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                        Đang tạo...
+                      </div>
+                    ) : (
+                      "Tạo đề thi"
+                    )}
+                  </Button>
+                )}
+                
+                <Button
+                  type="button"
+                  variant="secondary"
+                  onClick={onClose}
+                  disabled={isSubmitting}
+                >
+                  Hủy
+                </Button>
+              </div>
+            </div>
+          </form>
         </div>
-    );
+      </div>
+    </>
+  );
 };
 
 export default CreateExamModal;

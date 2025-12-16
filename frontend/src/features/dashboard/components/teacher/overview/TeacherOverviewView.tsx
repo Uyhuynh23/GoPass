@@ -1,14 +1,48 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
+import { useRouter } from "next/navigation";
 import { SectionHeader, Button } from "@/components/ui";
 import { useTeacherData } from "@/features/dashboard/context/TeacherDataContext";
 import TeacherStatsGrid from "./TeacherStatsGrid";
 import TeacherClassList from "./TeacherClassList";
 import RecentActivityFeed from "./RecentActivityFeed";
+import CreateClassModal from "../classes/CreateClassModal";
+import CreateExamModal from "../exams/CreateExamModal";
 
 const TeacherOverviewView: React.FC = () => {
+    const router = useRouter();
     const { teacherData } = useTeacherData();
+    const [showCreateClassModal, setShowCreateClassModal] = useState(false);
+    const [showCreateExamModal, setShowCreateExamModal] = useState(false);
+
+    const handleCreateClassClick = () => {
+        setShowCreateClassModal(true);
+    };
+
+    const handleCreateExamClick = () => {
+        setShowCreateExamModal(true);
+    };
+
+    const handleCreateClassSubmit = (classData: any) => {
+        console.log("Creating class from overview:", classData);
+        setShowCreateClassModal(false);
+        // TODO: Implement actual API call and refresh data
+    };
+
+    const handleCreateExamSubmit = (examData: any) => {
+        console.log("Creating exam from overview:", examData);
+        setShowCreateExamModal(false);
+        // TODO: Implement actual API call and refresh data
+    };
+
+    const handleViewAllClasses = () => {
+        router.push('/dashboard/teacher/classes');
+    };
+
+    const handleViewAllExams = () => {
+        router.push('/dashboard/teacher/exams');
+    };
 
     return (
         <div className="space-y-6">
@@ -28,6 +62,7 @@ const TeacherOverviewView: React.FC = () => {
                     <Button
                         variant="primary"
                         className="h-24 flex flex-col items-center justify-center gap-2"
+                        onClick={handleCreateClassClick}
                     >
                         <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
@@ -38,6 +73,7 @@ const TeacherOverviewView: React.FC = () => {
                     <Button
                         variant="secondary"
                         className="h-24 flex flex-col items-center justify-center gap-2"
+                        onClick={handleCreateExamClick}
                     >
                         <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
@@ -77,7 +113,15 @@ const TeacherOverviewView: React.FC = () => {
                     {/* Recent Exams */}
                     <div className="bg-white border border-gray-200 rounded-lg">
                         <div className="p-6 border-b border-gray-200">
-                            <h3 className="text-lg font-semibold text-gray-800">Đề thi gần đây</h3>
+                            <div className="flex items-center justify-between">
+                                <h3 className="text-lg font-semibold text-gray-800">Đề thi gần đây</h3>
+                                <button
+                                    onClick={handleViewAllExams}
+                                    className="text-sm text-teal-600 hover:text-teal-700 hover:bg-teal-50 px-3 py-1 rounded-lg transition-colors"
+                                >
+                                    Xem tất cả →
+                                </button>
+                            </div>
                         </div>
                         <div className="divide-y divide-gray-200">
                             {teacherData.recentExams.slice(0, 3).map((exam) => (
@@ -145,6 +189,23 @@ const TeacherOverviewView: React.FC = () => {
 
             {/* Classes Section */}
             <TeacherClassList classes={teacherData.classes} />
+
+            {/* Modals */}
+            {showCreateClassModal && (
+                <CreateClassModal
+                    isOpen={showCreateClassModal}
+                    onClose={() => setShowCreateClassModal(false)}
+                    onSubmit={handleCreateClassSubmit}
+                />
+            )}
+
+            {showCreateExamModal && (
+                <CreateExamModal
+                    isOpen={showCreateExamModal}
+                    onClose={() => setShowCreateExamModal(false)}
+                    onSubmit={handleCreateExamSubmit}
+                />
+            )}
         </div>
     );
 };
