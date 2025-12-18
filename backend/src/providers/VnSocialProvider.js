@@ -10,6 +10,14 @@ class VnSocialProvider {
     this.oauthUrl = 'https://vnsocial.vnpt.vn/oauth/login';
     this.accessToken = null;
     this.tokenExpiry = null;
+    
+    // Check if using fixed token from env
+    if (process.env.VNSOCIAL_TOKEN) {
+      console.log('🔑 VnSocial: Using fixed token from environment');
+      this.accessToken = process.env.VNSOCIAL_TOKEN;
+      // Set expiry far in the future for manual tokens (30 days)
+      this.tokenExpiry = Date.now() + (30 * 24 * 60 * 60 * 1000);
+    }
   }
 
   /**
@@ -95,6 +103,19 @@ class VnSocialProvider {
    * Kiểm tra và refresh token nếu cần
    */
   async ensureToken() {
+    // If using fixed token from env, check if still valid
+    if (process.env.VNSOCIAL_TOKEN) {
+      if (!this.accessToken || (this.tokenExpiry && Date.now() >= this.tokenExpiry)) {
+        console.log('⚠️ VnSocial: Fixed token expired! Please update VNSOCIAL_TOKEN in .env');
+        // Re-initialize with the env token
+        this.accessToken = process.env.VNSOCIAL_TOKEN;
+        this.tokenExpiry = Date.now() + (30 * 24 * 60 * 60 * 1000);
+      }
+      console.log('✅ VnSocial: Using fixed token from environment');
+      return this.accessToken;
+    }
+
+    // Otherwise, use username/password login flow
     if (!this.accessToken || (this.tokenExpiry && Date.now() >= this.tokenExpiry)) {
       console.log('🔄 VnSocial: Token expired or not found, refreshing...');
       
@@ -103,7 +124,7 @@ class VnSocialProvider {
 
       if (!username || !password) {
         console.error('❌ VnSocial: Missing credentials in .env file');
-        throw new Error('VnSocial credentials not configured. Please set VNSOCIAL_USERNAME and VNSOCIAL_PASSWORD in .env');
+        throw new Error('VnSocial credentials not configured. Please set VNSOCIAL_USERNAME and VNSOCIAL_PASSWORD (or VNSOCIAL_TOKEN) in .env');
       }
 
       await this.login(username, password);

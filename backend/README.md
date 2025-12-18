@@ -112,6 +112,37 @@ npm start
 - `POST /api/admin/users/:userId/reset-password` - Reset mật khẩu
 - `GET /api/admin/metrics` - Thống kê hệ thống
 
+### VnSocial (Social Media Monitoring)
+- `GET /api/vnsocial/topics` - Lấy danh sách dự án/chủ đề
+- `POST /api/vnsocial/posts/search-by-keyword` - Tìm bài viết theo từ khóa
+- `POST /api/vnsocial/posts/search-by-source` - Tìm bài viết theo nguồn
+- `POST /api/vnsocial/keywords/hot` - Lấy từ khóa nổi bật
+- `POST /api/vnsocial/posts/hot` - Lấy bài viết viral
+- `POST /api/vnsocial/statistics` - Thống kê tổng quan
+
+**Chi tiết:** Xem [VNSOCIAL_API_GUIDE.md](./VNSOCIAL_API_GUIDE.md) và [VNSOCIAL_FRONTEND_GUIDE.md](./VNSOCIAL_FRONTEND_GUIDE.md)
+
+## VnSocial Configuration
+
+Có 2 cách để cấu hình VnSocial API trong file `.env`:
+
+### Option 1: Sử dụng Username/Password (Auto Login)
+```bash
+VNSOCIAL_USERNAME=your-email@example.com
+VNSOCIAL_PASSWORD=your-password
+```
+Backend sẽ tự động login và refresh token khi cần.
+
+### Option 2: Sử dụng Token Cố Định (Recommended for Production)
+```bash
+VNSOCIAL_TOKEN=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+```
+Nếu có `VNSOCIAL_TOKEN`, backend sẽ dùng token này thay vì login.
+
+**Lưu ý:** Token VnSocial có thời hạn ~30 ngày. Khi hết hạn cần update lại trong `.env`.
+
+**Lấy token:** Login vào https://vnsocial.vnpt.vn → F12 DevTools → Network → Copy `x-access-token` từ request headers.
+
 ## Kiến trúc
 
 ### Phân lớp
@@ -127,6 +158,7 @@ npm start
 - **PasswordHasher**: Hash và verify passwords
 - **MailProvider**: Gửi email
 - **AiScoringProvider**: Tích hợp AI chấm điểm
+- **VnSocialProvider**: Tích hợp VnSocial API (VNPT social media monitoring)
 
 ## Database Models
 
