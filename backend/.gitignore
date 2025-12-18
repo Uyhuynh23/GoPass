@@ -1,6 +1,5 @@
 /code_md
 README.md
-.env.example
 .env
 /node_modules
 /dist
@@ -17,4 +16,5 @@ coverage/
 *.tsbuildinfo
 .cache/
 /coverage/
+
 

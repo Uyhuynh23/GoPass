@@ -159,28 +159,34 @@ const seedQuestions = async (users) => {
       content: 'React là gì?',
       type: 'multiple_choice',
       options: [
-        { text: 'Một thư viện JavaScript để xây dựng UI', isCorrect: true },
-        { text: 'Một framework CSS', isCorrect: false },
-        { text: 'Một database', isCorrect: false },
-        { text: 'Một ngôn ngữ lập trình', isCorrect: false }
+        { id: 'A', content: 'Một thư viện JavaScript để xây dựng UI', isCorrect: true },
+        { id: 'B', content: 'Một framework CSS', isCorrect: false },
+        { id: 'C', content: 'Một database', isCorrect: false },
+        { id: 'D', content: 'Một ngôn ngữ lập trình', isCorrect: false }
       ],
+      correctAnswer: 'A',
+      explanation: 'React là một thư viện JavaScript mã nguồn mở do Facebook phát triển, dùng để xây dựng giao diện người dùng.',
       difficulty: 'easy',
       subject: 'Web Development',
       tags: ['react', 'javascript', 'frontend'],
+      points: 1,
       createdBy: teacher1._id
     },
     {
       content: 'Node.js chạy trên môi trường nào?',
       type: 'multiple_choice',
       options: [
-        { text: 'Browser', isCorrect: false },
-        { text: 'Server-side', isCorrect: true },
-        { text: 'Mobile', isCorrect: false },
-        { text: 'Desktop', isCorrect: false }
+        { id: 'A', content: 'Browser', isCorrect: false },
+        { id: 'B', content: 'Server-side', isCorrect: true },
+        { id: 'C', content: 'Mobile', isCorrect: false },
+        { id: 'D', content: 'Desktop', isCorrect: false }
       ],
+      correctAnswer: 'B',
+      explanation: 'Node.js là runtime environment cho phép chạy JavaScript ở phía server.',
       difficulty: 'easy',
       subject: 'Web Development',
       tags: ['nodejs', 'backend'],
+      points: 1,
       createdBy: teacher1._id
     },
     // Database questions
@@ -188,14 +194,17 @@ const seedQuestions = async (users) => {
       content: 'SQL là gì?',
       type: 'multiple_choice',
       options: [
-        { text: 'Structured Query Language', isCorrect: true },
-        { text: 'Simple Question Language', isCorrect: false },
-        { text: 'Standard Quality Level', isCorrect: false },
-        { text: 'System Query Library', isCorrect: false }
+        { id: 'A', content: 'Structured Query Language', isCorrect: true },
+        { id: 'B', content: 'Simple Question Language', isCorrect: false },
+        { id: 'C', content: 'Standard Quality Level', isCorrect: false },
+        { id: 'D', content: 'System Query Library', isCorrect: false }
       ],
+      correctAnswer: 'A',
+      explanation: 'SQL (Structured Query Language) là ngôn ngữ truy vấn có cấu trúc để quản lý và thao tác với cơ sở dữ liệu.',
       difficulty: 'easy',
       subject: 'Database',
       tags: ['sql', 'database'],
+      points: 1,
       createdBy: teacher1._id
     },
     // AI questions
@@ -203,23 +212,30 @@ const seedQuestions = async (users) => {
       content: 'Supervised Learning là gì?',
       type: 'essay',
       correctAnswer: 'Supervised Learning là phương pháp học máy sử dụng dữ liệu có nhãn để huấn luyện mô hình.',
+      explanation: 'Supervised learning sử dụng tập dữ liệu có sẵn nhãn (labeled data) để train model dự đoán output cho dữ liệu mới.',
       difficulty: 'medium',
       subject: 'Artificial Intelligence',
       tags: ['ml', 'ai', 'supervised-learning'],
+      points: 5,
       createdBy: teacher2._id
     },
     {
       content: 'Neural Network có mấy layer cơ bản?',
       type: 'multiple_choice',
       options: [
-        { text: '2 layers', isCorrect: false },
-        { text: '3 layers (Input, Hidden, Output)', isCorrect: true },
-        { text: '4 layers', isCorrect: false },
-        { text: '5 layers', isCorrect: false }
+        { id: 'A', content: '2 layers', isCorrect: false },
+        { id: 'B', content: '3 layers (Input, Hidden, Output)', isCorrect: true },
+        { id: 'C', content: '4 layers', isCorrect: false },
+        { id: 'D', content: '5 layers', isCorrect: false }
       ],
+      correctAnswer: 'B',
+      explanation: 'Neural Network cơ bản gồm 3 layers: Input layer (nhận dữ liệu), Hidden layer (xử lý), và Output layer (đưa ra kết quả).',
+      correctAnswer: 'B',
+      explanation: 'Neural Network cơ bản gồm 3 layers: Input layer (nhận dữ liệu), Hidden layer (xử lý), và Output layer (đưa ra kết quả).',
       difficulty: 'medium',
       subject: 'Artificial Intelligence',
       tags: ['neural-network', 'deep-learning'],
+      points: 2,
       createdBy: teacher2._id
     }
   ]);
@@ -248,7 +264,9 @@ const seedExams = async (users, classes, questions) => {
       mode: 'test',
       shuffleQuestions: true,
       showResultsImmediately: false,
-      isPublished: true
+      isPublished: true,
+      totalQuestions: 2,
+      totalPoints: 2
     },
     {
       title: 'Bài tập Database tuần 5',
@@ -259,7 +277,9 @@ const seedExams = async (users, classes, questions) => {
       mode: 'practice',
       shuffleQuestions: false,
       showResultsImmediately: true,
-      isPublished: true
+      isPublished: true,
+      totalQuestions: 1,
+      totalPoints: 1
     },
     {
       title: 'Final Exam - AI Fundamentals',
@@ -270,7 +290,9 @@ const seedExams = async (users, classes, questions) => {
       mode: 'test',
       shuffleQuestions: true,
       showResultsImmediately: false,
-      isPublished: true
+      isPublished: true,
+      totalQuestions: 2,
+      totalPoints: 7
     }
   ]);
 
@@ -297,7 +319,9 @@ const seedExamQuestions = async (exams, questions) => {
       examId: webExam._id,
       questionId: q._id,
       order: index + 1,
-      points: 50
+      maxScore: q.points || 1,
+      points: q.points || 1,
+      section: 'React & Node.js'
     });
   });
 
@@ -307,7 +331,9 @@ const seedExamQuestions = async (exams, questions) => {
       examId: dbExam._id,
       questionId: q._id,
       order: index + 1,
-      points: 50
+      maxScore: q.points || 1,
+      points: q.points || 1,
+      section: 'SQL Fundamentals'
     });
   });
 
@@ -317,7 +343,9 @@ const seedExamQuestions = async (exams, questions) => {
       examId: aiExam._id,
       questionId: q._id,
       order: index + 1,
-      points: 100
+      maxScore: q.points || 1,
+      points: q.points || 1,
+      section: 'Machine Learning Basics'
     });
   });
 

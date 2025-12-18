@@ -3,13 +3,31 @@ const QuestionRepository = require('../repositories/QuestionRepository');
 class QuestionBankService {
   // Create question
   async createQuestion(teacherId, dto) {
-    const { type, content, options, correctAnswer, difficulty, subject, tags, points, isPublic } = dto;
+    const { 
+      type, 
+      content, 
+      options, 
+      correctAnswer, 
+      explanation,
+      linkedPassageId,
+      image,
+      tableData,
+      difficulty, 
+      subject, 
+      tags, 
+      points, 
+      isPublic 
+    } = dto;
 
     const question = await QuestionRepository.create({
       type,
       content,
       options,
       correctAnswer,
+      explanation,
+      linkedPassageId,
+      image,
+      tableData,
       difficulty: difficulty || 'medium',
       subject,
       tags: tags || [],
@@ -42,7 +60,21 @@ class QuestionBankService {
       throw new Error('Unauthorized to update this question');
     }
 
-    const allowedFields = ['type', 'content', 'options', 'correctAnswer', 'difficulty', 'subject', 'tags', 'points', 'isPublic'];
+    const allowedFields = [
+      'type', 
+      'content', 
+      'options', 
+      'correctAnswer', 
+      'explanation',
+      'linkedPassageId',
+      'image',
+      'tableData',
+      'difficulty', 
+      'subject', 
+      'tags', 
+      'points', 
+      'isPublic'
+    ];
     const updateData = {};
     allowedFields.forEach(field => {
       if (dto[field] !== undefined) updateData[field] = dto[field];

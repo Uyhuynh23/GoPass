@@ -6,7 +6,18 @@ const QuestionRepository = require('../repositories/QuestionRepository');
 class ExamService {
   // Create exam
   async createExam(teacherId, dto) {
-    const { title, description, subject, durationMinutes, mode, shuffleQuestions } = dto;
+    const { 
+      title, 
+      description, 
+      subject, 
+      durationMinutes, 
+      mode, 
+      shuffleQuestions,
+      showResultsImmediately,
+      readingPassages,
+      totalQuestions,
+      totalPoints
+    } = dto;
 
     const exam = await ExamRepository.create({
       title,
@@ -15,6 +26,10 @@ class ExamService {
       durationMinutes,
       mode: mode || 'practice',
       shuffleQuestions: shuffleQuestions || false,
+      showResultsImmediately: showResultsImmediately || false,
+      readingPassages: readingPassages || [],
+      totalQuestions: totalQuestions || 0,
+      totalPoints: totalPoints || 10,
       createdBy: teacherId,
       isPublished: false,
     });
@@ -51,7 +66,18 @@ class ExamService {
     }
 
     const updateData = {};
-    const allowedFields = ['title', 'description', 'subject', 'durationMinutes', 'mode', 'shuffleQuestions'];
+    const allowedFields = [
+      'title', 
+      'description', 
+      'subject', 
+      'durationMinutes', 
+      'mode', 
+      'shuffleQuestions',
+      'showResultsImmediately',
+      'readingPassages',
+      'totalQuestions',
+      'totalPoints'
+    ];
     allowedFields.forEach(field => {
       if (dto[field] !== undefined) updateData[field] = dto[field];
     });
@@ -92,6 +118,8 @@ class ExamService {
         questionId: dto.questionId,
         order: order++,
         maxScore: dto.maxScore || 1,
+        points: dto.points || dto.maxScore || 1,
+        section: dto.section || '',
       });
       addedQuestions.push(examQuestion);
     }

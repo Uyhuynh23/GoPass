@@ -21,22 +21,24 @@ class GradingService {
     });
 
     let totalScore = 0;
+    let correctQuestionsCount = 0;
 
     for (const answer of answers) {
       const question = answer.questionId;
       let score = 0;
       let feedback = '';
+      let isCorrect = false;
 
       // Grade based on question type
       if (question.type === 'multiple_choice' || question.type === 'true_false') {
-        // Check if selected options match correct answers
-        const correctOptions = question.options
+        // Check if selected options match correct answers using new options structure
+        const correctOptionIds = question.options
           .filter(opt => opt.isCorrect)
-          .map(opt => opt.text);
+          .map(opt => opt.id); // Use 'id' instead of 'text'
 
-        const isCorrect = this.arraysEqual(
+        isCorrect = this.arraysEqual(
           answer.selectedOptions.sort(),
-          correctOptions.sort()
+          correctOptionIds.sort()
         );
 
         score = isCorrect ? answer.maxScore : 0;
@@ -52,6 +54,7 @@ class GradingService {
           'short_answer'
         );
 
+        isCorrect = validation.isCorrect;
         score = validation.isCorrect ? answer.maxScore : 0;
         feedback = validation.isCorrect 
           ? 'Correct' 
@@ -73,17 +76,24 @@ class GradingService {
 
         score = aiResult.score;
         feedback = aiResult.feedback;
+        // Consider essay correct if score >= 70% of maxScore
+        isCorrect = score >= (answer.maxScore * 0.7);
 
         await ExamAnswerRepository.gradeAnswer(answer._id, score, feedback, true);
       }
 
       totalScore += score;
+      if (isCorrect) correctQuestionsCount++;
     }
 
-    // Update submission with total score and graded status
-    await ExamSubmissionRepository.gradeSubmission(submissionId, totalScore);
+    // Update submission with total score, correctQuestionsCount and graded status
+    await ExamSubmissionRepository.update(submissionId, {
+      totalScore,
+      correctQuestionsCount,
+      status: 'graded',
+    });
 
-    return { totalScore, message: 'Submission graded successfully' };
+    return { totalScore, correctQuestionsCount, message: 'Submission graded successfully' };
   }
 
   // Manual grade answer
