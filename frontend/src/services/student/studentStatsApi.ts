@@ -2,7 +2,7 @@
 import { StudentStats, HistoryDataResponse, HistoryItem, HistoryStats, PerformanceDataPoint, HistoryType } from "@/features/dashboard/types/student/";
 
 // Cấu hình URL cơ sở (có thể lấy từ env hoặc hardcode để test)
-const BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001";
+const BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
 
 /**
  * Hàm lấy thống kê tổng quan cho Student Dashboard
@@ -13,11 +13,14 @@ export const fetchStudentStats = async (studentId: string): Promise<StudentStats
     // Gọi song song 2 API cần thiết để tiết kiệm thời gian (Parallel Fetching)
     const [classMemberRes, submissionRes] = await Promise.all([
       // 1. Lấy danh sách lớp đã tham gia (chỉ lấy status=approved)
-      fetch(`${BASE_URL}/ClassMember?student_user_id=${studentId}&status=approved`, { cache: 'no-store' }),
+      fetch(`${BASE_URL}/classmembers?student_user_id=${studentId}&status=approved`, { cache: 'no-store' }),
+
       
       // 2. Lấy danh sách bài thi đã nộp (của học sinh này)
-      fetch(`${BASE_URL}/ExamSubmission?student_user_id=${studentId}`, { cache: 'no-store' })
+      fetch(`${BASE_URL}/examsubmissions?student_user_id=${studentId}`, { cache: 'no-store' })
     ]);
+    console.log("fetching student stats for:", studentId);
+    console.log("ClassMember response:", BASE_URL + `/classmembers?student_user_id=${studentId}&status=approved`);
 
     // Kiểm tra lỗi mạng
     if (!classMemberRes.ok || !submissionRes.ok) {
@@ -87,11 +90,11 @@ export const fetchStudentHistory = async (studentId: string): Promise<HistoryDat
   try {
     // 1. Gọi song song các API (Thêm fetch Contest)
     const [submissionsRes, examsRes, classesRes, contestExamsRes, contestsRes] = await Promise.all([
-      fetch(`${BASE_URL}/ExamSubmission?student_user_id=${studentId}&status=completed`, { cache: 'no-store' }),
-      fetch(`${BASE_URL}/Exam`, { cache: 'no-store' }),
-      fetch(`${BASE_URL}/Class`, { cache: 'no-store' }),
-      fetch(`${BASE_URL}/ContestExam`, { cache: 'no-store' }),
-      fetch(`${BASE_URL}/Contest`, { cache: 'no-store' }) // <--- FETCH THÊM BẢNG CONTEST
+      fetch(`${BASE_URL}/examsubmissions?student_user_id=${studentId}&status=completed`, { cache: 'no-store' }),
+      fetch(`${BASE_URL}/exams`, { cache: 'no-store' }),
+      fetch(`${BASE_URL}/classes`, { cache: 'no-store' }),
+      fetch(`${BASE_URL}/contestexams`, { cache: 'no-store' }),
+      fetch(`${BASE_URL}/contests`, { cache: 'no-store' }) // <--- FETCH THÊM BẢNG CONTEST
     ]);
 
     // Safety Check
@@ -229,12 +232,12 @@ export const fetchStudentHistory = async (studentId: string): Promise<HistoryDat
 export const fetchStudentActivity = async (studentId: string): Promise<PerformanceDataPoint[]> => {
   try {
     // 1. Lấy danh sách bài đã nộp
-    const submissionRes = await fetch(`${BASE_URL}/ExamSubmission?student_user_id=${studentId}`, { cache: 'no-store' });
+    const submissionRes = await fetch(`${BASE_URL}/examsubmissions?student_user_id=${studentId}`, { cache: 'no-store' });
     const submissions = await submissionRes.json();
     
     // 2. Lấy thêm thông tin đề thi để biết thời gian làm bài (duration)
-    // (Thực tế nên lấy duration từ submission nếu có lưu, ở đây giả sử lấy từ bảng Exam)
-    const examRes = await fetch(`${BASE_URL}/Exam`, { cache: 'no-store' });
+    // (Thực tế nên lấy duration từ submission nếu có lưu, ở đây giả sử lấy từ bảng exams)
+    const examRes = await fetch(`${BASE_URL}/exams`, { cache: 'no-store' });
     const exams = await examRes.json();
 
     // 3. Chuẩn bị khung dữ liệu cho 7 ngày qua

@@ -11,12 +11,14 @@ export const examService = {
         // Lấy thông tin đề
         fetch(`${API_URL}/exams/${id}`, { cache: "no-store" }),
         // Lấy danh sách liên kết câu hỏi (thứ tự, điểm số...)
-        fetch(`${API_URL}/exam_questions?examId=${id}&_sort=order&_order=asc`, {
+        fetch(`${API_URL}/examquestions?examId=${id}&_sort=order&_order=asc`, {
           cache: "no-store",
         }),
         // Lấy TOÀN BỘ câu hỏi gốc (Cách an toàn nhất để tránh lỗi _expand)
         fetch(`${API_URL}/questions`, { cache: "no-store" }),
       ]);
+      console.log('Fetched exam data from API',API_URL);
+      console.log('Exam Response:',`${API_URL}/exams/${id}`);
 
       if (!examRes.ok || !examQuestionsRes.ok || !allQuestionsRes.ok) {
         console.error("Lỗi API: Không thể tải dữ liệu từ json-server");

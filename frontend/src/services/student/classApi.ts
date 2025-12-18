@@ -1,7 +1,7 @@
 // src/services/student/classApi.ts
 import { ClassDetail, ClassAssignment, AssignmentStatus } from "@/features/dashboard/types/student/";
 
-const BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001";
+const BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
 
 const formatDate = (isoString: string) => {
   if (!isoString) return "";
@@ -21,13 +21,13 @@ export const getClassDetailById = async (
 ): Promise<ClassDetail | null> => {
   try {
     // 1. Fetch dữ liệu song song
-    // [THAY ĐỔI]: Fetch thêm bảng "Exam" (lấy toàn bộ) để làm từ điển tra cứu
+    // [THAY ĐỔI]: Fetch thêm bảng "exams" (lấy toàn bộ) để làm từ điển tra cứu
     const [classRes, membersRes, assignmentsRes, submissionsRes, allExamsRes] = await Promise.all([
-      fetch(`${BASE_URL}/Class/${classId}`, { cache: 'no-store' }),
-      fetch(`${BASE_URL}/ClassMember?class_id=${classId}`, { cache: 'no-store' }),
-      fetch(`${BASE_URL}/ExamAssignment?class_id=${classId}`, { cache: 'no-store' }), // Bỏ _expand vì ta sẽ tự map
-      fetch(`${BASE_URL}/ExamSubmission?class_id=${classId}`, { cache: 'no-store' }),
-      fetch(`${BASE_URL}/Exam`, { cache: 'no-store' }) // Lấy tất cả đề thi
+      fetch(`${BASE_URL}/classes/${classId}`, { cache: 'no-store' }),
+      fetch(`${BASE_URL}/classmembers?class_id=${classId}`, { cache: 'no-store' }),
+      fetch(`${BASE_URL}/examassignments?class_id=${classId}`, { cache: 'no-store' }), // Bỏ _expand vì ta sẽ tự map
+      fetch(`${BASE_URL}/examsubmissions?class_id=${classId}`, { cache: 'no-store' }),
+      fetch(`${BASE_URL}/exams`, { cache: 'no-store' }) // Lấy tất cả đề thi
     ]);
 
     if (!classRes.ok) return null;
@@ -55,7 +55,7 @@ export const getClassDetailById = async (
     let teacherName = "Giáo viên";
     if (classData.teacher_user_id) {
       try {
-        const teacherRes = await fetch(`${BASE_URL}/User/${classData.teacher_user_id}`);
+        const teacherRes = await fetch(`${BASE_URL}/users/${classData.teacher_user_id}`);
         if (teacherRes.ok) {
           const tData = await teacherRes.json();
           teacherName = tData.full_name;

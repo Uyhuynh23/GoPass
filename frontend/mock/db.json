@@ -40,6 +40,374 @@
       "name": "Admin System",
       "email": "admin@gopass.vn",
       "role": "admin"
+    },
+    {
+      "user_id": "u_student_01",
+      "id": "u_student_01",
+      "full_name": "Nguyễn Văn An",
+      "email": "student@gopass.vn",
+      "password_hash": "$2b$10$EixZaYVK1fsdf...",
+      "role": "student",
+      "status": "active",
+      "created_at": "2024-01-01T08:00:00Z",
+      "updated_at": "2024-06-15T08:00:00Z"
+    },
+    {
+      "user_id": "u_student_02",
+      "id": "u_student_02",
+      "full_name": "Lê Thị Bình",
+      "email": "binh.le@student.gopass.vn",
+      "password_hash": "$2b$10$...",
+      "role": "student",
+      "status": "active",
+      "created_at": "2024-02-01T08:00:00Z",
+      "updated_at": "2024-06-15T08:00:00Z"
+    },
+    {
+      "user_id": "u_student_03",
+      "id": "u_student_03",
+      "full_name": "Trần Văn Cường",
+      "email": "cuong.tran@student.gopass.vn",
+      "password_hash": "$2b$10$...",
+      "role": "student",
+      "status": "active",
+      "created_at": "2024-02-10T08:00:00Z",
+      "updated_at": "2024-06-15T08:00:00Z"
+    },
+    {
+      "user_id": "u_student_04",
+      "id": "u_student_04",
+      "full_name": "Phạm Minh Đức",
+      "email": "duc.pham@student.gopass.vn",
+      "password_hash": "$2b$10$...",
+      "role": "student",
+      "status": "active",
+      "created_at": "2024-03-01T08:00:00Z",
+      "updated_at": "2024-06-15T08:00:00Z"
+    },
+    {
+      "user_id": "u_student_05",
+      "id": "u_student_05",
+      "full_name": "Hoàng Thị Lan",
+      "email": "lan.hoang@student.gopass.vn",
+      "password_hash": "$2b$10$...",
+      "role": "student",
+      "status": "active",
+      "created_at": "2024-03-05T08:00:00Z",
+      "updated_at": "2024-06-15T08:00:00Z"
+    },
+    {
+      "user_id": "u_teacher_01",
+      "id": "u_teacher_01",
+      "full_name": "Thầy Nguyễn Văn B",
+      "email": "teacher1@gopass.vn",
+      "password_hash": "$2b$10$H8s9d7f...",
+      "role": "teacher",
+      "status": "active",
+      "created_at": "2023-01-01T00:00:00Z",
+      "updated_at": "2024-01-01T00:00:00Z"
+    },
+    {
+      "user_id": "u_teacher_02",
+      "id": "u_teacher_02",
+      "full_name": "Cô Phạm Thị Hằng",
+      "email": "teacher2@gopass.vn",
+      "password_hash": "$2b$10$Lks8d2...",
+      "role": "teacher",
+      "status": "active",
+      "created_at": "2023-02-15T00:00:00Z",
+      "updated_at": "2024-02-20T00:00:00Z"
+    },
+    {
+      "user_id": "u_teacher_03",
+      "id": "u_teacher_03",
+      "full_name": "Thầy Lê Văn Dũng",
+      "email": "teacher3@gopass.vn",
+      "password_hash": "$2b$10$...",
+      "role": "teacher",
+      "status": "active",
+      "created_at": "2023-05-01T00:00:00Z",
+      "updated_at": "2024-01-01T00:00:00Z"
+    },
+    {
+      "user_id": "u_admin_01",
+      "id": "u_admin_01",
+      "full_name": "Admin System",
+      "email": "admin@gopass.vn",
+      "password_hash": "$2b$10$Admn123...",
+      "role": "admin",
+      "status": "active",
+      "created_at": "2022-12-01T00:00:00Z",
+      "updated_at": "2024-01-01T00:00:00Z"
+    }
+  ],
+  "classes": [
+    {
+      "id": "c_math_01",
+      "teacher_user_id": "u_teacher_01",
+      "class_name": "Lớp 12A1 - Toán Nâng Cao",
+      "description": "Lớp chuyên Toán ôn thi THPTQG mục tiêu 9+.",
+      "class_code": "CLASS001",
+      "created_at": "2025-08-01T08:00:00Z"
+    },
+    {
+      "id": "c_math_02",
+      "teacher_user_id": "u_teacher_01",
+      "class_name": "Toán 12 - Lấy Gốc Cơ Bản",
+      "description": "Dành cho các bạn mất gốc, mục tiêu 7+.",
+      "class_code": "MATH_BASIC",
+      "created_at": "2025-08-05T08:00:00Z"
+    },
+    {
+      "id": "c_phys_02",
+      "teacher_user_id": "u_teacher_02",
+      "class_name": "Luyện thi Vật Lý - Cơ bản",
+      "description": "Ôn tập kiến thức nền tảng Vật Lý 12.",
+      "class_code": "PHYS_PRO_25",
+      "created_at": "2025-08-15T09:30:00Z"
+    },
+    {
+      "id": "c_chem",
+      "teacher_user_id": "u_teacher_02",
+      "class_name": "Hóa Học Chuyên Sâu",
+      "description": "Lớp Hóa dành cho HSG.",
+      "class_code": "CHEM_ADV",
+      "created_at": "2025-09-01T10:00:00Z"
+    },
+    {
+      "id": "c_lit",
+      "teacher_user_id": "u_teacher_01",
+      "class_name": "Ngữ Văn - Nghị Luận",
+      "description": "Rèn kỹ năng viết văn.",
+      "class_code": "LIT_01",
+      "created_at": "2025-09-05T14:00:00Z"
+    },
+    {
+      "id": "c_eng_01",
+      "teacher_user_id": "u_teacher_03",
+      "class_name": "Tiếng Anh IELTS 6.5+",
+      "description": "Luyện 4 kỹ năng Nghe - Nói - Đọc - Viết.",
+      "class_code": "ENG_IELTS",
+      "created_at": "2025-09-10T18:00:00Z"
+    },
+    {
+      "id": "c_bio_01",
+      "teacher_user_id": "u_teacher_02",
+      "class_name": "Sinh Học - Di Truyền",
+      "description": "Chuyên đề bài tập Di truyền học.",
+      "class_code": "BIO_GENE",
+      "created_at": "2025-09-12T14:00:00Z"
+    },
+    {
+      "id": "c_hist_01",
+      "teacher_user_id": "u_teacher_03",
+      "class_name": "Lịch Sử 12 - Tổng Ôn",
+      "description": "Ôn tập kiến thức lịch sử Việt Nam hiện đại.",
+      "class_code": "HIST_12",
+      "created_at": "2025-09-20T08:00:00Z"
+    },
+    {
+      "id": "c_geo_01",
+      "teacher_user_id": "u_teacher_03",
+      "class_name": "Địa Lý - Vùng Kinh Tế",
+      "description": "Phân tích Atlat và các vùng kinh tế trọng điểm.",
+      "class_code": "GEO_12",
+      "created_at": "2025-09-21T09:00:00Z"
+    },
+    {
+      "id": "c_it_01",
+      "teacher_user_id": "u_teacher_01",
+      "class_name": "Tin Học 11 - Python Cơ Bản",
+      "description": "Lập trình Python cho người mới bắt đầu.",
+      "class_code": "IT_PYTHON",
+      "created_at": "2025-09-22T10:00:00Z"
+    }
+  ],
+  "classmembers": [
+    {
+      "id": "cm_01",
+      "class_id": "c_math_01",
+      "student_user_id": "u_student_01",
+      "joined_date": "2025-09-01T08:00:00Z",
+      "status": "approved"
+    },
+    {
+      "id": "cm_02",
+      "class_id": "c_phys_02",
+      "student_user_id": "u_student_01",
+      "joined_date": "2025-09-05T09:00:00Z",
+      "status": "approved"
+    },
+    {
+      "id": "cm_03",
+      "class_id": "c_eng_01",
+      "student_user_id": "u_student_01",
+      "joined_date": "2025-09-15T08:00:00Z",
+      "status": "approved"
+    },
+    {
+      "id": "cm_04",
+      "class_id": "c_math_01",
+      "student_user_id": "u_student_02",
+      "joined_date": "2025-09-02T08:00:00Z",
+      "status": "approved"
+    },
+    {
+      "id": "cm_05",
+      "class_id": "c_math_01",
+      "student_user_id": "u_student_03",
+      "joined_date": "2025-09-02T09:00:00Z",
+      "status": "approved"
+    },
+    {
+      "id": "cm_06",
+      "class_id": "c_phys_02",
+      "student_user_id": "u_student_02",
+      "joined_date": "2025-09-06T09:00:00Z",
+      "status": "approved"
+    },
+    {
+      "id": "cm_07",
+      "class_id": "c_phys_02",
+      "student_user_id": "u_student_04",
+      "joined_date": "2025-09-06T10:00:00Z",
+      "status": "approved"
+    },
+    {
+      "id": "cm_08",
+      "class_id": "c_eng_01",
+      "student_user_id": "u_student_05",
+      "joined_date": "2025-09-16T18:00:00Z",
+      "status": "approved"
+    },
+    {
+      "id": "cm_09",
+      "class_id": "c_math_02",
+      "student_user_id": "u_student_04",
+      "joined_date": "2025-08-10T08:00:00Z",
+      "status": "approved"
+    },
+    {
+      "id": "cm_10",
+      "class_id": "c_math_02",
+      "student_user_id": "u_student_05",
+      "joined_date": "2025-08-11T08:00:00Z",
+      "status": "approved"
+    },
+    {
+      "id": "cm_11",
+      "class_id": "c_hist_01",
+      "student_user_id": "u_student_02",
+      "joined_date": "2025-09-21T08:00:00Z",
+      "status": "approved"
+    },
+    {
+      "id": "cm_12",
+      "class_id": "c_hist_01",
+      "student_user_id": "u_student_03",
+      "joined_date": "2025-09-22T08:00:00Z",
+      "status": "approved"
+    },
+    {
+      "id": "cm_13",
+      "class_id": "c_geo_01",
+      "student_user_id": "u_student_04",
+      "joined_date": "2025-09-22T09:00:00Z",
+      "status": "approved"
+    },
+    {
+      "id": "cm_14",
+      "class_id": "c_it_01",
+      "student_user_id": "u_student_05",
+      "joined_date": "2025-09-23T10:00:00Z",
+      "status": "approved"
+    },
+    {
+      "id": "cm_15",
+      "class_id": "c_it_01",
+      "student_user_id": "u_student_02",
+      "joined_date": "2025-09-23T10:30:00Z",
+      "status": "approved"
+    },
+    {
+      "id": "cm_new_01",
+      "class_id": "c_hist_01",
+      "student_user_id": "u_student_01",
+      "joined_date": "2025-09-25T08:00:00Z",
+      "status": "approved"
+    },
+    {
+      "id": "cm_new_02",
+      "class_id": "c_it_01",
+      "student_user_id": "u_student_01",
+      "joined_date": "2025-09-26T08:00:00Z",
+      "status": "approved"
+    }
+  ],
+  "classjoinrequests": [
+    {
+      "id": "req_01",
+      "class_id": "c_chem",
+      "student_user_id": "u_student_01",
+      "status": "pending",
+      "requested_at": "2025-12-14T10:00:00Z",
+      "processed_at": null
+    },
+    {
+      "id": "req_02",
+      "class_id": "c_lit",
+      "student_user_id": "u_student_01",
+      "status": "rejected",
+      "requested_at": "2025-11-20T08:00:00Z",
+      "processed_at": "2025-11-21T09:00:00Z"
+    },
+    {
+      "id": "req_03",
+      "class_id": "c_bio_01",
+      "student_user_id": "u_student_01",
+      "status": "pending",
+      "requested_at": "2025-12-15T08:00:00Z",
+      "processed_at": null
+    },
+    {
+      "id": "req_04",
+      "class_id": "c_math_02",
+      "student_user_id": "u_student_02",
+      "status": "pending",
+      "requested_at": "2025-12-14T09:00:00Z",
+      "processed_at": null
+    },
+    {
+      "id": "req_05",
+      "class_id": "c_eng_01",
+      "student_user_id": "u_student_03",
+      "status": "pending",
+      "requested_at": "2025-12-13T10:00:00Z",
+      "processed_at": null
+    },
+    {
+      "id": "req_06",
+      "class_id": "c_math_01",
+      "student_user_id": "u_student_04",
+      "status": "pending",
+      "requested_at": "2025-12-15T07:30:00Z",
+      "processed_at": null
+    },
+    {
+      "id": "req_07",
+      "class_id": "c_eng_01",
+      "student_user_id": "u_student_02",
+      "status": "rejected",
+      "requested_at": "2025-11-15T10:00:00Z",
+      "processed_at": "2025-11-16T10:00:00Z"
+    },
+    {
+      "id": "37bb",
+      "class_id": "c_it_01",
+      "student_user_id": "u_student_01",
+      "status": "pending",
+      "requested_at": "2025-12-15T06:47:28.464Z",
+      "processed_at": null
     }
   ],
   "exams": [
@@ -126,6 +494,865 @@
           "audioUrl": ""
         }
       ]
+    }
+  ],
+  "examassignments": [
+    {
+      "assignment_id": "assign_math_01_c01",
+      "exam_id": "ex_math_01",
+      "class_id": "c_math_01",
+      "start_time": "2025-10-01T08:00:00Z",
+      "end_time": "2025-10-01T09:00:00Z",
+      "attempt_limit": 1
+    },
+    {
+      "assignment_id": "assign_phys_01_c02",
+      "exam_id": "ex_phys_01",
+      "class_id": "c_phys_02",
+      "start_time": "2025-10-15T09:00:00Z",
+      "end_time": "2025-10-15T10:30:00Z",
+      "attempt_limit": 2
+    },
+    {
+      "assignment_id": "assign_eng_01_c03",
+      "exam_id": "ex_eng_01",
+      "class_id": "c_eng_01",
+      "start_time": "2025-10-20T18:00:00Z",
+      "end_time": "2025-10-20T20:00:00Z",
+      "attempt_limit": 1
+    },
+    {
+      "assignment_id": "assign_it_01_c14",
+      "exam_id": "ex_it_01",
+      "class_id": "c_it_01",
+      "start_time": "2025-10-25T10:00:00Z",
+      "end_time": "2025-10-25T11:00:00Z",
+      "attempt_limit": 3
+    },
+    {
+      "assignment_id": "assign_hist_ongoing",
+      "exam_id": "ex_hist_mid",
+      "class_id": "c_hist_01",
+      "start_time": "2025-12-14T00:00:00Z",
+      "end_time": "2025-12-16T23:59:00Z",
+      "attempt_limit": 1
+    },
+    {
+      "assignment_id": "assign_math_upcoming",
+      "exam_id": "ex_math_mock_01",
+      "class_id": "c_math_01",
+      "start_time": "2025-12-20T08:00:00Z",
+      "end_time": "2025-12-20T11:00:00Z",
+      "attempt_limit": 1
+    },
+    {
+      "assignment_id": "assign_it_overdue",
+      "exam_id": "ex_it_basic_chk",
+      "class_id": "c_it_01",
+      "start_time": "2025-11-10T08:00:00Z",
+      "end_time": "2025-11-10T20:00:00Z",
+      "attempt_limit": 1
+    },
+    {
+      "assignment_id": "assign_eng_retake",
+      "exam_id": "ex_eng_vocab",
+      "class_id": "c_eng_01",
+      "start_time": "2025-12-01T08:00:00Z",
+      "end_time": "2025-12-30T20:00:00Z",
+      "attempt_limit": 3
+    }
+  ],
+  "examquestions": [
+    {
+      "id": "eq-math-01",
+      "examId": "exam-001",
+      "questionId": "q-math-01",
+      "order": 1,
+      "section": "Phần I",
+      "maxScore": 0.25,
+      "createdAt": "2025-12-16T08:00:00Z",
+      "updatedAt": "2025-12-16T08:00:00Z"
+    },
+    {
+      "id": "eq-math-02",
+      "examId": "exam-001",
+      "questionId": "q-math-02",
+      "order": 2,
+      "section": "Phần I",
+      "maxScore": 0.25,
+      "createdAt": "2025-12-16T08:00:00Z",
+      "updatedAt": "2025-12-16T08:00:00Z"
+    },
+    {
+      "id": "eq-math-03",
+      "examId": "exam-001",
+      "questionId": "q-math-03",
+      "order": 3,
+      "section": "Phần I",
+      "maxScore": 0.25,
+      "createdAt": "2025-12-16T08:00:00Z",
+      "updatedAt": "2025-12-16T08:00:00Z"
+    },
+    {
+      "id": "eq-math-04",
+      "examId": "exam-001",
+      "questionId": "q-math-04",
+      "order": 4,
+      "section": "Phần I",
+      "maxScore": 0.25,
+      "createdAt": "2025-12-16T08:00:00Z",
+      "updatedAt": "2025-12-16T08:00:00Z"
+    },
+    {
+      "id": "eq-math-05",
+      "examId": "exam-001",
+      "questionId": "q-math-05",
+      "order": 5,
+      "section": "Phần I",
+      "maxScore": 0.25,
+      "createdAt": "2025-12-16T08:00:00Z",
+      "updatedAt": "2025-12-16T08:00:00Z"
+    },
+    {
+      "id": "eq-math-06",
+      "examId": "exam-001",
+      "questionId": "q-math-06",
+      "order": 6,
+      "section": "Phần I",
+      "maxScore": 0.25,
+      "createdAt": "2025-12-16T08:00:00Z",
+      "updatedAt": "2025-12-16T08:00:00Z"
+    },
+    {
+      "id": "eq-math-07",
+      "examId": "exam-001",
+      "questionId": "q-math-07",
+      "order": 7,
+      "section": "Phần I",
+      "maxScore": 0.25,
+      "createdAt": "2025-12-16T08:00:00Z",
+      "updatedAt": "2025-12-16T08:00:00Z"
+    },
+    {
+      "id": "eq-math-08",
+      "examId": "exam-001",
+      "questionId": "q-math-08",
+      "order": 8,
+      "section": "Phần I",
+      "maxScore": 0.25,
+      "createdAt": "2025-12-16T08:00:00Z",
+      "updatedAt": "2025-12-16T08:00:00Z"
+    },
+    {
+      "id": "eq-math-09",
+      "examId": "exam-001",
+      "questionId": "q-math-09",
+      "order": 9,
+      "section": "Phần I",
+      "maxScore": 0.25,
+      "createdAt": "2025-12-16T08:00:00Z",
+      "updatedAt": "2025-12-16T08:00:00Z"
+    },
+    {
+      "id": "eq-math-10",
+      "examId": "exam-001",
+      "questionId": "q-math-10",
+      "order": 10,
+      "section": "Phần I",
+      "maxScore": 0.25,
+      "createdAt": "2025-12-16T08:00:00Z",
+      "updatedAt": "2025-12-16T08:00:00Z"
+    },
+    {
+      "id": "eq-math-11",
+      "examId": "exam-001",
+      "questionId": "q-math-11",
+      "order": 11,
+      "section": "Phần I",
+      "maxScore": 0.25,
+      "createdAt": "2025-12-16T08:00:00Z",
+      "updatedAt": "2025-12-16T08:00:00Z"
+    },
+    {
+      "id": "eq-math-12",
+      "examId": "exam-001",
+      "questionId": "q-math-12",
+      "order": 12,
+      "section": "Phần I",
+      "maxScore": 0.25,
+      "createdAt": "2025-12-16T08:00:00Z",
+      "updatedAt": "2025-12-16T08:00:00Z"
+    },
+    {
+      "id": "eq-math-13",
+      "examId": "exam-001",
+      "questionId": "q-math-13",
+      "order": 13,
+      "section": "Phần II",
+      "maxScore": 1,
+      "createdAt": "2025-12-16T08:00:00Z",
+      "updatedAt": "2025-12-16T08:00:00Z"
+    },
+    {
+      "id": "eq-math-14",
+      "examId": "exam-001",
+      "questionId": "q-math-14",
+      "order": 14,
+      "section": "Phần II",
+      "maxScore": 1,
+      "createdAt": "2025-12-16T08:00:00Z",
+      "updatedAt": "2025-12-16T08:00:00Z"
+    },
+    {
+      "id": "eq-math-15",
+      "examId": "exam-001",
+      "questionId": "q-math-15",
+      "order": 15,
+      "section": "Phần II",
+      "maxScore": 1,
+      "createdAt": "2025-12-16T08:00:00Z",
+      "updatedAt": "2025-12-16T08:00:00Z"
+    },
+    {
+      "id": "eq-math-16",
+      "examId": "exam-001",
+      "questionId": "q-math-16",
+      "order": 16,
+      "section": "Phần II",
+      "maxScore": 1,
+      "createdAt": "2025-12-16T08:00:00Z",
+      "updatedAt": "2025-12-16T08:00:00Z"
+    },
+    {
+      "id": "eq-math-17",
+      "examId": "exam-001",
+      "questionId": "q-math-17",
+      "order": 17,
+      "section": "Phần III",
+      "maxScore": 0.5,
+      "createdAt": "2025-12-16T08:00:00Z",
+      "updatedAt": "2025-12-16T08:00:00Z"
+    },
+    {
+      "id": "eq-math-18",
+      "examId": "exam-001",
+      "questionId": "q-math-18",
+      "order": 18,
+      "section": "Phần III",
+      "maxScore": 0.5,
+      "createdAt": "2025-12-16T08:00:00Z",
+      "updatedAt": "2025-12-16T08:00:00Z"
+    },
+    {
+      "id": "eq-math-19",
+      "examId": "exam-001",
+      "questionId": "q-math-19",
+      "order": 19,
+      "section": "Phần III",
+      "maxScore": 0.5,
+      "createdAt": "2025-12-16T08:00:00Z",
+      "updatedAt": "2025-12-16T08:00:00Z"
+    },
+    {
+      "id": "eq-math-20",
+      "examId": "exam-001",
+      "questionId": "q-math-20",
+      "order": 20,
+      "section": "Phần III",
+      "maxScore": 0.5,
+      "createdAt": "2025-12-16T08:00:00Z",
+      "updatedAt": "2025-12-16T08:00:00Z"
+    },
+    {
+      "id": "eq-math-21",
+      "examId": "exam-001",
+      "questionId": "q-math-21",
+      "order": 21,
+      "section": "Phần III",
+      "maxScore": 0.5,
+      "createdAt": "2025-12-16T08:00:00Z",
+      "updatedAt": "2025-12-16T08:00:00Z"
+    },
+    {
+      "id": "eq-math-22",
+      "examId": "exam-001",
+      "questionId": "q-math-22",
+      "order": 22,
+      "section": "Phần III",
+      "maxScore": 0.5,
+      "createdAt": "2025-12-16T08:00:00Z",
+      "updatedAt": "2025-12-16T08:00:00Z"
+    },
+    {
+      "id": "eq-eng-01",
+      "examId": "exam-003",
+      "questionId": "q-01",
+      "order": 1,
+      "maxScore": 0.25,
+      "section": "Reading Comprehension",
+      "createdAt": "2025-12-14T08:00:00Z",
+      "updatedAt": "2025-12-14T08:00:00Z"
+    },
+    {
+      "id": "eq-eng-02",
+      "examId": "exam-003",
+      "questionId": "q-02",
+      "order": 2,
+      "maxScore": 0.25,
+      "section": "Reading Comprehension",
+      "createdAt": "2025-12-14T08:00:00Z",
+      "updatedAt": "2025-12-14T08:00:00Z"
+    },
+    {
+      "id": "eq-eng-03",
+      "examId": "exam-003",
+      "questionId": "q-03",
+      "order": 3,
+      "maxScore": 0.25,
+      "section": "Reading Comprehension",
+      "createdAt": "2025-12-14T08:00:00Z",
+      "updatedAt": "2025-12-14T08:00:00Z"
+    },
+    {
+      "id": "eq-eng-04",
+      "examId": "exam-003",
+      "questionId": "q-04",
+      "order": 4,
+      "maxScore": 0.25,
+      "section": "Reading Comprehension",
+      "createdAt": "2025-12-14T08:00:00Z",
+      "updatedAt": "2025-12-14T08:00:00Z"
+    },
+    {
+      "id": "eq-eng-05",
+      "examId": "exam-003",
+      "questionId": "q-05",
+      "order": 5,
+      "maxScore": 0.25,
+      "section": "Reading Comprehension",
+      "createdAt": "2025-12-14T08:00:00Z",
+      "updatedAt": "2025-12-14T08:00:00Z"
+    },
+    {
+      "id": "eq-eng-06",
+      "examId": "exam-003",
+      "questionId": "q-06",
+      "order": 6,
+      "maxScore": 0.25,
+      "section": "Reading Comprehension",
+      "createdAt": "2025-12-14T08:00:00Z",
+      "updatedAt": "2025-12-14T08:00:00Z"
+    },
+    {
+      "id": "eq-eng-07",
+      "examId": "exam-003",
+      "questionId": "q-07",
+      "order": 7,
+      "maxScore": 0.25,
+      "section": "Reading Comprehension",
+      "createdAt": "2025-12-14T08:00:00Z",
+      "updatedAt": "2025-12-14T08:00:00Z"
+    },
+    {
+      "id": "eq-eng-08",
+      "examId": "exam-003",
+      "questionId": "q-08",
+      "order": 8,
+      "maxScore": 0.25,
+      "section": "Reading Comprehension",
+      "createdAt": "2025-12-14T08:00:00Z",
+      "updatedAt": "2025-12-14T08:00:00Z"
+    },
+    {
+      "id": "eq-eng-09",
+      "examId": "exam-003",
+      "questionId": "q-09",
+      "order": 9,
+      "maxScore": 0.25,
+      "section": "Cloze Test",
+      "createdAt": "2025-12-14T08:00:00Z",
+      "updatedAt": "2025-12-14T08:00:00Z"
+    },
+    {
+      "id": "eq-eng-10",
+      "examId": "exam-003",
+      "questionId": "q-10",
+      "order": 10,
+      "maxScore": 0.25,
+      "section": "Cloze Test",
+      "createdAt": "2025-12-14T08:00:00Z",
+      "updatedAt": "2025-12-14T08:00:00Z"
+    },
+    {
+      "id": "eq-eng-11",
+      "examId": "exam-003",
+      "questionId": "q-11",
+      "order": 11,
+      "maxScore": 0.25,
+      "section": "Cloze Test",
+      "createdAt": "2025-12-14T08:00:00Z",
+      "updatedAt": "2025-12-14T08:00:00Z"
+    },
+    {
+      "id": "eq-eng-12",
+      "examId": "exam-003",
+      "questionId": "q-12",
+      "order": 12,
+      "maxScore": 0.25,
+      "section": "Cloze Test",
+      "createdAt": "2025-12-14T08:00:00Z",
+      "updatedAt": "2025-12-14T08:00:00Z"
+    },
+    {
+      "id": "eq-eng-13",
+      "examId": "exam-003",
+      "questionId": "q-13",
+      "order": 13,
+      "maxScore": 0.25,
+      "section": "Cloze Test",
+      "createdAt": "2025-12-14T08:00:00Z",
+      "updatedAt": "2025-12-14T08:00:00Z"
+    },
+    {
+      "id": "eq-eng-14",
+      "examId": "exam-003",
+      "questionId": "q-14",
+      "order": 14,
+      "maxScore": 0.25,
+      "section": "Cloze Test",
+      "createdAt": "2025-12-14T08:00:00Z",
+      "updatedAt": "2025-12-14T08:00:00Z"
+    },
+    {
+      "id": "eq-eng-15",
+      "examId": "exam-003",
+      "questionId": "q-15",
+      "order": 15,
+      "maxScore": 0.25,
+      "section": "Sentence/Utterance Arrangement",
+      "createdAt": "2025-12-14T08:00:00Z",
+      "updatedAt": "2025-12-14T08:00:00Z"
+    },
+    {
+      "id": "eq-eng-16",
+      "examId": "exam-003",
+      "questionId": "q-16",
+      "order": 16,
+      "maxScore": 0.25,
+      "section": "Sentence/Utterance Arrangement",
+      "createdAt": "2025-12-14T08:00:00Z",
+      "updatedAt": "2025-12-14T08:00:00Z"
+    },
+    {
+      "id": "eq-eng-17",
+      "examId": "exam-003",
+      "questionId": "q-17",
+      "order": 17,
+      "maxScore": 0.25,
+      "section": "Sentence/Utterance Arrangement",
+      "createdAt": "2025-12-14T08:00:00Z",
+      "updatedAt": "2025-12-14T08:00:00Z"
+    },
+    {
+      "id": "eq-eng-18",
+      "examId": "exam-003",
+      "questionId": "q-18",
+      "order": 18,
+      "maxScore": 0.25,
+      "section": "Sentence/Utterance Arrangement",
+      "createdAt": "2025-12-14T08:00:00Z",
+      "updatedAt": "2025-12-14T08:00:00Z"
+    },
+    {
+      "id": "eq-eng-19",
+      "examId": "exam-003",
+      "questionId": "q-19",
+      "order": 19,
+      "maxScore": 0.25,
+      "section": "Sentence/Utterance Arrangement",
+      "createdAt": "2025-12-14T08:00:00Z",
+      "updatedAt": "2025-12-14T08:00:00Z"
+    },
+    {
+      "id": "eq-eng-20",
+      "examId": "exam-003",
+      "questionId": "q-20",
+      "order": 20,
+      "maxScore": 0.25,
+      "section": "Reading Comprehension",
+      "createdAt": "2025-12-14T08:00:00Z",
+      "updatedAt": "2025-12-14T08:00:00Z"
+    },
+    {
+      "id": "eq-eng-21",
+      "examId": "exam-003",
+      "questionId": "q-21",
+      "order": 21,
+      "maxScore": 0.25,
+      "section": "Reading Comprehension",
+      "createdAt": "2025-12-14T08:00:00Z",
+      "updatedAt": "2025-12-14T08:00:00Z"
+    },
+    {
+      "id": "eq-eng-22",
+      "examId": "exam-003",
+      "questionId": "q-22",
+      "order": 22,
+      "maxScore": 0.25,
+      "section": "Reading Comprehension",
+      "createdAt": "2025-12-14T08:00:00Z",
+      "updatedAt": "2025-12-14T08:00:00Z"
+    },
+    {
+      "id": "eq-eng-23",
+      "examId": "exam-003",
+      "questionId": "q-23",
+      "order": 23,
+      "maxScore": 0.25,
+      "section": "Reading Comprehension",
+      "createdAt": "2025-12-14T08:00:00Z",
+      "updatedAt": "2025-12-14T08:00:00Z"
+    },
+    {
+      "id": "eq-eng-24",
+      "examId": "exam-003",
+      "questionId": "q-24",
+      "order": 24,
+      "maxScore": 0.25,
+      "section": "Reading Comprehension",
+      "createdAt": "2025-12-14T08:00:00Z",
+      "updatedAt": "2025-12-14T08:00:00Z"
+    },
+    {
+      "id": "eq-eng-25",
+      "examId": "exam-003",
+      "questionId": "q-25",
+      "order": 25,
+      "maxScore": 0.25,
+      "section": "Reading Comprehension",
+      "createdAt": "2025-12-14T08:00:00Z",
+      "updatedAt": "2025-12-14T08:00:00Z"
+    },
+    {
+      "id": "eq-eng-26",
+      "examId": "exam-003",
+      "questionId": "q-26",
+      "order": 26,
+      "maxScore": 0.25,
+      "section": "Reading Comprehension",
+      "createdAt": "2025-12-14T08:00:00Z",
+      "updatedAt": "2025-12-14T08:00:00Z"
+    },
+    {
+      "id": "eq-eng-27",
+      "examId": "exam-003",
+      "questionId": "q-27",
+      "order": 27,
+      "maxScore": 0.25,
+      "section": "Reading Comprehension",
+      "createdAt": "2025-12-14T08:00:00Z",
+      "updatedAt": "2025-12-14T08:00:00Z"
+    },
+    {
+      "id": "eq-eng-28",
+      "examId": "exam-003",
+      "questionId": "q-28",
+      "order": 28,
+      "maxScore": 0.25,
+      "section": "Reading Comprehension",
+      "createdAt": "2025-12-14T08:00:00Z",
+      "updatedAt": "2025-12-14T08:00:00Z"
+    },
+    {
+      "id": "eq-eng-29",
+      "examId": "exam-003",
+      "questionId": "q-29",
+      "order": 29,
+      "maxScore": 0.25,
+      "section": "Reading Comprehension",
+      "createdAt": "2025-12-14T08:00:00Z",
+      "updatedAt": "2025-12-14T08:00:00Z"
+    },
+    {
+      "id": "eq-eng-30",
+      "examId": "exam-003",
+      "questionId": "q-30",
+      "order": 30,
+      "maxScore": 0.25,
+      "section": "Cloze Test",
+      "createdAt": "2025-12-14T08:00:00Z",
+      "updatedAt": "2025-12-14T08:00:00Z"
+    },
+    {
+      "id": "eq-eng-31",
+      "examId": "exam-003",
+      "questionId": "q-31",
+      "order": 31,
+      "maxScore": 0.25,
+      "section": "Cloze Test",
+      "createdAt": "2025-12-14T08:00:00Z",
+      "updatedAt": "2025-12-14T08:00:00Z"
+    },
+    {
+      "id": "eq-eng-32",
+      "examId": "exam-003",
+      "questionId": "q-32",
+      "order": 32,
+      "maxScore": 0.25,
+      "section": "Cloze Test",
+      "createdAt": "2025-12-14T08:00:00Z",
+      "updatedAt": "2025-12-14T08:00:00Z"
+    },
+    {
+      "id": "eq-eng-33",
+      "examId": "exam-003",
+      "questionId": "q-33",
+      "order": 33,
+      "maxScore": 0.25,
+      "section": "Cloze Test",
+      "createdAt": "2025-12-14T08:00:00Z",
+      "updatedAt": "2025-12-14T08:00:00Z"
+    },
+    {
+      "id": "eq-eng-34",
+      "examId": "exam-003",
+      "questionId": "q-34",
+      "order": 34,
+      "maxScore": 0.25,
+      "section": "Cloze Test",
+      "createdAt": "2025-12-14T08:00:00Z",
+      "updatedAt": "2025-12-14T08:00:00Z"
+    },
+    {
+      "id": "eq-eng-35",
+      "examId": "exam-003",
+      "questionId": "q-35",
+      "order": 35,
+      "maxScore": 0.25,
+      "section": "Cloze Test",
+      "createdAt": "2025-12-14T08:00:00Z",
+      "updatedAt": "2025-12-14T08:00:00Z"
+    },
+    {
+      "id": "eq-eng-36",
+      "examId": "exam-003",
+      "questionId": "q-36",
+      "order": 36,
+      "maxScore": 0.25,
+      "section": "Cloze Test",
+      "createdAt": "2025-12-14T08:00:00Z",
+      "updatedAt": "2025-12-14T08:00:00Z"
+    },
+    {
+      "id": "eq-eng-37",
+      "examId": "exam-003",
+      "questionId": "q-37",
+      "order": 37,
+      "maxScore": 0.25,
+      "section": "Cloze Test",
+      "createdAt": "2025-12-14T08:00:00Z",
+      "updatedAt": "2025-12-14T08:00:00Z"
+    },
+    {
+      "id": "eq-eng-38",
+      "examId": "exam-003",
+      "questionId": "q-38",
+      "order": 38,
+      "maxScore": 0.25,
+      "section": "Cloze Test",
+      "createdAt": "2025-12-14T08:00:00Z",
+      "updatedAt": "2025-12-14T08:00:00Z"
+    },
+    {
+      "id": "eq-eng-39",
+      "examId": "exam-003",
+      "questionId": "q-39",
+      "order": 39,
+      "maxScore": 0.25,
+      "section": "Cloze Test",
+      "createdAt": "2025-12-14T08:00:00Z",
+      "updatedAt": "2025-12-14T08:00:00Z"
+    },
+    {
+      "id": "eq-eng-40",
+      "examId": "exam-003",
+      "questionId": "q-40",
+      "order": 40,
+      "maxScore": 0.25,
+      "section": "Cloze Test",
+      "createdAt": "2025-12-14T08:00:00Z",
+      "updatedAt": "2025-12-14T08:00:00Z"
+    },
+    {
+      "id": "eq-van-01",
+      "examId": "exam-002",
+      "questionId": "q-van-01",
+      "order": 1,
+      "maxScore": 0.5,
+      "section": "Đọc hiểu",
+      "createdAt": "2025-12-14T08:00:00Z",
+      "updatedAt": "2025-12-14T08:00:00Z"
+    },
+    {
+      "id": "eq-van-02",
+      "examId": "exam-002",
+      "questionId": "q-van-02",
+      "order": 2,
+      "maxScore": 0.5,
+      "section": "Đọc hiểu",
+      "createdAt": "2025-12-14T08:00:00Z",
+      "updatedAt": "2025-12-14T08:00:00Z"
+    },
+    {
+      "id": "eq-van-03",
+      "examId": "exam-002",
+      "questionId": "q-van-03",
+      "order": 3,
+      "maxScore": 0.5,
+      "section": "Đọc hiểu",
+      "createdAt": "2025-12-14T08:00:00Z",
+      "updatedAt": "2025-12-14T08:00:00Z"
+    },
+    {
+      "id": "eq-van-04",
+      "examId": "exam-002",
+      "questionId": "q-van-04",
+      "order": 4,
+      "maxScore": 0.5,
+      "section": "Đọc hiểu",
+      "createdAt": "2025-12-14T08:00:00Z",
+      "updatedAt": "2025-12-14T08:00:00Z"
+    },
+    {
+      "id": "eq-van-05",
+      "examId": "exam-002",
+      "questionId": "q-van-05",
+      "order": 5,
+      "maxScore": 1,
+      "section": "Đọc hiểu",
+      "createdAt": "2025-12-14T08:00:00Z",
+      "updatedAt": "2025-12-14T08:00:00Z"
+    },
+    {
+      "id": "eq-van-06",
+      "examId": "exam-002",
+      "questionId": "q-van-06",
+      "order": 6,
+      "maxScore": 2,
+      "section": "Viết",
+      "createdAt": "2025-12-14T08:00:00Z",
+      "updatedAt": "2025-12-14T08:00:00Z"
+    },
+    {
+      "id": "eq-van-07",
+      "examId": "exam-002",
+      "questionId": "q-van-07",
+      "order": 7,
+      "maxScore": 5,
+      "section": "Viết",
+      "createdAt": "2025-12-14T08:00:00Z",
+      "updatedAt": "2025-12-14T08:00:00Z"
+    }
+  ],
+  "examsubmissions": [
+    {
+      "submission_id": "sub_m01_u01",
+      "exam_id": "ex_math_01",
+      "student_user_id": "u_student_01",
+      "class_id": "c_math_01",
+      "started_at": "2025-10-01T08:05:00Z",
+      "submitted_at": "2025-10-01T08:45:00Z",
+      "status": "completed",
+      "objective_score": 8,
+      "final_score": 8
+    },
+    {
+      "submission_id": "sub_m01_u02",
+      "exam_id": "ex_math_01",
+      "student_user_id": "u_student_02",
+      "class_id": "c_math_01",
+      "started_at": "2025-10-01T08:00:00Z",
+      "submitted_at": "2025-10-01T08:40:00Z",
+      "status": "completed",
+      "objective_score": 7.5,
+      "final_score": 7.5
+    },
+    {
+      "submission_id": "sub_p01_u01",
+      "exam_id": "ex_phys_01",
+      "student_user_id": "u_student_01",
+      "class_id": "c_phys_02",
+      "started_at": "2025-10-15T09:05:00Z",
+      "submitted_at": "2025-10-15T10:00:00Z",
+      "status": "completed",
+      "objective_score": 9,
+      "final_score": 9
+    },
+    {
+      "submission_id": "sub_e01_u05",
+      "exam_id": "ex_eng_01",
+      "student_user_id": "u_student_05",
+      "class_id": "c_eng_01",
+      "started_at": "2025-10-20T18:15:00Z",
+      "submitted_at": null,
+      "status": "in_progress",
+      "objective_score": 0,
+      "final_score": 0
+    },
+    {
+      "submission_id": "sub_it01_u02",
+      "exam_id": "ex_it_01",
+      "student_user_id": "u_student_02",
+      "class_id": "c_it_01",
+      "started_at": "2025-10-25T10:05:00Z",
+      "submitted_at": "2025-10-25T10:30:00Z",
+      "status": "completed",
+      "objective_score": 10,
+      "final_score": 10
+    },
+    {
+      "submission_id": "sub_eng_vocab_01",
+      "exam_id": "ex_eng_vocab",
+      "student_user_id": "u_student_01",
+      "class_id": "c_eng_01",
+      "started_at": "2025-12-05T09:00:00Z",
+      "submitted_at": "2025-12-05T09:18:00Z",
+      "status": "completed",
+      "objective_score": 7,
+      "final_score": 7
+    },
+    {
+      "submission_id": "sub_contest_01",
+      "exam_id": "ex_contest_math_final",
+      "student_user_id": "u_student_01",
+      "class_id": null,
+      "started_at": "2025-12-10T09:00:00Z",
+      "submitted_at": "2025-12-10T10:30:00Z",
+      "status": "completed",
+      "objective_score": 9.5,
+      "final_score": 9.5
+    },
+    {
+      "submission_id": "sub_global_01",
+      "exam_id": "ex_global_iq",
+      "student_user_id": "u_student_01",
+      "class_id": null,
+      "started_at": "2025-12-12T14:00:00Z",
+      "submitted_at": "2025-12-12T14:30:00Z",
+      "status": "completed",
+      "objective_score": 85,
+      "final_score": 85
+    },
+    {
+      "submission_id": "sub_class_01",
+      "exam_id": "ex_phys_01",
+      "student_user_id": "u_student_01",
+      "class_id": "c_phys_02",
+      "started_at": "2025-12-14T08:00:00Z",
+      "submitted_at": "2025-12-14T09:00:00Z",
+      "status": "completed",
+      "objective_score": 8,
+      "final_score": 8
     }
   ],
   "questions": [
@@ -2394,739 +3621,6 @@
       }
     }
   ],
-  "exam_questions": [
-    {
-      "id": "eq-math-01",
-      "examId": "exam-001",
-      "questionId": "q-math-01",
-      "order": 1,
-      "section": "Phần I",
-      "maxScore": 0.25,
-      "createdAt": "2025-12-16T08:00:00Z",
-      "updatedAt": "2025-12-16T08:00:00Z"
-    },
-    {
-      "id": "eq-math-02",
-      "examId": "exam-001",
-      "questionId": "q-math-02",
-      "order": 2,
-      "section": "Phần I",
-      "maxScore": 0.25,
-      "createdAt": "2025-12-16T08:00:00Z",
-      "updatedAt": "2025-12-16T08:00:00Z"
-    },
-    {
-      "id": "eq-math-03",
-      "examId": "exam-001",
-      "questionId": "q-math-03",
-      "order": 3,
-      "section": "Phần I",
-      "maxScore": 0.25,
-      "createdAt": "2025-12-16T08:00:00Z",
-      "updatedAt": "2025-12-16T08:00:00Z"
-    },
-    {
-      "id": "eq-math-04",
-      "examId": "exam-001",
-      "questionId": "q-math-04",
-      "order": 4,
-      "section": "Phần I",
-      "maxScore": 0.25,
-      "createdAt": "2025-12-16T08:00:00Z",
-      "updatedAt": "2025-12-16T08:00:00Z"
-    },
-    {
-      "id": "eq-math-05",
-      "examId": "exam-001",
-      "questionId": "q-math-05",
-      "order": 5,
-      "section": "Phần I",
-      "maxScore": 0.25,
-      "createdAt": "2025-12-16T08:00:00Z",
-      "updatedAt": "2025-12-16T08:00:00Z"
-    },
-    {
-      "id": "eq-math-06",
-      "examId": "exam-001",
-      "questionId": "q-math-06",
-      "order": 6,
-      "section": "Phần I",
-      "maxScore": 0.25,
-      "createdAt": "2025-12-16T08:00:00Z",
-      "updatedAt": "2025-12-16T08:00:00Z"
-    },
-    {
-      "id": "eq-math-07",
-      "examId": "exam-001",
-      "questionId": "q-math-07",
-      "order": 7,
-      "section": "Phần I",
-      "maxScore": 0.25,
-      "createdAt": "2025-12-16T08:00:00Z",
-      "updatedAt": "2025-12-16T08:00:00Z"
-    },
-    {
-      "id": "eq-math-08",
-      "examId": "exam-001",
-      "questionId": "q-math-08",
-      "order": 8,
-      "section": "Phần I",
-      "maxScore": 0.25,
-      "createdAt": "2025-12-16T08:00:00Z",
-      "updatedAt": "2025-12-16T08:00:00Z"
-    },
-    {
-      "id": "eq-math-09",
-      "examId": "exam-001",
-      "questionId": "q-math-09",
-      "order": 9,
-      "section": "Phần I",
-      "maxScore": 0.25,
-      "createdAt": "2025-12-16T08:00:00Z",
-      "updatedAt": "2025-12-16T08:00:00Z"
-    },
-    {
-      "id": "eq-math-10",
-      "examId": "exam-001",
-      "questionId": "q-math-10",
-      "order": 10,
-      "section": "Phần I",
-      "maxScore": 0.25,
-      "createdAt": "2025-12-16T08:00:00Z",
-      "updatedAt": "2025-12-16T08:00:00Z"
-    },
-    {
-      "id": "eq-math-11",
-      "examId": "exam-001",
-      "questionId": "q-math-11",
-      "order": 11,
-      "section": "Phần I",
-      "maxScore": 0.25,
-      "createdAt": "2025-12-16T08:00:00Z",
-      "updatedAt": "2025-12-16T08:00:00Z"
-    },
-    {
-      "id": "eq-math-12",
-      "examId": "exam-001",
-      "questionId": "q-math-12",
-      "order": 12,
-      "section": "Phần I",
-      "maxScore": 0.25,
-      "createdAt": "2025-12-16T08:00:00Z",
-      "updatedAt": "2025-12-16T08:00:00Z"
-    },
-    {
-      "id": "eq-math-13",
-      "examId": "exam-001",
-      "questionId": "q-math-13",
-      "order": 13,
-      "section": "Phần II",
-      "maxScore": 1,
-      "createdAt": "2025-12-16T08:00:00Z",
-      "updatedAt": "2025-12-16T08:00:00Z"
-    },
-    {
-      "id": "eq-math-14",
-      "examId": "exam-001",
-      "questionId": "q-math-14",
-      "order": 14,
-      "section": "Phần II",
-      "maxScore": 1,
-      "createdAt": "2025-12-16T08:00:00Z",
-      "updatedAt": "2025-12-16T08:00:00Z"
-    },
-    {
-      "id": "eq-math-15",
-      "examId": "exam-001",
-      "questionId": "q-math-15",
-      "order": 15,
-      "section": "Phần II",
-      "maxScore": 1,
-      "createdAt": "2025-12-16T08:00:00Z",
-      "updatedAt": "2025-12-16T08:00:00Z"
-    },
-    {
-      "id": "eq-math-16",
-      "examId": "exam-001",
-      "questionId": "q-math-16",
-      "order": 16,
-      "section": "Phần II",
-      "maxScore": 1,
-      "createdAt": "2025-12-16T08:00:00Z",
-      "updatedAt": "2025-12-16T08:00:00Z"
-    },
-    {
-      "id": "eq-math-17",
-      "examId": "exam-001",
-      "questionId": "q-math-17",
-      "order": 17,
-      "section": "Phần III",
-      "maxScore": 0.5,
-      "createdAt": "2025-12-16T08:00:00Z",
-      "updatedAt": "2025-12-16T08:00:00Z"
-    },
-    {
-      "id": "eq-math-18",
-      "examId": "exam-001",
-      "questionId": "q-math-18",
-      "order": 18,
-      "section": "Phần III",
-      "maxScore": 0.5,
-      "createdAt": "2025-12-16T08:00:00Z",
-      "updatedAt": "2025-12-16T08:00:00Z"
-    },
-    {
-      "id": "eq-math-19",
-      "examId": "exam-001",
-      "questionId": "q-math-19",
-      "order": 19,
-      "section": "Phần III",
-      "maxScore": 0.5,
-      "createdAt": "2025-12-16T08:00:00Z",
-      "updatedAt": "2025-12-16T08:00:00Z"
-    },
-    {
-      "id": "eq-math-20",
-      "examId": "exam-001",
-      "questionId": "q-math-20",
-      "order": 20,
-      "section": "Phần III",
-      "maxScore": 0.5,
-      "createdAt": "2025-12-16T08:00:00Z",
-      "updatedAt": "2025-12-16T08:00:00Z"
-    },
-    {
-      "id": "eq-math-21",
-      "examId": "exam-001",
-      "questionId": "q-math-21",
-      "order": 21,
-      "section": "Phần III",
-      "maxScore": 0.5,
-      "createdAt": "2025-12-16T08:00:00Z",
-      "updatedAt": "2025-12-16T08:00:00Z"
-    },
-    {
-      "id": "eq-math-22",
-      "examId": "exam-001",
-      "questionId": "q-math-22",
-      "order": 22,
-      "section": "Phần III",
-      "maxScore": 0.5,
-      "createdAt": "2025-12-16T08:00:00Z",
-      "updatedAt": "2025-12-16T08:00:00Z"
-    },
-    {
-      "id": "eq-eng-01",
-      "examId": "exam-003",
-      "questionId": "q-01",
-      "order": 1,
-      "maxScore": 0.25,
-      "section": "Reading Comprehension",
-      "createdAt": "2025-12-14T08:00:00Z",
-      "updatedAt": "2025-12-14T08:00:00Z"
-    },
-    {
-      "id": "eq-eng-02",
-      "examId": "exam-003",
-      "questionId": "q-02",
-      "order": 2,
-      "maxScore": 0.25,
-      "section": "Reading Comprehension",
-      "createdAt": "2025-12-14T08:00:00Z",
-      "updatedAt": "2025-12-14T08:00:00Z"
-    },
-    {
-      "id": "eq-eng-03",
-      "examId": "exam-003",
-      "questionId": "q-03",
-      "order": 3,
-      "maxScore": 0.25,
-      "section": "Reading Comprehension",
-      "createdAt": "2025-12-14T08:00:00Z",
-      "updatedAt": "2025-12-14T08:00:00Z"
-    },
-    {
-      "id": "eq-eng-04",
-      "examId": "exam-003",
-      "questionId": "q-04",
-      "order": 4,
-      "maxScore": 0.25,
-      "section": "Reading Comprehension",
-      "createdAt": "2025-12-14T08:00:00Z",
-      "updatedAt": "2025-12-14T08:00:00Z"
-    },
-    {
-      "id": "eq-eng-05",
-      "examId": "exam-003",
-      "questionId": "q-05",
-      "order": 5,
-      "maxScore": 0.25,
-      "section": "Reading Comprehension",
-      "createdAt": "2025-12-14T08:00:00Z",
-      "updatedAt": "2025-12-14T08:00:00Z"
-    },
-    {
-      "id": "eq-eng-06",
-      "examId": "exam-003",
-      "questionId": "q-06",
-      "order": 6,
-      "maxScore": 0.25,
-      "section": "Reading Comprehension",
-      "createdAt": "2025-12-14T08:00:00Z",
-      "updatedAt": "2025-12-14T08:00:00Z"
-    },
-    {
-      "id": "eq-eng-07",
-      "examId": "exam-003",
-      "questionId": "q-07",
-      "order": 7,
-      "maxScore": 0.25,
-      "section": "Reading Comprehension",
-      "createdAt": "2025-12-14T08:00:00Z",
-      "updatedAt": "2025-12-14T08:00:00Z"
-    },
-    {
-      "id": "eq-eng-08",
-      "examId": "exam-003",
-      "questionId": "q-08",
-      "order": 8,
-      "maxScore": 0.25,
-      "section": "Reading Comprehension",
-      "createdAt": "2025-12-14T08:00:00Z",
-      "updatedAt": "2025-12-14T08:00:00Z"
-    },
-    {
-      "id": "eq-eng-09",
-      "examId": "exam-003",
-      "questionId": "q-09",
-      "order": 9,
-      "maxScore": 0.25,
-      "section": "Cloze Test",
-      "createdAt": "2025-12-14T08:00:00Z",
-      "updatedAt": "2025-12-14T08:00:00Z"
-    },
-    {
-      "id": "eq-eng-10",
-      "examId": "exam-003",
-      "questionId": "q-10",
-      "order": 10,
-      "maxScore": 0.25,
-      "section": "Cloze Test",
-      "createdAt": "2025-12-14T08:00:00Z",
-      "updatedAt": "2025-12-14T08:00:00Z"
-    },
-    {
-      "id": "eq-eng-11",
-      "examId": "exam-003",
-      "questionId": "q-11",
-      "order": 11,
-      "maxScore": 0.25,
-      "section": "Cloze Test",
-      "createdAt": "2025-12-14T08:00:00Z",
-      "updatedAt": "2025-12-14T08:00:00Z"
-    },
-    {
-      "id": "eq-eng-12",
-      "examId": "exam-003",
-      "questionId": "q-12",
-      "order": 12,
-      "maxScore": 0.25,
-      "section": "Cloze Test",
-      "createdAt": "2025-12-14T08:00:00Z",
-      "updatedAt": "2025-12-14T08:00:00Z"
-    },
-    {
-      "id": "eq-eng-13",
-      "examId": "exam-003",
-      "questionId": "q-13",
-      "order": 13,
-      "maxScore": 0.25,
-      "section": "Cloze Test",
-      "createdAt": "2025-12-14T08:00:00Z",
-      "updatedAt": "2025-12-14T08:00:00Z"
-    },
-    {
-      "id": "eq-eng-14",
-      "examId": "exam-003",
-      "questionId": "q-14",
-      "order": 14,
-      "maxScore": 0.25,
-      "section": "Cloze Test",
-      "createdAt": "2025-12-14T08:00:00Z",
-      "updatedAt": "2025-12-14T08:00:00Z"
-    },
-    {
-      "id": "eq-eng-15",
-      "examId": "exam-003",
-      "questionId": "q-15",
-      "order": 15,
-      "maxScore": 0.25,
-      "section": "Sentence/Utterance Arrangement",
-      "createdAt": "2025-12-14T08:00:00Z",
-      "updatedAt": "2025-12-14T08:00:00Z"
-    },
-    {
-      "id": "eq-eng-16",
-      "examId": "exam-003",
-      "questionId": "q-16",
-      "order": 16,
-      "maxScore": 0.25,
-      "section": "Sentence/Utterance Arrangement",
-      "createdAt": "2025-12-14T08:00:00Z",
-      "updatedAt": "2025-12-14T08:00:00Z"
-    },
-    {
-      "id": "eq-eng-17",
-      "examId": "exam-003",
-      "questionId": "q-17",
-      "order": 17,
-      "maxScore": 0.25,
-      "section": "Sentence/Utterance Arrangement",
-      "createdAt": "2025-12-14T08:00:00Z",
-      "updatedAt": "2025-12-14T08:00:00Z"
-    },
-    {
-      "id": "eq-eng-18",
-      "examId": "exam-003",
-      "questionId": "q-18",
-      "order": 18,
-      "maxScore": 0.25,
-      "section": "Sentence/Utterance Arrangement",
-      "createdAt": "2025-12-14T08:00:00Z",
-      "updatedAt": "2025-12-14T08:00:00Z"
-    },
-    {
-      "id": "eq-eng-19",
-      "examId": "exam-003",
-      "questionId": "q-19",
-      "order": 19,
-      "maxScore": 0.25,
-      "section": "Sentence/Utterance Arrangement",
-      "createdAt": "2025-12-14T08:00:00Z",
-      "updatedAt": "2025-12-14T08:00:00Z"
-    },
-    {
-      "id": "eq-eng-20",
-      "examId": "exam-003",
-      "questionId": "q-20",
-      "order": 20,
-      "maxScore": 0.25,
-      "section": "Reading Comprehension",
-      "createdAt": "2025-12-14T08:00:00Z",
-      "updatedAt": "2025-12-14T08:00:00Z"
-    },
-    {
-      "id": "eq-eng-21",
-      "examId": "exam-003",
-      "questionId": "q-21",
-      "order": 21,
-      "maxScore": 0.25,
-      "section": "Reading Comprehension",
-      "createdAt": "2025-12-14T08:00:00Z",
-      "updatedAt": "2025-12-14T08:00:00Z"
-    },
-    {
-      "id": "eq-eng-22",
-      "examId": "exam-003",
-      "questionId": "q-22",
-      "order": 22,
-      "maxScore": 0.25,
-      "section": "Reading Comprehension",
-      "createdAt": "2025-12-14T08:00:00Z",
-      "updatedAt": "2025-12-14T08:00:00Z"
-    },
-    {
-      "id": "eq-eng-23",
-      "examId": "exam-003",
-      "questionId": "q-23",
-      "order": 23,
-      "maxScore": 0.25,
-      "section": "Reading Comprehension",
-      "createdAt": "2025-12-14T08:00:00Z",
-      "updatedAt": "2025-12-14T08:00:00Z"
-    },
-    {
-      "id": "eq-eng-24",
-      "examId": "exam-003",
-      "questionId": "q-24",
-      "order": 24,
-      "maxScore": 0.25,
-      "section": "Reading Comprehension",
-      "createdAt": "2025-12-14T08:00:00Z",
-      "updatedAt": "2025-12-14T08:00:00Z"
-    },
-    {
-      "id": "eq-eng-25",
-      "examId": "exam-003",
-      "questionId": "q-25",
-      "order": 25,
-      "maxScore": 0.25,
-      "section": "Reading Comprehension",
-      "createdAt": "2025-12-14T08:00:00Z",
-      "updatedAt": "2025-12-14T08:00:00Z"
-    },
-    {
-      "id": "eq-eng-26",
-      "examId": "exam-003",
-      "questionId": "q-26",
-      "order": 26,
-      "maxScore": 0.25,
-      "section": "Reading Comprehension",
-      "createdAt": "2025-12-14T08:00:00Z",
-      "updatedAt": "2025-12-14T08:00:00Z"
-    },
-    {
-      "id": "eq-eng-27",
-      "examId": "exam-003",
-      "questionId": "q-27",
-      "order": 27,
-      "maxScore": 0.25,
-      "section": "Reading Comprehension",
-      "createdAt": "2025-12-14T08:00:00Z",
-      "updatedAt": "2025-12-14T08:00:00Z"
-    },
-    {
-      "id": "eq-eng-28",
-      "examId": "exam-003",
-      "questionId": "q-28",
-      "order": 28,
-      "maxScore": 0.25,
-      "section": "Reading Comprehension",
-      "createdAt": "2025-12-14T08:00:00Z",
-      "updatedAt": "2025-12-14T08:00:00Z"
-    },
-    {
-      "id": "eq-eng-29",
-      "examId": "exam-003",
-      "questionId": "q-29",
-      "order": 29,
-      "maxScore": 0.25,
-      "section": "Reading Comprehension",
-      "createdAt": "2025-12-14T08:00:00Z",
-      "updatedAt": "2025-12-14T08:00:00Z"
-    },
-    {
-      "id": "eq-eng-30",
-      "examId": "exam-003",
-      "questionId": "q-30",
-      "order": 30,
-      "maxScore": 0.25,
-      "section": "Cloze Test",
-      "createdAt": "2025-12-14T08:00:00Z",
-      "updatedAt": "2025-12-14T08:00:00Z"
-    },
-    {
-      "id": "eq-eng-31",
-      "examId": "exam-003",
-      "questionId": "q-31",
-      "order": 31,
-      "maxScore": 0.25,
-      "section": "Cloze Test",
-      "createdAt": "2025-12-14T08:00:00Z",
-      "updatedAt": "2025-12-14T08:00:00Z"
-    },
-    {
-      "id": "eq-eng-32",
-      "examId": "exam-003",
-      "questionId": "q-32",
-      "order": 32,
-      "maxScore": 0.25,
-      "section": "Cloze Test",
-      "createdAt": "2025-12-14T08:00:00Z",
-      "updatedAt": "2025-12-14T08:00:00Z"
-    },
-    {
-      "id": "eq-eng-33",
-      "examId": "exam-003",
-      "questionId": "q-33",
-      "order": 33,
-      "maxScore": 0.25,
-      "section": "Cloze Test",
-      "createdAt": "2025-12-14T08:00:00Z",
-      "updatedAt": "2025-12-14T08:00:00Z"
-    },
-    {
-      "id": "eq-eng-34",
-      "examId": "exam-003",
-      "questionId": "q-34",
-      "order": 34,
-      "maxScore": 0.25,
-      "section": "Cloze Test",
-      "createdAt": "2025-12-14T08:00:00Z",
-      "updatedAt": "2025-12-14T08:00:00Z"
-    },
-    {
-      "id": "eq-eng-35",
-      "examId": "exam-003",
-      "questionId": "q-35",
-      "order": 35,
-      "maxScore": 0.25,
-      "section": "Cloze Test",
-      "createdAt": "2025-12-14T08:00:00Z",
-      "updatedAt": "2025-12-14T08:00:00Z"
-    },
-    {
-      "id": "eq-eng-36",
-      "examId": "exam-003",
-      "questionId": "q-36",
-      "order": 36,
-      "maxScore": 0.25,
-      "section": "Cloze Test",
-      "createdAt": "2025-12-14T08:00:00Z",
-      "updatedAt": "2025-12-14T08:00:00Z"
-    },
-    {
-      "id": "eq-eng-37",
-      "examId": "exam-003",
-      "questionId": "q-37",
-      "order": 37,
-      "maxScore": 0.25,
-      "section": "Cloze Test",
-      "createdAt": "2025-12-14T08:00:00Z",
-      "updatedAt": "2025-12-14T08:00:00Z"
-    },
-    {
-      "id": "eq-eng-38",
-      "examId": "exam-003",
-      "questionId": "q-38",
-      "order": 38,
-      "maxScore": 0.25,
-      "section": "Cloze Test",
-      "createdAt": "2025-12-14T08:00:00Z",
-      "updatedAt": "2025-12-14T08:00:00Z"
-    },
-    {
-      "id": "eq-eng-39",
-      "examId": "exam-003",
-      "questionId": "q-39",
-      "order": 39,
-      "maxScore": 0.25,
-      "section": "Cloze Test",
-      "createdAt": "2025-12-14T08:00:00Z",
-      "updatedAt": "2025-12-14T08:00:00Z"
-    },
-    {
-      "id": "eq-eng-40",
-      "examId": "exam-003",
-      "questionId": "q-40",
-      "order": 40,
-      "maxScore": 0.25,
-      "section": "Cloze Test",
-      "createdAt": "2025-12-14T08:00:00Z",
-      "updatedAt": "2025-12-14T08:00:00Z"
-    },
-    {
-      "id": "eq-van-01",
-      "examId": "exam-002",
-      "questionId": "q-van-01",
-      "order": 1,
-      "maxScore": 0.5,
-      "section": "Đọc hiểu",
-      "createdAt": "2025-12-14T08:00:00Z",
-      "updatedAt": "2025-12-14T08:00:00Z"
-    },
-    {
-      "id": "eq-van-02",
-      "examId": "exam-002",
-      "questionId": "q-van-02",
-      "order": 2,
-      "maxScore": 0.5,
-      "section": "Đọc hiểu",
-      "createdAt": "2025-12-14T08:00:00Z",
-      "updatedAt": "2025-12-14T08:00:00Z"
-    },
-    {
-      "id": "eq-van-03",
-      "examId": "exam-002",
-      "questionId": "q-van-03",
-      "order": 3,
-      "maxScore": 0.5,
-      "section": "Đọc hiểu",
-      "createdAt": "2025-12-14T08:00:00Z",
-      "updatedAt": "2025-12-14T08:00:00Z"
-    },
-    {
-      "id": "eq-van-04",
-      "examId": "exam-002",
-      "questionId": "q-van-04",
-      "order": 4,
-      "maxScore": 0.5,
-      "section": "Đọc hiểu",
-      "createdAt": "2025-12-14T08:00:00Z",
-      "updatedAt": "2025-12-14T08:00:00Z"
-    },
-    {
-      "id": "eq-van-05",
-      "examId": "exam-002",
-      "questionId": "q-van-05",
-      "order": 5,
-      "maxScore": 1,
-      "section": "Đọc hiểu",
-      "createdAt": "2025-12-14T08:00:00Z",
-      "updatedAt": "2025-12-14T08:00:00Z"
-    },
-    {
-      "id": "eq-van-06",
-      "examId": "exam-002",
-      "questionId": "q-van-06",
-      "order": 6,
-      "maxScore": 2,
-      "section": "Viết",
-      "createdAt": "2025-12-14T08:00:00Z",
-      "updatedAt": "2025-12-14T08:00:00Z"
-    },
-    {
-      "id": "eq-van-07",
-      "examId": "exam-002",
-      "questionId": "q-van-07",
-      "order": 7,
-      "maxScore": 5,
-      "section": "Viết",
-      "createdAt": "2025-12-14T08:00:00Z",
-      "updatedAt": "2025-12-14T08:00:00Z"
-    }
-  ],
-  "submissions": [
-    {
-      "id": "6abc",
-      "examId": "exam-002",
-      "studentId": "student-01",
-      "contestId": null,
-      "status": "graded",
-      "startedAt": "2025-12-16T12:38:12.391Z",
-      "submittedAt": "2025-12-16T13:38:12.391Z",
-      "totalScore": 0,
-      "maxScore": 10,
-      "attemptNumber": 1,
-      "answers": []
-    },
-    {
-      "id": "1b8c",
-      "examId": "exam-001",
-      "studentId": "student-01",
-      "contestId": null,
-      "status": "graded",
-      "startedAt": "2025-12-16T12:38:38.285Z",
-      "submittedAt": "2025-12-16T13:38:38.285Z",
-      "totalScore": 0,
-      "maxScore": 10,
-      "attemptNumber": 1,
-      "answers": []
-    },
-    {
-      "id": "c221",
-      "examId": "exam-003",
-      "studentId": "student-01",
-      "contestId": null,
-      "status": "graded",
-      "startedAt": "2025-12-16T12:38:45.111Z",
-      "submittedAt": "2025-12-16T13:38:45.111Z",
-      "totalScore": 0,
-      "maxScore": 10,
-      "attemptNumber": 1,
-      "answers": []
-    }
-  ],
   "contests": [
     {
       "id": "contest-olympic-2025",
@@ -3140,32 +3634,26 @@
       "participantsCount": 6,
       "createdAt": "2025-11-20T00:00:00Z",
       "updatedAt": "2025-11-20T00:00:00Z"
+    },
+    {
+      "contest_id": "ct_01",
+      "title": "Olympic Toán Học Mùa Xuân",
+      "description": "Cuộc thi toán học thường niên.",
+      "start_time": "2025-12-01T00:00:00Z",
+      "end_time": "2025-12-30T00:00:00Z",
+      "status": "ongoing"
     }
   ],
-  "contest_exams": [
+  "contestexams": [
     {
-      "id": "ce-01",
-      "contestId": "contest-olympic-2025",
-      "examId": "exam-001",
-      "order": 2,
-      "weight": 1
-    },
-    {
-      "id": "ce-02",
-      "contestId": "contest-olympic-2025",
-      "examId": "exam-003",
-      "order": 3,
-      "weight": 1
-    },
-    {
-      "id": "ce-03",
-      "contestId": "contest-olympic-2025",
-      "examId": "exam-002",
+      "id": "ce_01",
+      "contest_id": "ct_01",
+      "exam_id": "ex_contest_math_final",
       "order": 1,
       "weight": 1
     }
   ],
-  "contest_participations": [
+  "contestparticipations": [
     {
       "id": "cp-student-02",
       "contestId": "contest-olympic-2025",
@@ -3232,5 +3720,48 @@
       "rank": null,
       "percentile": null
     }
-  ]
+  ],
+  "submissions": [
+    {
+      "id": "6abc",
+      "examId": "exam-002",
+      "studentId": "student-01",
+      "contestId": null,
+      "status": "graded",
+      "startedAt": "2025-12-16T12:38:12.391Z",
+      "submittedAt": "2025-12-16T13:38:12.391Z",
+      "totalScore": 0,
+      "maxScore": 10,
+      "attemptNumber": 1,
+      "answers": []
+    },
+    {
+      "id": "1b8c",
+      "examId": "exam-001",
+      "studentId": "student-01",
+      "contestId": null,
+      "status": "graded",
+      "startedAt": "2025-12-16T12:38:38.285Z",
+      "submittedAt": "2025-12-16T13:38:38.285Z",
+      "totalScore": 0,
+      "maxScore": 10,
+      "attemptNumber": 1,
+      "answers": []
+    },
+    {
+      "id": "c221",
+      "examId": "exam-003",
+      "studentId": "student-01",
+      "contestId": null,
+      "status": "graded",
+      "startedAt": "2025-12-16T12:38:45.111Z",
+      "submittedAt": "2025-12-16T13:38:45.111Z",
+      "totalScore": 0,
+      "maxScore": 10,
+      "attemptNumber": 1,
+      "answers": []
+    }
+  ],
+  "manualgradings": [],
+  "examanswers": []
 }

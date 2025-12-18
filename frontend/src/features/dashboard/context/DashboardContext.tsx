@@ -34,7 +34,7 @@ export const DashboardProvider: React.FC<DashboardProviderProps> = ({
   const [activeTab, setActiveTab] = useState("exams");
 
   // Use actual user data from auth context, with fallback defaults
-  const userRole = (user?.role as UserRole) || "admin";
+  const userRole = (user?.role as UserRole) || "student";
   const userName = user?.name || "User";
 
   return (

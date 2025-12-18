@@ -1,5 +1,5 @@
 // API endpoints configuration
-export const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5001/api';
+export const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
 
 export const AUTH_ENDPOINTS = {
   REGISTER: '/auth/register',

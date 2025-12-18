@@ -1,7 +1,7 @@
 import { StudentStats, ClassSummary } from "@/features/dashboard/types/student/";
 
 // URL của JSON Server (hoặc Backend thật sau này)
-const BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001";
+const BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
 
 // ID của học sinh đang đăng nhập (Hardcode để test, sau này lấy từ Auth Context)
 const CURRENT_STUDENT_ID = "u_student_01";
@@ -15,16 +15,16 @@ const CURRENT_STUDENT_ID = "u_student_01";
  */
 const fetchClassDetails = async (classId: string) => {
   try {
-    // 1. Lấy thông tin lớp từ bảng Class
-    const classRes = await fetch(`${BASE_URL}/Class/${classId}`, { cache: 'no-store' });
+    // 1. Lấy thông tin lớp từ bảng classes
+    const classRes = await fetch(`${BASE_URL}/classes/${classId}`, { cache: 'no-store' });
     if (!classRes.ok) return null;
     const classData = await classRes.json();
 
-    // 2. Lấy tên giáo viên từ bảng User
+    // 2. Lấy tên giáo viên từ bảng users
     let teacherName = "Unknown Teacher";
     if (classData.teacher_user_id) {
       try {
-        const teacherRes = await fetch(`${BASE_URL}/User/${classData.teacher_user_id}`, { cache: 'no-store' });
+        const teacherRes = await fetch(`${BASE_URL}/users/${classData.teacher_user_id}`, { cache: 'no-store' });
         if (teacherRes.ok) {
           const teacherData = await teacherRes.json();
           teacherName = teacherData.full_name;
@@ -35,10 +35,10 @@ const fetchClassDetails = async (classId: string) => {
     }
 
     // 3. [UPDATE] Đếm số học sinh thực tế
-    // Logic: Gọi bảng ClassMember, lọc theo class_id và status=approved
+    // Logic: Gọi bảng classmembers, lọc theo class_id và status=approved
     let studentCount = 0;
     try {
-      const countRes = await fetch(`${BASE_URL}/ClassMember?class_id=${classId}&status=approved`, { cache: 'no-store' });
+      const countRes = await fetch(`${BASE_URL}/classmembers?class_id=${classId}&status=approved`, { cache: 'no-store' });
       if (countRes.ok) {
         const members = await countRes.json();
         studentCount = members.length; // Đếm số phần tử mảng trả về
@@ -69,10 +69,10 @@ export const getMyClasses = async (): Promise<ClassSummary[]> => {
     // BƯỚC 1: Gọi song song 2 API để tiết kiệm thời gian
     const [activeRes, pendingRes] = await Promise.all([
       // Lấy danh sách lớp ĐÃ VÀO (Active)
-      fetch(`${BASE_URL}/ClassMember?student_user_id=${CURRENT_STUDENT_ID}&status=approved`, { cache: 'no-store' }),
+      fetch(`${BASE_URL}/classmembers?student_user_id=${CURRENT_STUDENT_ID}&status=approved`, { cache: 'no-store' }),
       
       // Lấy danh sách lớp CHỜ DUYỆT (Pending)
-      fetch(`${BASE_URL}/ClassJoinRequest?student_user_id=${CURRENT_STUDENT_ID}&status=pending`, { cache: 'no-store' })
+      fetch(`${BASE_URL}/classjoinrequests?student_user_id=${CURRENT_STUDENT_ID}&status=pending`, { cache: 'no-store' })
     ]);
 
     // Parse JSON (nếu lỗi thì trả về mảng rỗng để không chết app)
@@ -145,7 +145,7 @@ type JoinClassResult =
 export const joinClass = async (code: string): Promise<JoinClassResult> => {
   try {
     // 1. Tìm lớp
-    const searchUrl = `${BASE_URL}/Class?class_code=${code}`;
+    const searchUrl = `${BASE_URL}/classes?class_code=${code}`;
     const classSearchRes = await fetch(searchUrl, { cache: 'no-store' });
     
     if (!classSearchRes.ok) return { success: false, error: 'SERVER_ERROR' };
@@ -171,7 +171,7 @@ export const joinClass = async (code: string): Promise<JoinClassResult> => {
       processed_at: null
     };
 
-    const createRes = await fetch(`${BASE_URL}/ClassJoinRequest`, {
+    const createRes = await fetch(`${BASE_URL}/classjoinrequests`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(payload),
@@ -216,8 +216,8 @@ export const joinClass = async (code: string): Promise<JoinClassResult> => {
  */
 export const cancelClassRequest = async (requestId: string): Promise<boolean> => {
   try {
-    // Lưu ý: Endpoint là ClassJoinRequest, và dùng requestId (ví dụ: req_01)
-    const response = await fetch(`${BASE_URL}/ClassJoinRequest/${requestId}`, {
+    // Lưu ý: Endpoint là classjoinrequests, và dùng requestId (ví dụ: req_01)
+    const response = await fetch(`${BASE_URL}/classjoinrequests/${requestId}`, {
       method: 'DELETE',
     });
     return response.ok;
