@@ -395,12 +395,8 @@ Content-Type: application/json
 
 **Body (raw JSON):**
 ```json
-{
-  "project_id": "69438bd945065e19984503e7",
-  "start_time": 1733011200000,
-  "end_time": 1734480000000,
-  "sources": ["facebook", "youtube", "baochi"]
-}
+
+
 ```
 
 **Tham số bắt buộc:**
