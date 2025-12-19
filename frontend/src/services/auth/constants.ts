@@ -1,5 +1,5 @@
 // API endpoints configuration
-export const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
+export const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5001/api';
 
 export const AUTH_ENDPOINTS = {
   REGISTER: '/auth/register',
@@ -8,7 +8,7 @@ export const AUTH_ENDPOINTS = {
   LOGOUT: '/auth/logout',
   FORGOT_PASSWORD: '/auth/forgot-password',
   RESET_PASSWORD: '/auth/reset-password',
-  ME: '/users/me',
+  ME: '/auth/me',
 } as const;
 
 export const STORAGE_KEYS = {

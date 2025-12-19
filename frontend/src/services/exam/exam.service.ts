@@ -1,84 +1,110 @@
 // src/services/exam/exam.service.ts
+import { httpClient } from '@/lib/http';
 import { ExamWithDetails } from "@/features/exam/types";
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
-
+/**
+ * Exam Service - Handles all exam-related API calls
+ * Uses httpClient for automatic JWT token handling
+ */
 export const examService = {
+  /**
+   * Get exam by ID with full details
+   * API: GET /api/exams/:examId
+   * Auth: Required
+   */
   getExamById: async (id: string): Promise<ExamWithDetails | null> => {
     try {
-      // 1. Gọi 3 API riêng biệt để đảm bảo lấy đủ dữ liệu
-      const [examRes, examQuestionsRes, allQuestionsRes] = await Promise.all([
-        // Lấy thông tin đề
-        fetch(`${API_URL}/exams/${id}`, { cache: "no-store" }),
-        // Lấy danh sách liên kết câu hỏi (thứ tự, điểm số...)
-        fetch(`${API_URL}/examquestions?examId=${id}&_sort=order&_order=asc`, {
-          cache: "no-store",
-        }),
-        // Lấy TOÀN BỘ câu hỏi gốc (Cách an toàn nhất để tránh lỗi _expand)
-        fetch(`${API_URL}/questions`, { cache: "no-store" }),
-      ]);
-      console.log('Fetched exam data from API',API_URL);
-      console.log('Exam Response:',`${API_URL}/exams/${id}`);
+      const response = await httpClient.get<{ success: boolean; data: any }>(
+        `/exams/${id}`,
+        { requiresAuth: true }
+      );
 
-      if (!examRes.ok || !examQuestionsRes.ok || !allQuestionsRes.ok) {
-        console.error("Lỗi API: Không thể tải dữ liệu từ json-server");
+      if (!response.success || !response.data) {
+        console.error("Failed to fetch exam data");
         return null;
       }
 
-      const examData = await examRes.json();
-      const examQuestionsData = await examQuestionsRes.json();
-      const allQuestionsData = await allQuestionsRes.json();
+      const examData = response.data;
 
-      // 2. MANUAL JOIN: Tự ghép dữ liệu bằng code JavaScript
-      const mappedQuestions = examQuestionsData
-        .map((eq: any) => {
-          // Tìm câu hỏi gốc trong mảng allQuestionsData dựa trên questionId
-          const originalQuestion = allQuestionsData.find(
-            (q: any) => q.id === eq.questionId
-          );
-
-          // Nếu không tìm thấy câu hỏi gốc (dữ liệu rác), log warning và trả về null
-          if (!originalQuestion) {
-            console.warn(
-              `Dữ liệu hỏng: Không tìm thấy questionId=${eq.questionId} trong bảng questions`
-            );
-            return null;
-          }
-
-          // Tách các trường nhạy cảm (Đáp án)
-          // eslint-disable-next-line @typescript-eslint/no-unused-vars
-          const { correctAnswer, explanation, ...safeQuestionContent } =
-            originalQuestion;
-
-          return {
-            _id: eq.id,
-            examId: eq.examId,
-            questionId: eq.questionId,
-            order: eq.order,
-            maxScore: eq.maxScore,
-            section: eq.section,
-
-            question: {
-              ...safeQuestionContent,
-              _id: originalQuestion.id, // Frontend dùng _id
-              // Đảm bảo các trường quan trọng luôn có giá trị
-              points: originalQuestion.points || eq.maxScore,
-              tags: originalQuestion.tags || [],
-              linkedPassageId: originalQuestion.linkedPassageId || null,
-            },
-          };
-        })
-        .filter((item: any) => item !== null); // Loại bỏ các item bị lỗi
-
-      // 3. Trả về kết quả hoàn chỉnh
+      // Transform backend data to frontend format
       return {
         ...examData,
-        _id: examData.id,
-        questions: mappedQuestions,
+        _id: examData.examId || examData._id,
+        questions: examData.questions?.map((q: any) => ({
+          _id: q.examQuestionId,
+          examId: examData.examId,
+          questionId: q.questionId,
+          order: q.orderIndex,
+          maxScore: q.points,
+          section: q.section || null,
+          question: {
+            _id: q.questionId,
+            type: q.questionType,
+            content: q.questionText,
+            options: q.options || [],
+            points: q.points,
+            tags: q.tags || [],
+            linkedPassageId: q.linkedPassageId || null,
+          },
+        })) || [],
       };
     } catch (error) {
-      console.error("Lỗi khi lấy đề thi (Service):", error);
+      console.error("Error fetching exam:", error);
       return null;
     }
+  },
+
+  /**
+   * Create a new exam
+   * API: POST /api/exams
+   * Auth: Required (Teacher)
+   */
+  createExam: async (examData: any): Promise<any> => {
+    return httpClient.post('/exams', examData, { requiresAuth: true });
+  },
+
+  /**
+   * Update exam
+   * API: PUT /api/exams/:examId
+   * Auth: Required (Teacher, must be owner)
+   */
+  updateExam: async (examId: string, examData: any): Promise<any> => {
+    return httpClient.put(`/exams/${examId}`, examData, { requiresAuth: true });
+  },
+
+  /**
+   * Delete exam
+   * API: DELETE /api/exams/:examId
+   * Auth: Required (Teacher, must be owner)
+   */
+  deleteExam: async (examId: string): Promise<any> => {
+    return httpClient.delete(`/exams/${examId}`, { requiresAuth: true });
+  },
+
+  /**
+   * Add questions to exam
+   * API: POST /api/exams/:examId/questions
+   * Auth: Required (Teacher, must be owner)
+   */
+  addQuestionsToExam: async (examId: string, questions: any[]): Promise<any> => {
+    return httpClient.post(`/exams/${examId}/questions`, { questions }, { requiresAuth: true });
+  },
+
+  /**
+   * Assign exam to class
+   * API: POST /api/exams/:examId/assign-to-class
+   * Auth: Required (Teacher, must be owner)
+   */
+  assignExamToClass: async (examId: string, assignmentData: any): Promise<any> => {
+    return httpClient.post(`/exams/${examId}/assign-to-class`, assignmentData, { requiresAuth: true });
+  },
+
+  /**
+   * Generate exam from question bank
+   * API: POST /api/exams/generate-from-bank
+   * Auth: Required (Teacher)
+   */
+  generateExamFromBank: async (criteria: any): Promise<any> => {
+    return httpClient.post('/exams/generate-from-bank', criteria, { requiresAuth: true });
   },
 };

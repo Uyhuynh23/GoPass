@@ -2,7 +2,7 @@
 import { StudentStats, HistoryDataResponse, HistoryItem, HistoryStats, PerformanceDataPoint, HistoryType } from "@/features/dashboard/types/student/";
 
 // Cấu hình URL cơ sở (có thể lấy từ env hoặc hardcode để test)
-const BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
+const BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5001/api";
 
 /**
  * Hàm lấy thống kê tổng quan cho Student Dashboard

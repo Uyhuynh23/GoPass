@@ -1,5 +1,7 @@
 import React from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { authService } from "@/services/auth";
 
 interface DashboardHeaderProps {
   userRole: "admin" | "student" | "teacher";
@@ -10,6 +12,8 @@ const DashboardHeader: React.FC<DashboardHeaderProps> = ({
   userRole,
   userName,
 }) => {
+  const router = useRouter();
+
   const getRoleLabel = () => {
     const labels = {
       admin: "Quản trị viên",
@@ -26,6 +30,15 @@ const DashboardHeader: React.FC<DashboardHeaderProps> = ({
       teacher: "bg-blue-100 text-blue-700",
     };
     return colors[userRole];
+  };
+
+  const handleLogout = async () => {
+    try {
+      await authService.logout();
+      router.push("/")
+    } catch (error) {
+      console.error("Logout failed:", error);
+    }
   };
 
   return (
@@ -50,7 +63,11 @@ const DashboardHeader: React.FC<DashboardHeaderProps> = ({
           {/* User Info */}
           <div className="flex items-center space-x-4">
             <span className="text-sm text-gray-700">{userName}</span>
-            <button className="p-2 rounded-lg hover:bg-gray-100 transition-colors">
+            <button
+              onClick={handleLogout}
+              className="p-2 rounded-lg hover:bg-gray-100 transition-colors"
+              title="Đăng xuất"
+            >
               <svg
                 className="w-5 h-5 text-gray-600"
                 fill="none"

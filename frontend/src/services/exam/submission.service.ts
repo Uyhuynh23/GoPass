@@ -1,7 +1,7 @@
 import { AnswerData, ExamSubmission } from "@/features/exam/types";
 import { examService } from "./exam.service";
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
+const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5001/api";
 
 export const submissionService = {
   saveAnswers: async (examId: string, answers: AnswerData[]) => {

@@ -6,7 +6,7 @@ import {
   UserInfo,
 } from "@/features/contest/types";
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
+const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5001/api";
 
 // ✅ 1. Định nghĩa Interface cho dữ liệu Exam lấy từ API (để Map hiểu)
 // Lưu ý: API json-server trả về "id", trong khi Type Exam gốc dùng "_id"

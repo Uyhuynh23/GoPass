@@ -1,7 +1,7 @@
 import { StudentStats, ClassSummary } from "@/features/dashboard/types/student/";
 
 // URL của JSON Server (hoặc Backend thật sau này)
-const BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
+const BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5001/api";
 
 // ID của học sinh đang đăng nhập (Hardcode để test, sau này lấy từ Auth Context)
 const CURRENT_STUDENT_ID = "u_student_01";

@@ -1,5 +1,6 @@
 import { API_BASE_URL, AUTH_ENDPOINTS, STORAGE_KEYS } from './constants';
 import type { LoginCredentials, RegisterData, AuthResponse, User } from '@/types/auth';
+import { httpClient } from '@/lib/http';
 
 class AuthService {
   private getHeaders(includeAuth = false): HeadersInit {
@@ -56,17 +57,11 @@ class AuthService {
   // API calls
   async login(credentials: LoginCredentials): Promise<AuthResponse> {
     try {
-      const response = await fetch(`${API_BASE_URL}${AUTH_ENDPOINTS.LOGIN}`, {
-        method: 'POST',
-        headers: this.getHeaders(),
-        body: JSON.stringify(credentials),
-      });
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.message || 'Đăng nhập thất bại');
-      }
+      const data = await httpClient.post<AuthResponse>(
+        AUTH_ENDPOINTS.LOGIN,
+        credentials,
+        { requiresAuth: false }
+      );
 
       // Store tokens and user data
       this.setTokens(data.data.accessToken, data.data.refreshToken);
@@ -80,17 +75,11 @@ class AuthService {
 
   async register(data: RegisterData): Promise<AuthResponse> {
     try {
-      const response = await fetch(`${API_BASE_URL}${AUTH_ENDPOINTS.REGISTER}`, {
-        method: 'POST',
-        headers: this.getHeaders(),
-        body: JSON.stringify(data),
-      });
-
-      const result = await response.json();
-
-      if (!response.ok) {
-        throw new Error(result.message || 'Đăng ký thất bại');
-      }
+      const result = await httpClient.post<AuthResponse>(
+        AUTH_ENDPOINTS.REGISTER,
+        data,
+        { requiresAuth: false }
+      );
 
       // Store tokens and user data
       this.setTokens(result.data.accessToken, result.data.refreshToken);
@@ -133,11 +122,11 @@ class AuthService {
       const refreshToken = this.getRefreshToken();
       
       if (refreshToken) {
-        await fetch(`${API_BASE_URL}${AUTH_ENDPOINTS.LOGOUT}`, {
-          method: 'POST',
-          headers: this.getHeaders(true),
-          body: JSON.stringify({ refreshToken }),
-        });
+        await httpClient.post(
+          AUTH_ENDPOINTS.LOGOUT,
+          { refreshToken },
+          { requiresAuth: false }
+        );
       }
     } catch (error) {
       console.error('Logout error:', error);
@@ -148,33 +137,16 @@ class AuthService {
 
   async getCurrentUser(): Promise<User | null> {
     try {
-      const response = await fetch(`${API_BASE_URL}${AUTH_ENDPOINTS.ME}`, {
-        headers: this.getHeaders(true),
-      });
+      const data = await httpClient.get<{ success: boolean; data: User }>(
+        AUTH_ENDPOINTS.ME,
+        { requiresAuth: true }
+      );
 
-      if (!response.ok) {
-        if (response.status === 401) {
-          // Try to refresh token
-          const newToken = await this.refreshAccessToken();
-          if (newToken) {
-            // Retry with new token
-            const retryResponse = await fetch(`${API_BASE_URL}${AUTH_ENDPOINTS.ME}`, {
-              headers: this.getHeaders(true),
-            });
-            const data = await retryResponse.json();
-            this.setUserData(data.data);
-            return data.data;
-          }
-        }
-        this.removeTokens();
-        return null;
-      }
-
-      const data = await response.json();
       this.setUserData(data.data);
       return data.data;
     } catch (error) {
       console.error('Get current user error:', error);
+      this.removeTokens();
       return null;
     }
   }
