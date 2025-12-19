@@ -13,4 +13,10 @@ module.exports = {
   ManualGradingRepository: require('./ManualGradingRepository'),
   ContestRepository: require('./ContestRepository'),
   ContestExamRepository: require('./ContestExamRepository'),
+  // Forum & VnSocial repositories
+  ForumTopicRepository: require("./ForumTopicRepository"),
+  ForumCommentRepository: require("./ForumCommentRepository"),
+  VnsocialTopicRepository: require("./VnsocialTopicRepository"),
+  VnsocialArticleRepository: require("./VnsocialArticleRepository"),
+  UsedArticleRepository: require("./UsedArticleRepository"),
 };

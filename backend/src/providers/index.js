@@ -5,4 +5,5 @@ module.exports = {
   MailProvider: require('./MailProvider'),
   AiScoringProvider: require('./AiScoringProvider'),
   VnSocialProvider: require('./VnSocialProvider'),
+  VnSmartBotProvider: require('./VnSmartBotProvider'),
 };

@@ -16,4 +16,11 @@ module.exports = {
   Contest: require('./Contest'),
   ContestExam: require('./ContestExam'),
   ContestParticipation: require('./ContestParticipation'),
+
+    // Forum & VnSocial models
+  ForumTopic: require("./ForumTopic"),
+  ForumComment: require("./ForumComment"),
+  VnsocialTopic: require("./VnsocialTopic"),
+  VnsocialArticle: require("./VnsocialArticle"),
+  UsedArticle: require("./UsedArticle"),
 };

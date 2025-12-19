@@ -10,6 +10,14 @@ class VnSocialProvider {
     this.oauthUrl = 'https://vnsocial.vnpt.vn/oauth/login';
     this.accessToken = null;
     this.tokenExpiry = null;
+    
+    // Check if using fixed token from env
+    if (process.env.VNSOCIAL_TOKEN) {
+      console.log('🔑 VnSocial: Using fixed token from environment');
+      this.accessToken = process.env.VNSOCIAL_TOKEN;
+      // Set expiry far in the future for manual tokens (30 days)
+      this.tokenExpiry = Date.now() + (30 * 24 * 60 * 60 * 1000);
+    }
   }
 
   /**
@@ -95,6 +103,19 @@ class VnSocialProvider {
    * Kiểm tra và refresh token nếu cần
    */
   async ensureToken() {
+    // If using fixed token from env, check if still valid
+    if (process.env.VNSOCIAL_TOKEN) {
+      if (!this.accessToken || (this.tokenExpiry && Date.now() >= this.tokenExpiry)) {
+        console.log('⚠️ VnSocial: Fixed token expired! Please update VNSOCIAL_TOKEN in .env');
+        // Re-initialize with the env token
+        this.accessToken = process.env.VNSOCIAL_TOKEN;
+        this.tokenExpiry = Date.now() + (30 * 24 * 60 * 60 * 1000);
+      }
+      console.log('✅ VnSocial: Using fixed token from environment');
+      return this.accessToken;
+    }
+
+    // Otherwise, use username/password login flow
     if (!this.accessToken || (this.tokenExpiry && Date.now() >= this.tokenExpiry)) {
       console.log('🔄 VnSocial: Token expired or not found, refreshing...');
       
@@ -103,7 +124,7 @@ class VnSocialProvider {
 
       if (!username || !password) {
         console.error('❌ VnSocial: Missing credentials in .env file');
-        throw new Error('VnSocial credentials not configured. Please set VNSOCIAL_USERNAME and VNSOCIAL_PASSWORD in .env');
+        throw new Error('VnSocial credentials not configured. Please set VNSOCIAL_USERNAME and VNSOCIAL_PASSWORD (or VNSOCIAL_TOKEN) in .env');
       }
 
       await this.login(username, password);
@@ -125,6 +146,10 @@ class VnSocialProvider {
       
       const params = type ? { type } : {};
       
+      console.log('🔗 VnSocial: Request URL:', `${this.baseUrl}/projects`);
+      console.log('🔑 VnSocial: Using token:', token ? token.substring(0, 20) + '...' : 'none');
+      console.log('📤 VnSocial: Request params:', params);
+      
       const response = await axios.get(`${this.baseUrl}/projects`, {
         headers: {
           'Content-Type': 'application/json',
@@ -133,7 +158,21 @@ class VnSocialProvider {
         params
       });
 
+      console.log('📦 VnSocial: Full response:', JSON.stringify(response.data, null, 2));
       console.log('✅ VnSocial: Projects retrieved successfully, count:', response.data?.object?.length || 0);
+      
+      // Log structure để debug
+      if (response.data?.object) {
+        console.log('📊 VnSocial: Response structure:');
+        console.log('  - response.data.object type:', Array.isArray(response.data.object) ? 'Array' : typeof response.data.object);
+        console.log('  - response.data.object.data?', response.data.object.data ? 'exists' : 'not exists');
+        console.log('  - response.data.object.total?', response.data.object.total);
+        
+        if (Array.isArray(response.data.object) && response.data.object.length > 0) {
+          console.log('  - First project sample:', response.data.object[0]);
+        }
+      }
+      
       return response.data;
     } catch (error) {
       console.error('❌ VnSocial getProjects error:', {
@@ -333,15 +372,21 @@ class VnSocialProvider {
         project_id,
         source,
         start_time,
-        end_time
+        end_time,
+        size = 1  // Default: only get 1 hot post per topic
       } = params;
 
       const requestBody = {
         project_id,
         source,
         start_time,
-        end_time
+        end_time,
+        size
       };
+
+      console.log('🔥 VnSocial: getHotPosts called');
+      console.log('📤 Request body:', JSON.stringify(requestBody, null, 2));
+      console.log('🔗 URL:', `${this.baseUrl}/projects/hot-posts`);
 
       const response = await axios.post(
         `${this.baseUrl}/projects/hot-posts`,
@@ -354,9 +399,30 @@ class VnSocialProvider {
         }
       );
 
+      console.log('📦 VnSocial: getHotPosts raw response:', JSON.stringify(response.data, null, 2));
+      
+      // VnSocial hot-posts API trả về response.object là Array trực tiếp
+      const posts = Array.isArray(response.data?.object) ? response.data.object : [];
+      
+      console.log(`📊 Posts count: ${posts.length}`);
+      
+      if (posts.length > 0) {
+        console.log('📰 First post sample:', {
+          docId: posts[0].docId,
+          title: posts[0].title?.substring(0, 50),
+          domain: posts[0].domain,
+          userName: posts[0].userName
+        });
+      }
+
       return response.data;
     } catch (error) {
-      console.error('VnSocial getHotPosts error:', error.response?.data || error.message);
+      console.error('❌ VnSocial getHotPosts error:', {
+        message: error.message,
+        status: error.response?.status,
+        data: error.response?.data,
+        params: params
+      });
       throw new Error('Failed to get hot posts from VnSocial');
     }
   }

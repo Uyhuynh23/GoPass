@@ -9,4 +9,6 @@ module.exports = {
   QuestionBankService: require('./QuestionBankService'),
   ContestService: require('./ContestService'),
   AdminService: require('./AdminService'),
+  VnSocialService: require('./VnSocialService'),
+  SocialDebateService: require('./SocialDebateService'),
 };
