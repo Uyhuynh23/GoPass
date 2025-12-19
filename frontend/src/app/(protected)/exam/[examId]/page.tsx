@@ -1,26 +1,80 @@
-import React from "react";
-import { notFound } from "next/navigation";
-// Import Service đã tạo ở Bước 1
+"use client";
+
+import React, { useEffect, useState } from "react";
+import { useParams, useSearchParams } from "next/navigation";
 import { examService } from "@/services/exam/exam.service";
 import ExamDetailClient from "./ExamDetailClient";
 
-// Đây là Server Component, nên có thể dùng async/await thoải mái
-export default async function ExamDetailPage({
-  params,
-}: {
-  params: Promise<{ examId: string }>;
-}) {
-  // 1. Resolve params (Yêu cầu bắt buộc của Next.js 15)
-  const { examId } = await params;
+export default function ExamDetailPage() {
+  const params = useParams();
+  const searchParams = useSearchParams();
+  const examId = params?.examId as string;
 
-  // 2. Gọi Service để lấy dữ liệu (Async call)
-  const exam = await examService.getExamById(examId);
+  const [exam, setExam] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
 
-  // 3. Xử lý trường hợp không tìm thấy
-  if (!exam) {
-    notFound();
+  useEffect(() => {
+    const fetchData = async () => {
+      if (!examId) {
+        setError(true);
+        setLoading(false);
+        return;
+      }
+
+      try {
+        // Get assignmentId and contestId from searchParams if present
+        const assignmentId = searchParams?.get("assignmentId") || undefined;
+        const contestId = searchParams?.get("contestId") || undefined;
+
+        // Fetch exam data with optional assignment/contest context
+        const examData = await examService.getExamById(
+          examId,
+          assignmentId,
+          contestId
+        );
+
+        if (!examData) {
+          setError(true);
+        } else {
+          setExam(examData);
+        }
+      } catch (err) {
+        console.error("Error loading exam:", err);
+        setError(true);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, [examId, searchParams]);
+
+  if (loading) {
+    return (
+      <div className="h-screen flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+          <p className="text-gray-600">Loading exam...</p>
+        </div>
+      </div>
+    );
   }
 
-  // 4. Truyền dữ liệu xuống Client Component để hiển thị
+  if (error || !exam) {
+    return (
+      <div className="h-screen flex items-center justify-center">
+        <div className="text-center">
+          <h1 className="text-2xl font-bold text-gray-800 mb-2">
+            Exam Not Found
+          </h1>
+          <p className="text-gray-600">
+            The exam you're looking for doesn't exist.
+          </p>
+        </div>
+      </div>
+    );
+  }
+
   return <ExamDetailClient exam={exam} />;
 }

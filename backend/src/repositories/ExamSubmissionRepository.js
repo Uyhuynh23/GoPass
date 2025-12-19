@@ -59,6 +59,10 @@ class ExamSubmissionRepository extends BaseRepository {
     const total = submissions.reduce((sum, s) => sum + s.totalScore, 0);
     return total / submissions.length;
   }
+
+  async findByExamAndStudent(examId, studentId, options = {}) {
+    return await this.find({ examId, studentId }, options);
+  }
 }
 
 module.exports = new ExamSubmissionRepository();

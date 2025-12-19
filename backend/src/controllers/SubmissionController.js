@@ -30,19 +30,30 @@ class SubmissionController {
 
   async submitExam(req, res) {
     try {
-      const result = await SubmissionService.submitExam(req.params.submissionId, req.user.userId);
-      res.status(200).json({ success: true, message: result.message });
+      const result = await SubmissionService.submitExam(
+        req.params.submissionId, 
+        req.user.userId,
+        req.body.answers,
+        req.body.timeSpentSeconds
+      );
+      res.status(200).json({ success: true, message: 'Exam submitted successfully', data: result });
     } catch (error) {
-      res.status(400).json({ success: false, message: error.message });
+      const statusCode = error.message.includes('not found') ? 404 : 400;
+      res.status(statusCode).json({ success: false, message: error.message });
     }
   }
 
   async getSubmissionDetail(req, res) {
     try {
-      const submission = await SubmissionService.getSubmissionDetail(req.params.submissionId, req.user.userId);
+      const submission = await SubmissionService.getSubmissionDetail(
+        req.params.submissionId, 
+        req.user.userId
+      );
       res.status(200).json({ success: true, data: submission });
     } catch (error) {
-      res.status(404).json({ success: false, message: error.message });
+      const statusCode = error.message.includes('not found') ? 404 : 
+                        error.message.includes('permission') ? 403 : 400;
+      res.status(statusCode).json({ success: false, message: error.message });
     }
   }
 
@@ -50,6 +61,70 @@ class SubmissionController {
     try {
       const submission = await SubmissionService.getOrCreateSubmission(req.params.assignmentId, req.user.userId);
       res.status(200).json({ success: true, data: submission });
+    } catch (error) {
+      res.status(400).json({ success: false, message: error.message });
+    }
+  }
+
+  // NEW: Auto-save answers (batch update)
+  async autoSaveAnswers(req, res) {
+    try {
+      const result = await SubmissionService.autoSaveAnswers(
+        req.params.submissionId,
+        req.user.userId,
+        req.body.answers
+      );
+      res.status(200).json({ 
+        success: true, 
+        message: 'Answers saved successfully',
+        data: result
+      });
+    } catch (error) {
+      const statusCode = error.message.includes('not found') ? 404 : 
+                        error.message.includes('finalized') ? 403 : 400;
+      res.status(statusCode).json({ success: false, message: error.message });
+    }
+  }
+
+  // NEW: Get submission answers
+  async getSubmissionAnswers(req, res) {
+    try {
+      const result = await SubmissionService.getSubmissionAnswers(
+        req.params.submissionId,
+        req.user.userId
+      );
+      res.status(200).json({ success: true, data: result });
+    } catch (error) {
+      const statusCode = error.message.includes('not found') ? 404 : 400;
+      res.status(statusCode).json({ success: false, message: error.message });
+    }
+  }
+
+  // NEW: Manual grading by teacher
+  async manualGrade(req, res) {
+    try {
+      const result = await SubmissionService.manualGrade(
+        req.params.submissionId,
+        req.user.userId,
+        req.body.grades
+      );
+      res.status(200).json({ 
+        success: true, 
+        message: 'Manual grading completed',
+        data: result
+      });
+    } catch (error) {
+      const statusCode = error.message.includes('not found') ? 404 : 
+                        error.message.includes('permission') ? 403 : 400;
+      res.status(statusCode).json({ success: false, message: error.message });
+    }
+  }
+
+  // NEW: Get active submissions
+  async getMyActiveSubmissions(req, res) {
+    try {
+      const submissions = await SubmissionService.getMyActiveSubmissions(req.user.userId);
+      res.status(200).json({ success: true, data: submissions });
     } catch (error) {
       res.status(400).json({ success: false, message: error.message });
     }

@@ -28,6 +28,16 @@ module.exports = {
     apiKey: process.env.AI_SCORING_API_KEY,
   },
 
+  
+  // vnSmartBot config
+  vnSmartBot: {
+    apiUrl: process.env.VNSMARTBOT_API_URL || 'https://assistant-stream.vnpt.vn/v1/conversation',
+    authorization: process.env.VNSMARTBOT_AUTHORIZATION || '',
+    tokenId: process.env.VNSMARTBOT_TOKEN_ID || '',
+    tokenKey: process.env.VNSMARTBOT_TOKEN_KEY || '',
+    botId: process.env.VNSMARTBOT_BOT_ID || '',
+  },
+
   // Client URL for reset password links
-  clientUrl: process.env.CLIENT_URL || 'http://localhost:3000',
+  clientUrl: process.env.CLIENT_URL || 'http://localhost:5001/api',
 };

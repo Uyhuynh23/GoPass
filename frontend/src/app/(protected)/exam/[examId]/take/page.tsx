@@ -1,26 +1,80 @@
-// src/app/(protected)/exam/[examId]/take/page.tsx
-import React from "react";
-import { notFound } from "next/navigation";
+"use client";
+
+import React, { useEffect, useState } from "react";
+import { useParams, useSearchParams } from "next/navigation";
 import { examService } from "@/services/exam/exam.service";
 import TakeExamClient from "./TakeExamClient";
 
-export default async function TakeExamPage({
-  params,
-}: {
-  params: Promise<{ examId: string }>;
-}) {
-  // 1. Resolve Params (Next.js 15)
-  const { examId } = await params;
+export default function TakeExamPage() {
+  const params = useParams();
+  const searchParams = useSearchParams();
+  const examId = params?.examId as string;
 
-  // 2. Fetch Data (Server-side)
-  // Gọi service (đã được giả lập async)
-  const exam = await examService.getExamById(examId);
+  const [exam, setExam] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
 
-  // 3. Handle 404
-  if (!exam) {
-    notFound();
+  useEffect(() => {
+    const fetchData = async () => {
+      if (!examId) {
+        setError(true);
+        setLoading(false);
+        return;
+      }
+
+      try {
+        // Get assignmentId and contestId from searchParams if present
+        const assignmentId = searchParams?.get("assignmentId") || undefined;
+        const contestId = searchParams?.get("contestId") || undefined;
+
+        // Fetch exam data with context
+        const examData = await examService.getExamById(
+          examId,
+          assignmentId,
+          contestId
+        );
+
+        if (!examData) {
+          setError(true);
+        } else {
+          setExam(examData);
+        }
+      } catch (err) {
+        console.error("Error loading exam:", err);
+        setError(true);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, [examId, searchParams]);
+
+  if (loading) {
+    return (
+      <div className="h-screen flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+          <p className="text-gray-600">Loading exam...</p>
+        </div>
+      </div>
+    );
   }
 
-  // 4. Render Client Interface
+  if (error || !exam) {
+    return (
+      <div className="h-screen flex items-center justify-center">
+        <div className="text-center">
+          <h1 className="text-2xl font-bold text-gray-800 mb-2">
+            Exam Not Found
+          </h1>
+          <p className="text-gray-600">
+            The exam you're looking for doesn't exist.
+          </p>
+        </div>
+      </div>
+    );
+  }
+
   return <TakeExamClient exam={exam} />;
 }

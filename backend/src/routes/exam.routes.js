@@ -18,4 +18,8 @@ router.post('/generate-from-bank', authorize('teacher'), ExamController.generate
 // Shared routes
 router.get('/:examId', ExamController.getExamDetail);
 
+// NEW: Student routes for exam taking
+router.post('/:examId/submissions', ExamController.createSubmission);
+router.get('/:examId/my-submissions', ExamController.getMySubmissions);
+
 module.exports = router;

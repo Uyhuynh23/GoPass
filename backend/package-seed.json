@@ -1,0 +1,11 @@
+{
+  "name": "gopass-seed-scripts",
+  "version": "1.0.0",
+  "description": "Database seeding scripts for GoPass",
+  "scripts": {
+    "seed": "node src/scripts/seed-exam-data.js",
+    "seed:full": "node src/scripts/seed-exam-data.js --full",
+    "seed:clear": "node src/scripts/seed-exam-data.js --clear --full",
+    "seed:basic": "node src/scripts/seed-exam-data.js --clear"
+  }
+}

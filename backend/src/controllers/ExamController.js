@@ -77,6 +77,39 @@ class ExamController {
       res.status(400).json({ success: false, message: error.message });
     }
   }
+
+  // NEW: Create submission (start exam)
+  async createSubmission(req, res) {
+    try {
+      const { assignmentId, contestId } = req.body;
+      const submission = await ExamService.createSubmission(
+        req.params.examId,
+        req.user.userId,
+        assignmentId,
+        contestId
+      );
+      res.status(201).json({ success: true, data: submission });
+    } catch (error) {
+      const statusCode = error.message.includes('not found') ? 404 : 
+                        error.message.includes('permission') || error.message.includes('ended') || error.message.includes('exceeded') ? 403 : 400;
+      res.status(statusCode).json({ success: false, message: error.message });
+    }
+  }
+
+  // NEW: Get user's submissions for an exam
+  async getMySubmissions(req, res) {
+    try {
+      const { assignmentId } = req.query;
+      const submissions = await ExamService.getMySubmissions(
+        req.params.examId,
+        req.user.userId,
+        assignmentId
+      );
+      res.status(200).json({ success: true, data: submissions });
+    } catch (error) {
+      res.status(400).json({ success: false, message: error.message });
+    }
+  }
 }
 
 module.exports = new ExamController();

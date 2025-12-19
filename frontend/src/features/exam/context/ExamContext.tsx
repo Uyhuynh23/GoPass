@@ -60,7 +60,9 @@ export const ExamProvider: React.FC<ExamProviderProps> = ({
 }) => {
   // --- 1. CORE STATE ---
   const [exam] = useState<ExamWithDetails>(initialExam);
-  const [submission, setSubmission] = useState<ExamSubmission | null>(null);
+  const [submission, setSubmission] = useState<ExamSubmission | null>(
+    initialExam.userSubmission || null
+  );
   const [isTimeUp, setIsTimeUp] = useState(false);
 
   // State mặc định
@@ -222,11 +224,11 @@ export const ExamProvider: React.FC<ExamProviderProps> = ({
   };
 
   const autoSaveToApi = async () => {
-    if (examState.answers.size === 0 || isReviewMode) return;
+    if (examState.answers.size === 0 || isReviewMode || !submission) return;
     setExamState({ autoSaveStatus: "saving" });
     try {
-      await submissionService.saveAnswers(
-        exam._id,
+      await submissionService.autoSaveAnswers(
+        submission._id,
         Array.from(examState.answers.values())
       );
       setExamState({ autoSaveStatus: "saved" });
@@ -237,14 +239,21 @@ export const ExamProvider: React.FC<ExamProviderProps> = ({
   };
 
   const submitExam = async () => {
-    if (examState.isSubmitting || isReviewMode) return;
+    if (examState.isSubmitting || isReviewMode || !submission) return;
 
     // 1. Đánh dấu đang nộp để CHẶN mọi hành động save khác
     setExamState({ isSubmitting: true });
 
     try {
       const answersArray = Array.from(examState.answers.values());
-      await submissionService.submitExam(exam._id, answersArray);
+      const timeSpent =
+        initialExam.durationMinutes * 60 - examState.timeRemaining;
+
+      await submissionService.submitExam(
+        submission._id,
+        answersArray,
+        timeSpent
+      );
 
       // 2. Xóa sạch LocalStorage NGAY LẬP TỨC sau khi nộp thành công
       examStorage.clear(initialExam._id);
