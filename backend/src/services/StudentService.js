@@ -268,10 +268,15 @@ class StudentService {
      * Get student activity for last 7 days
      */
   async getStudentActivity(studentId) {
-    const submissions = await ExamSubmissionRepository.find(
-      { studentUserId: studentId },
-      { populate: 'examId' }
-    );
+
+    const sevenDaysAgo = new Date();
+    sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 30);
+
+    const submissions = await ExamSubmissionRepository.find({ 
+    studentUserId: studentId,
+    submittedAt: { $gte: sevenDaysAgo } // Chỉ lấy bài nộp trong 7 ngày qua
+    });
+    console.log('Submissions for activity:', submissions.length);
 
 
     const activity = [];
@@ -289,15 +294,17 @@ class StudentService {
 
     // Aggregate submissions by date
     submissions.forEach(sub => {
+        
       if (!sub.submittedAt && !sub.startedAt) return;
       
       const subDate = new Date(sub.submittedAt || sub.startedAt).toDateString();
       const dayStat = activity.find(d => d._compareDate === subDate);
-      
+
       if (dayStat) {
         dayStat.exams += 1;
-        const duration = sub.examId?.durationMinutes || 0;
-        dayStat.hours += duration / 60;
+        // Calculate hours from durationSeconds
+        const durationHours = (sub.durationSeconds || 0) / 3600;
+        dayStat.hours += durationHours;
         const score = sub.totalScore || sub.finalScore || 0;
         if (score > dayStat.score) dayStat.score = score;
       }

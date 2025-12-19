@@ -17,7 +17,7 @@ const ActivityChartWidget: React.FC = () => {
   useEffect(() => {
     const loadData = async () => {
       setLoading(true);
-      const activityData = await fetchStudentActivity(currentStudentId);
+      const activityData = await fetchStudentActivity();
       setData(activityData);
       setLoading(false);
     };
