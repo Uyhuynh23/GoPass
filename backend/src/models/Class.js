@@ -42,7 +42,7 @@ const classSchema = new mongoose.Schema({
 });
 
 // Index for faster queries
-classSchema.index({ code: 1 });
-classSchema.index({ teacherId: 1 });
+classSchema.index({ classCode: 1 });
+classSchema.index({ teacherUserId: 1 });
 
 module.exports = mongoose.model('Class', classSchema);

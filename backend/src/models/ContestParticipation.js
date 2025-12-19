@@ -11,4 +11,6 @@ const contestParticipationSchema = new mongoose.Schema({
   completedExams: [{ type: String }] // JSON của bạn để mảng các ID Exam
 });
 
+contestParticipationSchema.index({ contestId: 1, userId: 1 }, { unique: true });
+
 module.exports = mongoose.model('ContestParticipation', contestParticipationSchema);

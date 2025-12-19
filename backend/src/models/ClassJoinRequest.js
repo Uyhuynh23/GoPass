@@ -33,6 +33,6 @@ const classJoinRequestSchema = new mongoose.Schema({
 
 // Index for faster queries
 classJoinRequestSchema.index({ classId: 1, status: 1 });
-classJoinRequestSchema.index({ studentId: 1 });
+classJoinRequestSchema.index({ studentUserId: 1 });
 
 module.exports = mongoose.model('ClassJoinRequest', classJoinRequestSchema);
