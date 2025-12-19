@@ -82,14 +82,29 @@ class ExamController {
   async createSubmission(req, res) {
     try {
       const { assignmentId, contestId } = req.body;
+      
+      console.log('🆕 Create Submission Request:', {
+        examId: req.params.examId,
+        userId: req.user.userId,
+        assignmentId,
+        contestId
+      });
+      
       const submission = await ExamService.createSubmission(
         req.params.examId,
         req.user.userId,
         assignmentId,
         contestId
       );
+      
+      console.log('✅ Submission created:', { 
+        id: submission._id, 
+        status: submission.status 
+      });
+      
       res.status(201).json({ success: true, data: submission });
     } catch (error) {
+      console.error('❌ Create submission error:', error.message);
       const statusCode = error.message.includes('not found') ? 404 : 
                         error.message.includes('permission') || error.message.includes('ended') || error.message.includes('exceeded') ? 403 : 400;
       res.status(statusCode).json({ success: false, message: error.message });

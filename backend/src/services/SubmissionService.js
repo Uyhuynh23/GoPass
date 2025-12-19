@@ -64,8 +64,6 @@ class SubmissionService {
 
   // Save answer
   async saveAnswer(submissionId, dto) {
-    const { questionId, answerText, selectedOptions } = dto;
-
     const submission = await ExamSubmissionRepository.findById(submissionId);
     if (!submission) {
       throw new Error('Submission not found');
@@ -74,6 +72,22 @@ class SubmissionService {
     if (submission.status !== 'in_progress') {
       throw new Error('Cannot save answer for submitted exam');
     }
+
+    // Extract answer data - support both old and new formats
+    let { questionId, answerText, selectedOptions } = dto;
+    
+    // NEW FORMAT: If 'answer' field exists, convert it
+    if (dto.answer !== undefined && dto.answer !== null) {
+      if (Array.isArray(dto.answer)) {
+        selectedOptions = dto.answer; // Multiple choice array
+      } else if (typeof dto.answer === 'object') {
+        selectedOptions = dto.answer; // True/False object
+      } else {
+        answerText = String(dto.answer); // Short answer or essay
+      }
+    }
+
+    console.log('💾 Saving answer:', { questionId, answerText, selectedOptions });
 
     // Get question max score
     const examQuestion = await ExamQuestionRepository.findOne({
@@ -104,10 +118,19 @@ class SubmissionService {
 
   // Submit exam
   async submitExam(submissionId, studentId, answers = [], timeSpentSeconds = 0) {
+    console.log('🔍 SubmissionService.submitExam called:', { submissionId, studentId, answersCount: answers.length });
+
     const submission = await ExamSubmissionRepository.findById(submissionId);
     if (!submission) {
       throw new Error('Submission not found');
     }
+
+    console.log('📋 Submission found:', { 
+      id: submission._id, 
+      examId: submission.examId,
+      status: submission.status,
+      studentId: submission.studentId
+    });
 
     if (submission.studentId.toString() !== studentId.toString()) {
       throw new Error('Unauthorized');
@@ -119,6 +142,7 @@ class SubmissionService {
 
     // Save final answers if provided
     if (answers && answers.length > 0) {
+      console.log('💾 Saving final answers:', answers.length);
       for (const answerDto of answers) {
         await this.saveAnswer(submissionId, answerDto);
       }
@@ -142,7 +166,10 @@ class SubmissionService {
         eq => eq.questionId._id.toString() === answer.questionId.toString()
       );
 
-      if (!examQuestion) continue;
+      if (!examQuestion) {
+        console.warn('⚠️ Question not found for answer:', answer.questionId);
+        continue;
+      }
 
       const question = examQuestion.questionId;
       const maxScore = answer.maxScore || examQuestion.maxScore || 1;
@@ -151,6 +178,14 @@ class SubmissionService {
       let isAutoGraded = false;
       let feedback = '';
 
+      console.log('🔍 Grading question:', {
+        type: question.type,
+        questionId: question._id,
+        userAnswer: answer.selectedOptions || answer.answerText,
+        correctAnswer: question.correctAnswer,
+        maxScore
+      });
+
       // Auto-grade based on question type
       if (question.type === 'multiple_choice') {
         const userAnswer = Array.isArray(answer.selectedOptions) && answer.selectedOptions.length > 0
@@ -158,7 +193,15 @@ class SubmissionService {
           : '';
         const correctAnswer = question.correctAnswer;
 
-        if (userAnswer.trim().toUpperCase() === String(correctAnswer).trim().toUpperCase()) {
+        console.log('🔍 Multiple choice comparison:', {
+          userAnswer,
+          correctAnswer,
+          userTrimmed: String(userAnswer).trim().toUpperCase(),
+          correctTrimmed: String(correctAnswer).trim().toUpperCase(),
+          match: String(userAnswer).trim().toUpperCase() === String(correctAnswer).trim().toUpperCase()
+        });
+
+        if (String(userAnswer).trim().toUpperCase() === String(correctAnswer).trim().toUpperCase()) {
           score = maxScore;
           feedback = 'Correct!';
         } else {
@@ -241,15 +284,26 @@ class SubmissionService {
 
     // Update submission
     const status = pendingManualGrading > 0 ? 'submitted' : 'graded';
+    
+    console.log('📊 Grading complete:', {
+      totalScore,
+      gradedCount,
+      pendingManualGrading,
+      status
+    });
+
+    console.log('💾 Updating submission in database...');
     await ExamSubmissionRepository.update(submissionId, {
       status,
       totalScore: parseFloat(totalScore.toFixed(2)),
       submittedAt: new Date(),
       durationSeconds: timeSpentSeconds,
     });
+    console.log('✅ Submission updated in database');
 
     // If contest, update participation score
     if (submission.contestId) {
+      console.log('🏆 Updating contest participation...');
       try {
         const participation = await ContestParticipationRepository.findOne({
           contestId: submission.contestId,
@@ -262,17 +316,23 @@ class SubmissionService {
             submission.examId,
             totalScore
           );
+          console.log('✅ Contest participation updated');
         }
       } catch (error) {
-        console.error('Error updating contest participation:', error);
+        console.error('❌ Error updating contest participation:', error);
       }
     }
+
+    console.log('🎉 Submit exam complete');
+
+    // Fetch updated submission to get accurate maxScore
+    const updatedSubmission = await ExamSubmissionRepository.findById(submissionId);
 
     return {
       submissionId,
       status,
       totalScore: parseFloat(totalScore.toFixed(2)),
-      maxScore: submission.maxScore,
+      maxScore: updatedSubmission.maxScore,
       submittedAt: new Date(),
       gradedAnswers: gradedCount,
       pendingManualGrading,

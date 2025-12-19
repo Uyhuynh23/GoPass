@@ -28,6 +28,11 @@ export default function TakeExamPage() {
         const contestId = searchParams?.get("contestId") || undefined;
 
         // Fetch exam data with context
+        console.log("📖 Fetching exam data...", {
+          examId,
+          assignmentId,
+          contestId,
+        });
         const examData = await examService.getExamById(
           examId,
           assignmentId,
@@ -36,11 +41,40 @@ export default function TakeExamPage() {
 
         if (!examData) {
           setError(true);
-        } else {
-          setExam(examData);
+          return;
         }
+
+        // Check if user has an active submission
+        if (!examData.userSubmission) {
+          console.log("⚠️ No submission found, creating one...");
+
+          // Create a new submission
+          const submission = await examService.createSubmission(
+            examId,
+            assignmentId,
+            contestId
+          );
+
+          if (!submission) {
+            console.error("❌ Failed to create submission");
+            setError(true);
+            return;
+          }
+
+          console.log("✅ Submission created:", submission._id);
+
+          // Attach submission to exam data
+          examData.userSubmission = submission;
+        } else {
+          console.log(
+            "✅ Found existing submission:",
+            examData.userSubmission._id
+          );
+        }
+
+        setExam(examData);
       } catch (err) {
-        console.error("Error loading exam:", err);
+        console.error("❌ Error loading exam:", err);
         setError(true);
       } finally {
         setLoading(false);

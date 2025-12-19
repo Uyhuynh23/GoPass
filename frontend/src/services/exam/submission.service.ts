@@ -36,19 +36,29 @@ export const submissionService = {
     timeSpentSeconds: number = 0
   ): Promise<ExamSubmission | null> => {
     try {
+      console.log('🔄 Calling API POST /submissions/:id/submit', {
+        submissionId,
+        answersCount: answers.length,
+        timeSpentSeconds,
+        endpoint: `/submissions/${submissionId}/submit`
+      });
+
       const response = await httpClient.post<{ success: boolean; data: ExamSubmission }>(
         `/submissions/${submissionId}/submit`,
         { answers, timeSpentSeconds },
         { requiresAuth: true }
       );
 
+      console.log('📥 API Response:', response);
+
       if (!response.success || !response.data) {
+        console.warn('⚠️ Submit response invalid:', response);
         return null;
       }
 
       return response.data;
     } catch (error) {
-      console.error('Error submitting exam:', error);
+      console.error('❌ Error submitting exam:', error);
       return null;
     }
   },

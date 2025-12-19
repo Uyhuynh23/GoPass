@@ -65,6 +65,17 @@ export const ExamProvider: React.FC<ExamProviderProps> = ({
   );
   const [isTimeUp, setIsTimeUp] = useState(false);
 
+  // Log submission status on mount
+  useEffect(() => {
+    console.log("📋 ExamProvider initialized:", {
+      examId: initialExam._id,
+      hasUserSubmission: !!initialExam.userSubmission,
+      submissionId: initialExam.userSubmission?._id,
+      submissionStatus: initialExam.userSubmission?.status,
+      isReviewMode,
+    });
+  }, []);
+
   // State mặc định
   const [examState, setExamStateRaw] = useState<ExamState>({
     currentQuestionIndex: 0,
@@ -239,7 +250,14 @@ export const ExamProvider: React.FC<ExamProviderProps> = ({
   };
 
   const submitExam = async () => {
-    if (examState.isSubmitting || isReviewMode || !submission) return;
+    if (examState.isSubmitting || isReviewMode || !submission) {
+      console.log("⚠️ Submit blocked:", {
+        isSubmitting: examState.isSubmitting,
+        isReviewMode,
+        hasSubmission: !!submission,
+      });
+      return;
+    }
 
     // 1. Đánh dấu đang nộp để CHẶN mọi hành động save khác
     setExamState({ isSubmitting: true });
@@ -249,17 +267,25 @@ export const ExamProvider: React.FC<ExamProviderProps> = ({
       const timeSpent =
         initialExam.durationMinutes * 60 - examState.timeRemaining;
 
-      await submissionService.submitExam(
+      console.log("📤 Submitting exam:", {
+        submissionId: submission._id,
+        answersCount: answersArray.length,
+        timeSpent,
+      });
+
+      const result = await submissionService.submitExam(
         submission._id,
         answersArray,
         timeSpent
       );
 
+      console.log("✅ Exam submitted successfully:", result);
+
       // 2. Xóa sạch LocalStorage NGAY LẬP TỨC sau khi nộp thành công
       examStorage.clear(initialExam._id);
       console.log("✅ Cleared storage for", initialExam._id);
     } catch (error) {
-      console.error("Submit failed:", error);
+      console.error("❌ Submit failed:", error);
       alert("Nộp bài thất bại. Vui lòng thử lại.");
       setExamState({ isSubmitting: false }); // Mở khóa nếu lỗi để user nộp lại
     }

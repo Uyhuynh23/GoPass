@@ -91,18 +91,20 @@ class ExamService {
       assignment = await ExamAssignmentRepository.findById(assignmentId);
     }
 
-    // Get user's latest submission for this exam
+    // Get user's latest in-progress submission for this exam
     let userSubmission = null;
     if (assignmentId) {
       userSubmission = await ExamSubmissionRepository.findOne({
         assignmentId,
         studentId: userId,
+        status: 'in_progress', // Only get in-progress submissions
       }, { sort: { createdAt: -1 } });
     } else if (contestId) {
       userSubmission = await ExamSubmissionRepository.findOne({
         examId,
         studentId: userId,
         contestId,
+        status: 'in_progress', // Only get in-progress submissions
       }, { sort: { createdAt: -1 } });
     } else {
       userSubmission = await ExamSubmissionRepository.findOne({
@@ -110,8 +112,11 @@ class ExamService {
         studentId: userId,
         assignmentId: null,
         contestId: null,
+        status: 'in_progress', // Only get in-progress submissions
       }, { sort: { createdAt: -1 } });
     }
+
+    console.log('📋 User submission found:', userSubmission ? { id: userSubmission._id, status: userSubmission.status } : 'None');
 
     return {
       ...exam.toObject(),
