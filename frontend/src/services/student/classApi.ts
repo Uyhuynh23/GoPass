@@ -1,5 +1,9 @@
 // src/services/student/classApi.ts
-import { ClassDetail, ClassAssignment, AssignmentStatus } from "@/features/dashboard/types/student/";
+import {
+  ClassDetail,
+  ClassAssignment,
+  AssignmentStatus,
+} from "@/features/dashboard/types/student/";
 import { httpClient } from "@/lib/http";
 
 const formatDate = (isoString: string) => {
@@ -32,27 +36,72 @@ export const getClassDetailById = async (
     const teacherName = classData.teacher?.name || "Giáo viên";
     const studentCount = classData.studentCount || 0;
     
-    // For now, return a simplified version
-    // TODO: Fetch assignments and submissions separately if needed
+    // Fetch class assignments (student-facing)
+    const assignmentsRes = await httpClient.get<{
+      success: boolean;
+      data: { assignments: any[] };
+    }>(`/classes/${classId}/assignments`, { requiresAuth: true });
+
+    const rawAssignments =
+      assignmentsRes?.success && assignmentsRes.data?.assignments
+        ? assignmentsRes.data.assignments
+        : [];
+
+    // Submission completion status only; availability is handled in the component
+    const mapStatus = (myAttemptCount?: number): AssignmentStatus => {
+      return myAttemptCount && myAttemptCount > 0 ? "completed" : "incomplete";
+    };
+
+    const assignments: ClassAssignment[] = rawAssignments.map((a) => {
+      const status: AssignmentStatus = mapStatus(a.myAttemptCount);
+
+      return {
+        id: a._id || a.assignmentId || a.id || "",
+        examId: a.examId || "",
+        title: a.title || "Bài kiểm tra",
+        startTime: a.startTime ? new Date(a.startTime).toISOString() : "",
+        endTime: a.endTime ? new Date(a.endTime).toISOString() : "",
+        deadlineDisplay: a.endTime ? formatDate(a.endTime) : "",
+        duration: a.duration || 0,
+        questionCount: a.questionCount || 0,
+        status,
+        score: typeof a.myScore === "number" ? a.myScore : null,
+        maxScore: typeof a.maxScore === "number" ? a.maxScore : 0,
+        attemptLimit: typeof a.attemptLimit === "number" ? a.attemptLimit : 1,
+        myAttemptCount: typeof a.myAttemptCount === "number" ? a.myAttemptCount : 0,
+        submittedCount: typeof a.submittedCount === "number" ? a.submittedCount : 0,
+        totalStudents: studentCount,
+      };
+    });
+
+    const totalAssignments = assignments.length;
+    const assignmentsDone = assignments.filter(
+      (a) => a.status === "completed"
+    ).length;
+    const scored = assignments.filter((a) => a.score !== null && a.maxScore);
+    const avgScore =
+      scored.length > 0
+        ? scored.reduce((sum, a) => sum + (a.score || 0), 0) / scored.length
+        : 0;
 
     return {
       id: classData._id,
       code: classData.classCode,
       name: classData.className,
-      subject: "Tổng hợp", // TODO: Derive from assignments
+      subject: classData.subject || "Tổng hợp",
       teacher: teacherName,
       studentsCount: studentCount,
       description: classData.description || "",
-      
+
       stats: {
         rank: 0,
         totalStudents: studentCount,
-        assignmentsDone: 0, // TODO: Fetch from assignments
-        totalAssignments: 0, // TODO: Fetch from assignments
-        avgScore: 0 // TODO: Calculate from submissions
+        assignmentsDone,
+        totalAssignments,
+        avgScore,
       },
-      
-      assignments: [] // TODO: Fetch assignments separately
+
+      assignments,
     };
 
   } catch (error) {

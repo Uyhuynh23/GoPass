@@ -162,6 +162,74 @@ class ClassService {
     };
   }
 
+  // Get class assignments (student/teacher)
+  async getClassAssignments(classId, currentUserId, query = {}) {
+    const classData = await ClassRepository.findById(classId);
+    if (!classData) {
+      throw new Error('Class not found');
+    }
+
+    const assignments = await ExamAssignmentRepository.findByClass(classId, {
+      populate: 'examId',
+      sort: { startTime: 1 },
+    });
+
+    const examIds = assignments
+      .map((a) => (a.examId?._id ? a.examId._id.toString() : a.examId?.toString()))
+      .filter(Boolean);
+
+    const userSubmissions = await ExamSubmissionRepository.find(
+      { examId: { $in: examIds }, studentUserId: currentUserId },
+      { sort: { submittedAt: 1 } }
+    );
+
+    const now = Date.now();
+    const mapped = await Promise.all(
+      assignments.map(async (a) => {
+        const exam = a.examId;
+        const examId = exam?._id?.toString() || exam?.toString() || '';
+
+        const startMs = a.startTime ? new Date(a.startTime).getTime() : 0;
+        const endMs = a.endTime ? new Date(a.endTime).getTime() : 0;
+        let status = 'upcoming';
+        if (now >= startMs && now <= endMs) status = 'ongoing';
+        else if (now > endMs) status = 'completed';
+
+        const mySubs = userSubmissions.filter(
+          (s) => s.examId?.toString() === examId
+        );
+        const myLatest = mySubs[mySubs.length - 1];
+
+        const submittedCount = await ExamSubmissionRepository.count({ examId });
+
+        return {
+          _id: a._id,
+          assignmentId: a._id,
+          examId,
+          title: exam?.title || 'Exam',
+          startTime: a.startTime,
+          endTime: a.endTime,
+          allowLateSubmission: a.allowLateSubmission,
+          shuffleQuestions: a.shuffleQuestions,
+          attemptLimit: a.attemptLimit,
+          duration: exam?.durationMinutes || 0,
+          questionCount: exam?.totalQuestions || 0,
+          status,
+          myScore: myLatest?.totalScore ?? null,
+          maxScore: myLatest?.maxScore ?? exam?.totalPoints ?? 0,
+          myAttemptCount: mySubs.length,
+          submittedCount,
+        };
+      })
+    );
+
+    if (query.status) {
+      return { assignments: mapped.filter((a) => a.status === query.status) };
+    }
+
+    return { assignments: mapped };
+  }
+
   // Get class members
   async getClassMembers(classId, currentUserId, query = {}) {
     const classData = await ClassRepository.findById(classId);
@@ -471,15 +539,17 @@ class ClassService {
     };
   }
 
+
   // Get student's enrolled classes
   async getStudentEnrolledClasses(studentUserId) {
-    const filter = { status: 'active' }; 
+    // 1. Define filter to find only active memberships for this specific student
+    const filter = { studentUserId, status: 'active' }; 
     
     const options = {
       populate: { 
         path: 'classId', 
-        select: 'className classCode teacherUserId studentCount',
-       populate: {
+        select: 'className classCode teacherUserId', 
+        populate: {
           path: 'teacherUserId',
           select: 'name avatar'
         }
@@ -488,12 +558,44 @@ class ClassService {
       lean: true
     };
 
-    const memberships = await ClassMemberRepository.findByStudent(studentUserId, filter, options);
+    // 2. Fetch all raw membership records
+    const memberships = await ClassMemberRepository.find(filter, options);
+    
+    // Safety filter: ensure the associated class object exists (in case of hard deletes)
+    const activeMemberships = memberships.filter(m => m.classId);
 
-    // Map to standardized format to match Frontend ClassSummary
-    return memberships
-      .filter(m => m.classId) // Safety check for deleted classes
-      .map(m => ({
+    // 3. Extract unique Class IDs to perform a bulk count operation
+    const classIds = activeMemberships.map(m => m.classId._id);
+
+    // 4. Perform Aggregation to calculate the real-time student count for each class
+    // This is highly efficient as it executes a single query for the entire list
+    const counts = await ClassMemberRepository.model.aggregate([
+      { 
+        $match: { 
+          classId: { $in: classIds }, 
+          status: 'active' 
+        } 
+      },
+      { 
+        $group: { 
+          _id: "$classId", 
+          count: { $sum: 1 } // Increment count for every active member found
+        } 
+      }
+    ]);
+
+    // 5. Convert aggregation result array into a Lookup Map { "classId": count }
+    // This allows O(1) complexity when mapping the final data
+    const countMap = counts.reduce((acc, curr) => {
+      acc[curr._id.toString()] = curr.count;
+      return acc;
+    }, {});
+
+    // 6. Map the internal database results to the standardized Frontend Interface
+    return activeMemberships.map(m => {
+      const classIdStr = m.classId._id.toString();
+      
+      return {
         _id: m.classId._id,
         className: m.classId.className,
         classCode: m.classId.classCode,
@@ -501,11 +603,12 @@ class ClassService {
           name: m.classId.teacherUserId?.name || "Instructor",
           avatar: m.classId.teacherUserId?.avatar || ""
         },
-        studentCount: m.classId.studentCount || 0,
+        // Assign the live count from the map, defaulting to 0 if no members are found
+        studentCount: countMap[classIdStr] || 0, 
         status: 'active',
         joinedDate: m.createdAt,
-        // Optional: you can add stats here later as per Spec 2.11
-      }));
+      };
+    });
   }
 
 // Get student's pending join requests
@@ -551,7 +654,7 @@ class ClassService {
 
     console.log("DEBUG: RequestID from Frontend:", requestId);
     console.log("DEBUG: UserID from Middleware:", studentUserId);
-    
+
     const deletedRequest = await ClassJoinRequestRepository.deleteRequest(requestId, studentUserId);
     
     if (!deletedRequest) {
