@@ -79,6 +79,12 @@ const forumTopicSchema = new mongoose.Schema(
     // Tags để categorize
     tags: [String],
 
+    // Exam ID - Đề thi Ngữ Văn tương ứng với topic này
+    examId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Exam",
+    },
+
     // Raw payload từ SmartBot (để debug) - không cần nữa vì đã lưu ở ForumPackage
     // rawSmartbotPayload: mongoose.Schema.Types.Mixed,
   },

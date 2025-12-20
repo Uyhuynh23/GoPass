@@ -7,6 +7,9 @@ const VnsocialTopicRepository = require("../repositories/VnsocialTopicRepository
 const VnsocialArticleRepository = require("../repositories/VnsocialArticleRepository");
 const UsedArticleRepository = require("../repositories/UsedArticleRepository");
 const { FORUM_CONTENT_GENERATION_PROMPT } = require("../config/prompts");
+const Exam = require("../models/Exam");
+const Question = require("../models/Question");
+const ExamQuestion = require("../models/ExamQuestion");
 
 /**
  * Service quản lý Forum system
@@ -224,6 +227,24 @@ class ForumService {
               status: "active",
             });
 
+            // Create corresponding exam for this forum topic
+            try {
+              console.log("📝 Creating exam for forum topic...");
+              const exam = await this._createExamForForumTopic(
+                forumTopic,
+                article,
+                topicData,
+                adminUserId
+              );
+              console.log(`✅ Exam created: ${exam._id}`);
+            } catch (examError) {
+              console.error(
+                `⚠️ Failed to create exam for topic ${forumTopic._id}:`,
+                examError.message
+              );
+              // Continue even if exam creation fails
+            }
+
             forumTopics.push(forumTopic);
           }
 
@@ -431,6 +452,87 @@ class ForumService {
       tags: generatedContent.tags || [],
       rawResponse: parsedResponse,
     };
+  }
+
+  /**
+   * Tạo đề thi Ngữ Văn từ forum topic
+   * @private
+   * @param {Object} forumTopic - Forum topic đã tạo
+   * @param {Object} article - Article gốc
+   * @param {Object} topicData - Data từ AI (chứa essayPrompt)
+   * @param {string} adminUserId - ID của admin
+   * @returns {Promise<Object>} Created exam
+   */
+  async _createExamForForumTopic(forumTopic, article, topicData, adminUserId) {
+    try {
+      // 1. Tạo Exam
+      const exam = await Exam.create({
+        title: `Nghị luận xã hội - ${topicData.topicTitle}`,
+        description: "Đề thi ngữ văn nghị luận xã hội",
+        subject: "Ngữ Văn",
+        durationMinutes: 30,
+        mode: "practice_global",
+        shuffleQuestions: false,
+        showResultsImmediately: false,
+        createdBy: adminUserId,
+        isPublished: true,
+        readingPassages: [],
+        totalQuestions: 1,
+        totalPoints: 10,
+      });
+
+      console.log(`✅ Exam created: ${exam._id}`);
+
+      // 2. Tạo Question (Essay)
+      const question = await Question.create({
+        type: "essay",
+        content: `Câu 1 (VDC). ${topicData.essayPrompt}`,
+        options: [],
+        correctAnswer: null,
+        explanation:
+          "<p><b>Phương pháp:</b></p><p>Vận dụng kiến thức về cách viết đoạn văn nghị luận xã hội, phân tích vấn đề, đưa ra luận điểm và luận cứ chặt chẽ.</p>",
+        linkedPassageId: null, // Có thể link đến article URL nếu cần
+        image: {
+          url: "",
+          caption: "",
+          position: "top",
+        },
+        tableData: {
+          headers: [],
+          rows: [],
+        },
+        difficulty: "hard",
+        subject: "Ngữ Văn",
+        tags: ["viết"],
+        points: 2,
+        createdBy: adminUserId,
+        isPublic: true,
+      });
+
+      console.log(`✅ Question created: ${question._id}`);
+
+      // 3. Tạo ExamQuestion (liên kết Exam và Question)
+      const examQuestion = await ExamQuestion.create({
+        examId: exam._id,
+        questionId: question._id,
+        order: 1,
+        maxScore: 10,
+        section: "Viết",
+        points: 10,
+      });
+
+      console.log(`✅ ExamQuestion created: ${examQuestion._id}`);
+
+      // 4. Cập nhật forumTopic với examId (optional - để link ngược)
+      await ForumTopicRepository.update(forumTopic._id, {
+        examId: exam._id, // Lưu examId vào forum topic
+      });
+
+      return exam;
+    } catch (error) {
+      console.error("❌ Error creating exam for forum topic:", error);
+      throw error;
+    }
   }
 
   /**
