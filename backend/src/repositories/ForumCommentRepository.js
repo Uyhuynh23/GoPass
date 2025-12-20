@@ -8,6 +8,7 @@ class ForumCommentRepository extends BaseRepository {
 
   /**
    * Lấy comments của một topic (chỉ top-level, không có parentCommentId)
+   * Recursively populates replies
    */
   async getTopicComments(topicId, { page = 1, limit = 20 } = {}) {
     const skip = (page - 1) * limit;
@@ -28,12 +29,52 @@ class ForumCommentRepository extends BaseRepository {
       this.count(filter),
     ]);
 
+    // Recursively populate replies for each comment
+    const commentsWithReplies = await Promise.all(
+      comments.map(async (comment) => {
+        const replies = await this.getRepliesRecursive(comment._id);
+        return {
+          ...comment.toObject(),
+          replies,
+        };
+      })
+    );
+
     return {
-      comments,
+      comments: commentsWithReplies,
       total,
       page,
       totalPages: Math.ceil(total / limit),
     };
+  }
+
+  /**
+   * Recursively fetch all replies for a comment
+   */
+  async getRepliesRecursive(parentCommentId) {
+    const replies = await this.find(
+      {
+        parentCommentId,
+        status: "active",
+      },
+      {
+        sort: { createdAt: 1 },
+        populate: "userId",
+      }
+    );
+
+    // Recursively fetch replies for each reply
+    const repliesWithNested = await Promise.all(
+      replies.map(async (reply) => {
+        const nestedReplies = await this.getRepliesRecursive(reply._id);
+        return {
+          ...reply.toObject(),
+          replies: nestedReplies,
+        };
+      })
+    );
+
+    return repliesWithNested;
   }
 
   /**

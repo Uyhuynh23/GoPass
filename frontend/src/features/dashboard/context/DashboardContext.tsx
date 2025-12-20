@@ -31,7 +31,7 @@ export const DashboardProvider: React.FC<DashboardProviderProps> = ({
   children,
 }) => {
   const { user } = useAuth(); // Get user from auth context
-  const [activeTab, setActiveTab] = useState("exams");
+  const [activeTab, setActiveTab] = useState("overview");
 
   // Use actual user data from auth context, with fallback defaults
   const userRole = (user?.role as UserRole) || "student";

@@ -47,6 +47,9 @@ export default function ArticleDetailPage({ params }: PageProps) {
   const [replyingTo, setReplyingTo] = useState<{
     [key: string]: string | null;
   }>({});
+  const [expandedReplies, setExpandedReplies] = useState<{
+    [key: string]: boolean;
+  }>({});
   const topicRefs = useRef<Record<string, HTMLDivElement | null>>({});
   const [targetTopicId, setTargetTopicId] = useState<string | null>(null);
 
@@ -191,11 +194,17 @@ export default function ArticleDetailPage({ params }: PageProps) {
       ...prev,
       [topicId]: `@${authorName} `,
     }));
+    // Expand replies for this comment
+    setExpandedReplies((prev) => ({ ...prev, [commentId]: true }));
   };
 
-  const handleCancelReply = (topicId: string) => {
+  const handleCancelReply = (topicId: string, commentId?: string) => {
     setReplyingTo((prev) => ({ ...prev, [topicId]: null }));
     setNewComments((prev) => ({ ...prev, [topicId]: "" }));
+    // Collapse replies when canceling
+    if (commentId) {
+      setExpandedReplies((prev) => ({ ...prev, [commentId]: false }));
+    }
   };
 
   const renderComment = (
@@ -204,15 +213,23 @@ export default function ArticleDetailPage({ params }: PageProps) {
     depth: number = 0
   ) => {
     const isAISeed = comment.isAISeed;
-    const paddingLeft = depth * 40;
+    const paddingLeft = depth * 32;
+    const isReplyingToThis = replyingTo[topicId] === comment._id;
 
     return (
-      <div key={comment._id} className="space-y-3">
+      <div key={comment._id} className="space-y-2">
         <div
-          className={`p-4 rounded-lg ${
+          onClick={() => {
+            handleReplyClick(
+              topicId,
+              comment._id,
+              comment.author?.fullName || (isAISeed ? "AI Assistant" : "user")
+            );
+          }}
+          className={`p-4 rounded-lg transition-all cursor-pointer ${
             isAISeed
-              ? "bg-amber-50 border-l-4 border-amber-400"
-              : "bg-white border border-gray-200"
+              ? "bg-amber-50 border-l-4 border-amber-400 hover:bg-amber-100"
+              : "bg-white border border-gray-200 hover:border-teal-300 hover:shadow-sm"
           }`}
           style={{ marginLeft: `${paddingLeft}px` }}
         >
@@ -256,37 +273,90 @@ export default function ArticleDetailPage({ params }: PageProps) {
                 {comment.content}
               </p>
 
-              <div className="flex items-center gap-4">
-                <button
-                  onClick={() =>
-                    handleReplyClick(
-                      topicId,
-                      comment._id,
-                      comment.author?.fullName || "user"
-                    )
-                  }
-                  className="text-sm text-teal-600 hover:text-teal-700 font-medium"
-                >
-                  Trả lời
-                </button>
+              <div className="flex items-center gap-4 text-xs text-gray-500">
+                <span className="text-teal-600 font-medium">
+                  Nhấp để trả lời
+                </span>
                 {comment.likes && comment.likes.length > 0 && (
-                  <span className="text-sm text-gray-500">
-                    {comment.likes.length} thích
-                  </span>
+                  <span>{comment.likes.length} thích</span>
+                )}
+                {comment.replies && comment.replies.length > 0 && (
+                  <span>{comment.replies.length} phản hồi</span>
                 )}
               </div>
             </div>
           </div>
         </div>
 
-        {/* Render replies recursively */}
-        {comment.replies && comment.replies.length > 0 && (
-          <div className="space-y-3">
-            {comment.replies.map((reply) =>
-              renderComment(reply, topicId, depth + 1)
-            )}
+        {/* Reply Input - Show below this comment if replying to it */}
+        {isReplyingToThis && (
+          <div
+            className="bg-white p-4 rounded-lg border-2 border-teal-200 shadow-sm"
+            style={{ marginLeft: `${paddingLeft}px` }}
+          >
+            <div className="mb-2 flex items-center justify-between bg-blue-50 px-3 py-2 rounded">
+              <span className="text-sm text-blue-700">
+                Đang trả lời{" "}
+                {isAISeed
+                  ? "AI Assistant"
+                  : comment.author?.fullName || "người dùng"}
+                ...
+              </span>
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleCancelReply(topicId, comment._id);
+                }}
+                className="text-sm text-blue-600 hover:text-blue-800 font-medium"
+              >
+                Hủy
+              </button>
+            </div>
+            <div className="flex gap-3">
+              <input
+                type="text"
+                placeholder="Nhập câu trả lời..."
+                value={newComments[topicId] || ""}
+                onChange={(e) =>
+                  setNewComments((prev) => ({
+                    ...prev,
+                    [topicId]: e.target.value,
+                  }))
+                }
+                onKeyPress={(e) => {
+                  if (e.key === "Enter" && !e.shiftKey) {
+                    e.preventDefault();
+                    handleSubmitComment(topicId);
+                  }
+                }}
+                className="flex-1 px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500"
+                autoFocus
+              />
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleSubmitComment(topicId);
+                }}
+                disabled={!newComments[topicId]?.trim()}
+                className="px-5 py-2.5 bg-teal-600 text-white rounded-lg hover:bg-teal-700 transition-colors flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed font-medium"
+              >
+                <Send className="w-4 h-4" />
+                Trả lời
+              </button>
+            </div>
           </div>
         )}
+
+        {/* Render replies recursively - only when expanded */}
+        {comment.replies &&
+          comment.replies.length > 0 &&
+          expandedReplies[comment._id] && (
+            <div className="space-y-2">
+              {comment.replies.map((reply) =>
+                renderComment(reply, topicId, depth + 1)
+              )}
+            </div>
+          )}
       </div>
     );
   };
@@ -363,10 +433,6 @@ export default function ArticleDetailPage({ params }: PageProps) {
             <div className="mt-6 pt-6 border-t border-gray-200">
               <div className="flex items-center gap-6 text-sm text-gray-600">
                 <div className="flex items-center gap-1.5">
-                  <Eye className="w-4 h-4" />
-                  <span>{article.views?.toLocaleString() || 0} lượt xem</span>
-                </div>
-                <div className="flex items-center gap-1.5">
                   <MessageCircle className="w-4 h-4" />
                   <span>{forumTopics.length} chủ đề thảo luận</span>
                 </div>
@@ -398,7 +464,7 @@ export default function ArticleDetailPage({ params }: PageProps) {
           </div>
 
           {/* Topics List */}
-          <div className="divide-y divide-gray-200">
+          <div className="space-y-4 p-4">
             {forumTopics.length === 0 ? (
               <div className="p-12 text-center text-gray-500">
                 <Sparkles className="w-12 h-12 mx-auto mb-3 text-gray-300" />
@@ -413,73 +479,56 @@ export default function ArticleDetailPage({ params }: PageProps) {
               forumTopics.map((topic) => (
                 <div
                   key={topic._id}
-                  ref={(el) => {
-                    if (el) topicRefs.current[topic._id] = el;
-                  }}
                   className="p-6 hover:bg-gray-50 transition-colors"
                 >
-                  {/* Topic Header */}
-                  <div className="mb-4">
-                    <div className="flex items-start justify-between gap-4 mb-3">
-                      <div className="flex-1">
-                        <div className="flex items-center gap-2 mb-2">
-                          {topic.seedComment && (
-                            <span className="px-2 py-0.5 bg-amber-100 text-amber-700 rounded text-xs font-medium">
-                              🤖 AI Seed
-                            </span>
-                          )}
-                          {topic.essayPrompt && (
-                            <span className="px-2 py-0.5 bg-blue-100 text-blue-700 rounded text-xs font-medium">
-                              ✍️ Gợi ý viết
-                            </span>
-                          )}
-                          <span className="text-xs text-gray-500">
-                            {new Date(topic.createdAt).toLocaleDateString(
-                              "vi-VN"
+                  {/* Topic Header - Clickable to expand/collapse */}
+                  <div
+                    onClick={() => toggleTopic(topic._id)}
+                    className="p-6 hover:bg-gray-50 transition-colors cursor-pointer"
+                  >
+                    <div className="mb-3">
+                      <div className="flex items-start justify-between gap-4">
+                        <div className="flex-1">
+                          <div className="flex items-center gap-2 mb-2">
+                            {topic.seedComment && (
+                              <span className="px-2 py-0.5 bg-amber-100 text-amber-700 rounded text-xs font-medium">
+                                🤖 AI Seed
+                              </span>
                             )}
-                          </span>
-                        </div>
+                            {topic.essayPrompt && (
+                              <span className="px-2 py-0.5 bg-blue-100 text-blue-700 rounded text-xs font-medium">
+                                ✍️ Gợi ý viết
+                              </span>
+                            )}
+                            <span className="text-xs text-gray-500">
+                              {new Date(topic.createdAt).toLocaleDateString(
+                                "vi-VN"
+                              )}
+                            </span>
+                          </div>
 
                         {/* Topic Title */}
-                        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3">
-                          <h3 className="text-lg font-semibold text-gray-900 mb-2">
-                            {topic.title}
-                          </h3>
-
-                          <div className="flex flex-col items-start md:items-end gap-2 self-start md:self-auto">
-                            {topic.examId && (
-                              <button
-                                onClick={() =>
-                                  router.push(
-                                    `/dashboard?tab=practice&focusExamId=${topic.examId}`
-                                  )
-                                }
-                                className="inline-flex items-center gap-2 px-3 py-2 text-sm font-semibold text-teal-700 bg-teal-50 border border-teal-200 rounded-lg hover:bg-teal-100 transition-colors"
-                              >
-                                <Sparkles className="w-4 h-4" />
-                                Luyện đề liên quan
-                              </button>
-                            )}
-
-                            <button
-                              onClick={() => toggleTopic(topic._id)}
-                              className="flex items-center gap-1 text-sm text-teal-600 hover:text-teal-700 font-medium transition-colors"
-                            >
-                              {expandedTopics[topic._id] ? (
-                                <>
-                                  <ChevronUp className="w-4 h-4" />
-                                  Thu gọn
-                                </>
-                              ) : (
-                                <>
-                                  <ChevronDown className="w-4 h-4" />
-                                  Xem thảo luận
-                                </>
-                              )}
-                            </button>
-                          </div>
-                        </div>
+                        <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                          {topic.title}
+                        </h3>
                       </div>
+
+                      <button
+                        onClick={() => toggleTopic(topic._id)}
+                        className="flex items-center gap-1 text-sm text-teal-600 hover:text-teal-700 font-medium transition-colors"
+                      >
+                        {expandedTopics[topic._id] ? (
+                          <>
+                            <ChevronUp className="w-4 h-4" />
+                            Thu gọn
+                          </>
+                        ) : (
+                          <>
+                            <ChevronDown className="w-4 h-4" />
+                            Xem thảo luận
+                          </>
+                        )}
+                      </button>
                     </div>
 
                     {/* Essay Prompt (if exists) - shown as a hint, not part of comment thread */}
@@ -492,41 +541,96 @@ export default function ArticleDetailPage({ params }: PageProps) {
                           {topic.essayPrompt}
                         </p>
                       </div>
-                    )}
-                  </div>
-
-                  {/* Topic Stats & Actions */}
-                  <div className="flex items-center gap-4 mb-4">
-                    <button
-                      onClick={() => toggleTopicLike(topic._id)}
-                      className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${
-                        topicLikes[topic._id]
-                          ? "bg-teal-600 text-white"
-                          : "bg-gray-100 text-gray-700 hover:bg-gray-200"
-                      }`}
-                    >
-                      <ThumbsUp className="w-4 h-4" />
-                      <span>{topic.stats?.totalLikes || 0}</span>
-                    </button>
-                    <div className="flex items-center gap-1.5 text-sm text-gray-600">
-                      <MessageCircle className="w-4 h-4" />
-                      <span>{topic.stats?.totalComments || 0} bình luận</span>
                     </div>
-                    <div className="flex items-center gap-1.5 text-sm text-gray-500">
-                      <Eye className="w-4 h-4" />
-                      <span>{topic.stats?.totalViews || 0} lượt xem</span>
+
+                    {/* Topic Stats & Actions */}
+                    <div className="flex items-center gap-4">
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          toggleTopicLike(topic._id);
+                        }}
+                        className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${
+                          topicLikes[topic._id]
+                            ? "bg-teal-600 text-white"
+                            : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                        }`}
+                      >
+                        <ThumbsUp className="w-4 h-4" />
+                        <span>{topic.stats?.totalLikes || 0}</span>
+                      </button>
+                      <div className="flex items-center gap-1.5 text-sm text-gray-600">
+                        <MessageCircle className="w-4 h-4" />
+                        <span>{topic.stats?.totalComments || 0} bình luận</span>
+                      </div>
                     </div>
                   </div>
 
                   {/* Expanded Content - Comments Thread */}
                   {expandedTopics[topic._id] && (
-                    <div className="mt-6 space-y-4">
+                    <div className="px-6 pb-6 bg-gray-50">
+                      {/* Essay Prompt - Full view when expanded -  */}
+                      {topic.essayPrompt && (
+                        <div className="bg-blue-50 border-l-4 border-blue-400 p-4 rounded-r mb-4">
+                          <p className="text-sm font-medium text-blue-900 mb-1">
+                            💡 Gợi ý viết bài:
+                          </p>
+                          <p className="text-sm text-blue-800 leading-relaxed">
+                            {topic.essayPrompt}
+                          </p>
+                        </div>
+                      )}
+
+                      {/* Comment Input - At the top for new comments only */}
+                      {!replyingTo[topic._id] && (
+                        <div className="bg-white p-4 rounded-lg border-2 border-teal-100 mb-4 shadow-sm">
+                          <div className="flex gap-3">
+                            <input
+                              type="text"
+                              placeholder="Viết bình luận của bạn..."
+                              value={newComments[topic._id] || ""}
+                              onChange={(e) =>
+                                setNewComments((prev) => ({
+                                  ...prev,
+                                  [topic._id]: e.target.value,
+                                }))
+                              }
+                              onKeyPress={(e) => {
+                                if (e.key === "Enter" && !e.shiftKey) {
+                                  e.preventDefault();
+                                  handleSubmitComment(topic._id);
+                                }
+                              }}
+                              className="flex-1 px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500"
+                            />
+                            <button
+                              onClick={() => handleSubmitComment(topic._id)}
+                              disabled={!newComments[topic._id]?.trim()}
+                              className="px-5 py-2.5 bg-teal-600 text-white rounded-lg hover:bg-teal-700 transition-colors flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed font-medium"
+                            >
+                              <Send className="w-4 h-4" />
+                              Gửi
+                            </button>
+                          </div>
+                        </div>
+                      )}
+
                       {/* Comments Thread */}
                       <div className="space-y-3">
                         {topicComments[topic._id] &&
                         topicComments[topic._id].length > 0 ? (
                           topicComments[topic._id]
                             .filter((comment) => !comment.parentComment) // Only top-level comments
+                            .sort((a, b) => {
+                              // AI comments first
+                              if (a.isAISeed && !b.isAISeed) return -1;
+                              if (!a.isAISeed && b.isAISeed) return 1;
+                              // Then by date
+                              return (
+                                new Date(a.createdAt).getTime() -
+                                new Date(b.createdAt).getTime()
+                              );
+                            })
                             .map((comment) =>
                               renderComment(comment, topic._id, 0)
                             )
@@ -539,55 +643,6 @@ export default function ArticleDetailPage({ params }: PageProps) {
                             </p>
                           </div>
                         )}
-                      </div>
-
-                      {/* Comment Input */}
-                      <div className="bg-gray-50 p-4 rounded-lg border-t-2 border-teal-100">
-                        {replyingTo[topic._id] && (
-                          <div className="mb-3 flex items-center justify-between bg-blue-50 px-3 py-2 rounded">
-                            <span className="text-sm text-blue-700">
-                              Đang trả lời bình luận...
-                            </span>
-                            <button
-                              onClick={() => handleCancelReply(topic._id)}
-                              className="text-sm text-blue-600 hover:text-blue-800"
-                            >
-                              Hủy
-                            </button>
-                          </div>
-                        )}
-                        <div className="flex gap-3">
-                          <input
-                            type="text"
-                            placeholder={
-                              replyingTo[topic._id]
-                                ? "Nhập câu trả lời..."
-                                : "Chia sẻ ý kiến của bạn..."
-                            }
-                            value={newComments[topic._id] || ""}
-                            onChange={(e) =>
-                              setNewComments((prev) => ({
-                                ...prev,
-                                [topic._id]: e.target.value,
-                              }))
-                            }
-                            onKeyPress={(e) => {
-                              if (e.key === "Enter" && !e.shiftKey) {
-                                e.preventDefault();
-                                handleSubmitComment(topic._id);
-                              }
-                            }}
-                            className="flex-1 px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500"
-                          />
-                          <button
-                            onClick={() => handleSubmitComment(topic._id)}
-                            disabled={!newComments[topic._id]?.trim()}
-                            className="px-5 py-2.5 bg-teal-600 text-white rounded-lg hover:bg-teal-700 transition-colors flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed font-medium"
-                          >
-                            <Send className="w-4 h-4" />
-                            {replyingTo[topic._id] ? "Trả lời" : "Gửi"}
-                          </button>
-                        </div>
                       </div>
                     </div>
                   )}

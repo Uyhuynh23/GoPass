@@ -375,34 +375,21 @@ export class ForumService {
                 { requiresAuth: true }
             );
             
-            // Transform comments to include nested replies
+            // Transform comments - replies are already nested from backend
             const comments = response.data?.comments || [];
-            const transformedComments = await Promise.all(
-                comments.map(async (comment) => {
-                    // Fetch replies if any
-                    if (comment._id) {
-                        try {
-                            const repliesResponse = await httpClient.get<{ success: boolean; data: { replies: any[] } }>(
-                                `/forum/comments/${comment._id}/replies`,
-                                { requiresAuth: true }
-                            );
-                            comment.replies = repliesResponse.data?.replies || [];
-                        } catch (err) {
-                            comment.replies = [];
-                        }
-                    }
-                    
-                    // Check if this is an AI seed comment (based on isAiGenerated field)
-                    comment.isAISeed = comment.isAiGenerated || false;
-                    
-                    // Transform author field
-                    if (comment.userId) {
-                        comment.author = comment.userId;
-                    }
-                    
-                    return comment;
-                })
-            );
+            const transformedComments = comments.map((comment) => {
+                // Recursively transform nested replies
+                const transformComment = (c: any): any => {
+                    return {
+                        ...c,
+                        isAISeed: c.isAiGenerated || false,
+                        author: c.userId,
+                        replies: (c.replies || []).map(transformComment),
+                    };
+                };
+                
+                return transformComment(comment);
+            });
             
             return transformedComments;
         } catch (error) {

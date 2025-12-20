@@ -1,6 +1,7 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useRouter, usePathname } from "next/navigation";
 import { UserRole } from "@/features/dashboard/types";
 
 interface NavigationTab {
@@ -20,6 +21,51 @@ const DashboardNavigation: React.FC<DashboardNavigationProps> = ({
   activeTab,
   onTabChange,
 }) => {
+  const router = useRouter();
+  const pathname = usePathname();
+
+  // Detect active tab from pathname
+  useEffect(() => {
+    if (pathname) {
+      const pathSegments = pathname.split("/").filter(Boolean);
+      // pathSegments: ['dashboard', 'forum', 'article', '123']
+      if (pathSegments.length >= 2) {
+        const section = pathSegments[1]; // 'forum', 'classes', 'exams', etc.
+        // Map URL segments to tab IDs
+        const tabMapping: { [key: string]: string } = {
+          forum: "forum",
+          classes: "classes",
+          exams: "exams",
+          "question-bank": "question-bank",
+          contests: "contests",
+          practice: "practice",
+          history: "history",
+          students: "students",
+        };
+        const mappedTab = tabMapping[section];
+        if (mappedTab && mappedTab !== activeTab) {
+          onTabChange(mappedTab);
+        }
+      } else if (pathSegments.length === 1 && pathSegments[0] === "dashboard") {
+        // Just /dashboard - overview
+        if (activeTab !== "overview") {
+          onTabChange("overview");
+        }
+      }
+    }
+  }, [pathname]);
+
+  const handleTabClick = (tabId: string) => {
+    // Update active tab state
+    onTabChange(tabId);
+
+    // Navigate to the route
+    if (tabId === "overview") {
+      router.push("/dashboard");
+    } else {
+      router.push(`/dashboard/${tabId}`);
+    }
+  };
   const getTabsByRole = (): NavigationTab[] => {
     const iconClasses = "w-5 h-5";
 
@@ -296,7 +342,7 @@ const DashboardNavigation: React.FC<DashboardNavigationProps> = ({
             return (
               <button
                 key={tab.id}
-                onClick={() => onTabChange(tab.id)}
+                onClick={() => handleTabClick(tab.id)}
                 className={`
                   flex items-center space-x-2 py-4 px-2 border-b-2 font-medium text-sm transition-colors
                   ${
