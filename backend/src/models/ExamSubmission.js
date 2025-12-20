@@ -1,31 +1,38 @@
 const mongoose = require("mongoose");
 const examSubmissionSchema = new mongoose.Schema({
+  assignmentId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'ExamAssignment',
+    default: null,
+  },
   examId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Exam',
-    default: null,
+    required: true,
   },
-  contestId: { // Link tới Contest để biết bài này thuộc cuộc thi nào
+  contestId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Contest',
-    default: null, // Có thể null nếu là thi thử tự do
+    default: null,
   },
-  studentUserId: {
+  studentId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
     required: true,
   },
+  status: {
+    type: String,
+    enum: ['in_progress', 'submitted', 'graded', 'late'],
+    default: 'in_progress',
+  },
   startedAt: {
     type: Date,
     required: true,
+    default: Date.now,
   },
   submittedAt: {
     type: Date,
-    default: Date.now,
-  },
-  durationSeconds: { // Thời gian làm bài thực tế
-    type: Number,
-    default: 0
+    default: null,
   },
   totalScore: {
     type: Number,
@@ -35,29 +42,23 @@ const examSubmissionSchema = new mongoose.Schema({
     type: Number,
     default: 10,
   },
-  status: {
-    type: String,
-    enum: ['in_progress', 'submitted', 'graded'],
-    default: 'submitted',
+  attemptNumber: {
+    type: Number,
+    default: 1,
   },
-  // ✅ QUAN TRỌNG: Lưu chi tiết đáp án để Review
-  answers: [{
-    questionId: { type: mongoose.Schema.Types.ObjectId, ref: 'Question' },
-    selectedOptions: [String], // Ví dụ: ["A"] hoặc ["A", "C"]
-    answerText: String,        // Nếu là tự luận
-    isCorrect: Boolean,
-    score: Number,
-    feedback: String           // Lời giải thích cho câu này (nếu có)
-  }]
+  durationSeconds: {
+    type: Number,
+    default: 0
+  },
 }, {
   timestamps: true,
 });
 
-
 // Index for queries
-examSubmissionSchema.index({ examId: 1, studentUserId: 1 });
-examSubmissionSchema.index({ examId: 1 });
-examSubmissionSchema.index({ studentUserId: 1 });
+examSubmissionSchema.index({ examId: 1, studentId: 1 });
+examSubmissionSchema.index({ assignmentId: 1, studentId: 1 });
+examSubmissionSchema.index({ contestId: 1, studentId: 1 });
+examSubmissionSchema.index({ studentId: 1 });
 examSubmissionSchema.index({ status: 1 });
 
 module.exports = mongoose.model("ExamSubmission", examSubmissionSchema);

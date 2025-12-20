@@ -60,8 +60,21 @@ export const ExamProvider: React.FC<ExamProviderProps> = ({
 }) => {
   // --- 1. CORE STATE ---
   const [exam] = useState<ExamWithDetails>(initialExam);
-  const [submission, setSubmission] = useState<ExamSubmission | null>(null);
+  const [submission, setSubmission] = useState<ExamSubmission | null>(
+    initialExam.userSubmission || null
+  );
   const [isTimeUp, setIsTimeUp] = useState(false);
+
+  // Log submission status on mount
+  useEffect(() => {
+    console.log("📋 ExamProvider initialized:", {
+      examId: initialExam._id,
+      hasUserSubmission: !!initialExam.userSubmission,
+      submissionId: initialExam.userSubmission?._id,
+      submissionStatus: initialExam.userSubmission?.status,
+      isReviewMode,
+    });
+  }, []);
 
   // State mặc định
   const [examState, setExamStateRaw] = useState<ExamState>({
@@ -222,11 +235,11 @@ export const ExamProvider: React.FC<ExamProviderProps> = ({
   };
 
   const autoSaveToApi = async () => {
-    if (examState.answers.size === 0 || isReviewMode) return;
+    if (examState.answers.size === 0 || isReviewMode || !submission) return;
     setExamState({ autoSaveStatus: "saving" });
     try {
-      await submissionService.saveAnswers(
-        exam._id,
+      await submissionService.autoSaveAnswers(
+        submission._id,
         Array.from(examState.answers.values())
       );
       setExamState({ autoSaveStatus: "saved" });
@@ -237,20 +250,42 @@ export const ExamProvider: React.FC<ExamProviderProps> = ({
   };
 
   const submitExam = async () => {
-    if (examState.isSubmitting || isReviewMode) return;
+    if (examState.isSubmitting || isReviewMode || !submission) {
+      console.log("⚠️ Submit blocked:", {
+        isSubmitting: examState.isSubmitting,
+        isReviewMode,
+        hasSubmission: !!submission,
+      });
+      return;
+    }
 
     // 1. Đánh dấu đang nộp để CHẶN mọi hành động save khác
     setExamState({ isSubmitting: true });
 
     try {
       const answersArray = Array.from(examState.answers.values());
-      await submissionService.submitExam(exam._id, answersArray);
+      const timeSpent =
+        initialExam.durationMinutes * 60 - examState.timeRemaining;
+
+      console.log("📤 Submitting exam:", {
+        submissionId: submission._id,
+        answersCount: answersArray.length,
+        timeSpent,
+      });
+
+      const result = await submissionService.submitExam(
+        submission._id,
+        answersArray,
+        timeSpent
+      );
+
+      console.log("✅ Exam submitted successfully:", result);
 
       // 2. Xóa sạch LocalStorage NGAY LẬP TỨC sau khi nộp thành công
       examStorage.clear(initialExam._id);
       console.log("✅ Cleared storage for", initialExam._id);
     } catch (error) {
-      console.error("Submit failed:", error);
+      console.error("❌ Submit failed:", error);
       alert("Nộp bài thất bại. Vui lòng thử lại.");
       setExamState({ isSubmitting: false }); // Mở khóa nếu lỗi để user nộp lại
     }

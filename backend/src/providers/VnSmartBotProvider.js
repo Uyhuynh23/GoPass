@@ -1,5 +1,5 @@
-const axios = require('axios');
-const config = require('../config');
+const axios = require("axios");
+const config = require("../config");
 
 /**
  * Provider để tương tác với vnSmartBot API
@@ -32,7 +32,7 @@ class VnSmartBotProvider {
     const {
       sender_id,
       text,
-      input_channel = 'platform',
+      input_channel = "platform",
       metadata = {},
       session_id,
       bot_id,
@@ -51,30 +51,30 @@ class VnSmartBotProvider {
 
     try {
       const response = await axios({
-        method: 'POST',
+        method: "POST",
         url: this.baseUrl,
         headers: {
-          'Authorization': this.authorization,
-          'Token-id': this.tokenId,
-          'Token-key': this.tokenKey,
-          'Content-Type': 'application/json',
-          'Accept': 'text/event-stream',
-          'Cache-Control': 'no-cache',
-          'Connection': 'keep-alive',
+          Authorization: this.authorization,
+          "Token-id": this.tokenId,
+          "Token-key": this.tokenKey,
+          "Content-Type": "application/json",
+          Accept: "text/event-stream",
+          "Cache-Control": "no-cache",
+          Connection: "keep-alive",
         },
         data: requestBody,
-        responseType: 'stream',
+        responseType: "stream",
       });
 
       // Xử lý streaming data
-      response.data.on('data', (chunk) => {
+      response.data.on("data", (chunk) => {
         try {
           const chunkStr = chunk.toString();
           // Parse SSE format (data: {...})
-          const lines = chunkStr.split('\n');
-          
-          lines.forEach(line => {
-            if (line.startsWith('data: ')) {
+          const lines = chunkStr.split("\n");
+
+          lines.forEach((line) => {
+            if (line.startsWith("data: ")) {
               const jsonStr = line.substring(6);
               if (jsonStr.trim()) {
                 const data = JSON.parse(jsonStr);
@@ -83,18 +83,17 @@ class VnSmartBotProvider {
             }
           });
         } catch (err) {
-          console.error('Error parsing chunk:', err);
+          console.error("Error parsing chunk:", err);
         }
       });
 
-      response.data.on('end', () => {
+      response.data.on("end", () => {
         onEnd();
       });
 
-      response.data.on('error', (err) => {
+      response.data.on("error", (err) => {
         onError(err);
       });
-
     } catch (error) {
       onError(error);
     }
@@ -109,7 +108,7 @@ class VnSmartBotProvider {
     const {
       sender_id,
       text,
-      input_channel = 'platform',
+      input_channel = "platform",
       metadata = {},
       session_id,
       bot_id,
@@ -126,29 +125,48 @@ class VnSmartBotProvider {
       settings,
     };
 
-    console.log(`🤖 [vnSmartBot] Calling API with text length: ${text?.length || 0}`);
+    console.log(`🤖 [vnSmartBot] Calling API`);
+    console.log(
+      `📝 [vnSmartBot] Request Body:`,
+      JSON.stringify(requestBody, null, 2)
+    );
+    console.log(`🔗 [vnSmartBot] API URL:`, this.baseUrl);
+    console.log(`🔑 [vnSmartBot] Has Authorization:`, !!this.authorization);
+    console.log(`🔑 [vnSmartBot] Has Token-id:`, !!this.tokenId);
+    console.log(`🔑 [vnSmartBot] Has Token-key:`, !!this.tokenKey);
+    console.log(`🤖 [vnSmartBot] Bot ID:`, this.defaultBotId);
 
     try {
       const response = await axios({
-        method: 'POST',
+        method: "POST",
         url: this.baseUrl,
         headers: {
-          'Authorization': this.authorization,
-          'Token-id': this.tokenId,
-          'Token-key': this.tokenKey,
-          'Content-Type': 'application/json',
+          Authorization: this.authorization,
+          "Token-id": this.tokenId,
+          "Token-key": this.tokenKey,
+          "Content-Type": "application/json",
         },
         data: requestBody,
+        timeout: 60000, // 60 second timeout
       });
 
-      console.log(`✅ [vnSmartBot] Response received, status: ${response.status}`);
-      console.log(`📝 [vnSmartBot] Response structure:`, JSON.stringify(response.data).substring(0, 200));
+      console.log(
+        `✅ [vnSmartBot] Response received, status: ${response.status}`
+      );
+      console.log(
+        `📝 [vnSmartBot] Response data:`,
+        JSON.stringify(response.data, null, 2)
+      );
 
       return response.data;
     } catch (error) {
       console.error(`❌ [vnSmartBot] API Error:`, error.message);
       if (error.response) {
-        console.error(`❌ [vnSmartBot] Error response:`, error.response.status, error.response.data);
+        console.error(
+          `❌ [vnSmartBot] Error response:`,
+          error.response.status,
+          error.response.data
+        );
       }
       throw this._handleError(error);
     }
@@ -165,7 +183,7 @@ class VnSmartBotProvider {
     }
 
     return {
-      button_variables: variables.map(v => ({
+      button_variables: variables.map((v) => ({
         variableName: v.variableName,
         value: String(v.value), // Đảm bảo value là string
       })),
@@ -187,7 +205,9 @@ class VnSmartBotProvider {
     const intentName = response.object.sb.intent_name;
 
     // Kiểm tra xem có phải là chuyển giao dịch viên không
-    const hasTransferAgent = cardData.some(card => card.type === 'chuyen_gdv');
+    const hasTransferAgent = cardData.some(
+      (card) => card.type === "chuyen_gdv"
+    );
 
     return {
       cards: cardData,
@@ -219,7 +239,7 @@ class VnSmartBotProvider {
       // API trả về error response
       return {
         success: false,
-        message: error.response.data?.message || 'vnSmartBot API Error',
+        message: error.response.data?.message || "vnSmartBot API Error",
         statusCode: error.response.status,
         data: error.response.data,
       };
@@ -227,14 +247,14 @@ class VnSmartBotProvider {
       // Request được gửi nhưng không nhận được response
       return {
         success: false,
-        message: 'No response from vnSmartBot API',
+        message: "No response from vnSmartBot API",
         error: error.message,
       };
     } else {
       // Lỗi khác
       return {
         success: false,
-        message: 'Error setting up request to vnSmartBot',
+        message: "Error setting up request to vnSmartBot",
         error: error.message,
       };
     }

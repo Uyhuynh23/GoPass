@@ -9,4 +9,5 @@ module.exports = {
   QuestionBankController: require('./QuestionBankController'),
   ContestController: require('./ContestController'),
   AdminController: require('./AdminController'),
+  StudentController: require('./StudentController'),
 };

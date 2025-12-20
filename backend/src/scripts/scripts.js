@@ -13,6 +13,7 @@ const ClassMember = require('../models/ClassMember');
 const ClassJoinRequest = require('../models/ClassJoinRequest');
 const Question = require('../models/Question');
 const Contest = require('../models/Contest');
+const ExamAssignment = require('../models/ExamAssignment');
 const ExamSubmission = require('../models/ExamSubmission');
 
 const seedData = async () => {
@@ -141,8 +142,26 @@ const seedData = async () => {
       console.log("✅ Đã nạp Contests.");
     }
 
-    // 8. SEED SUBMISSIONS
+    // 8. SEED EXAM ASSIGNMENTS
+    if (data.examassignments) {
+      await ExamAssignment.deleteMany({});
+      const assignmentsToInsert = data.examassignments.map((assign) => {
+        const { assignmentID, ...rest } = assign; // Loại bỏ assignmentID cũ
+        return {
+          ...rest,
+          examId: examMap[assign.examId] || null,
+          classId: classMap[assign.classId] || null,
+          shuffleQuestions: assign.shuffleQuestions || false,
+          allowLateSubmission: assign.allowLateSubmission || false,
+        };
+      });
+      await ExamAssignment.insertMany(assignmentsToInsert);
+      console.log("✅ Đã nạp Exam Assignments.");
+    }
+
+    // 9. SEED SUBMISSIONS
     const allSubmissions = [...(data.examsubmissions || []), ...(data.submissions || [])];
+
     if (allSubmissions.length > 0) {
       await ExamSubmission.deleteMany({});
       const subsToInsert = allSubmissions.map(s => {

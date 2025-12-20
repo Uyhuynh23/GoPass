@@ -30,7 +30,7 @@ Write-Host "Step 1: Getting admin token..."
 # Giai thich: Dang nhap bang tai khoan admin mac dinh de lay JWT token dung cho cac request sau
 try {
     $loginBody = @{
-        email = "admin@gopass.com"
+        email = "admin@gopass.vn"
         password = "123456"
     } | ConvertTo-Json
 

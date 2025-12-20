@@ -1,15 +1,26 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 // import { useRouter } from "next/navigation"; 
-import { MOCK_CONTESTS } from "@/features/dashboard/data/mock-contests";
 import ContestCard from "./ContestCard"; // Import component con
+import { fetchStudentContests } from "@/services/student/studentContestApi";
+import { StudentContest } from "@/features/dashboard/types/student/exam";
 
 const StudentContestsView = () => {
   const [filterSubject, setFilterSubject] = useState("all");
+  const [contests, setContests] = useState<StudentContest[]>([]);
+
+  // Load contests from API (keep UI unchanged)
+  useEffect(() => {
+    const load = async () => {
+      const data = await fetchStudentContests();
+      setContests(data);
+    };
+    load();
+  }, []);
 
   // --- Logic: Filter Contests ---
-  const filteredContests = MOCK_CONTESTS.filter((contest) => {
+  const filteredContests = contests.filter((contest) => {
     if (filterSubject === "all") return true;
     return contest.subjects.includes(filterSubject);
   });

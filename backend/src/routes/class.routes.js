@@ -24,6 +24,7 @@ router.get('/my-enrolled', authorize('student'), ClassController.getLearningClas
 
 // Shared routes
 router.get('/:classId', ClassController.getClassDetail);
+router.get('/:classId/assignments', ClassController.getClassAssignments);
 router.get('/:classId/members', ClassController.getClassMembers);
 
 module.exports = router;

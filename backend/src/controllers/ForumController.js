@@ -8,10 +8,15 @@ class ForumController {
    */
   async generateTopics(req, res, next) {
     try {
+      console.log("🚀 [ForumController.generateTopics] Request received");
+      console.log("📝 Request body:", JSON.stringify(req.body, null, 2));
+      console.log("👤 User:", req.user?.userId);
+
       const { topicId, count, source, startTime, endTime } = req.body;
 
       // Validate
       if (!topicId) {
+        console.error("❌ Validation failed: topicId is required");
         return res.status(400).json({
           success: false,
           message: "topicId is required",
@@ -20,6 +25,7 @@ class ForumController {
 
       const adminUserId = req.user.userId; // From authenticate middleware
 
+      console.log("📞 Calling ForumService.generateForumTopics...");
       const forumTopics = await ForumService.generateForumTopics(
         {
           topicId,
@@ -31,6 +37,9 @@ class ForumController {
         adminUserId
       );
 
+      console.log(
+        `✅ [ForumController.generateTopics] Success: ${forumTopics.length} topics created`
+      );
       res.status(201).json({
         success: true,
         message: `Generated ${forumTopics.length} forum topics`,
@@ -40,6 +49,11 @@ class ForumController {
         },
       });
     } catch (error) {
+      console.error(
+        "❌ [ForumController.generateTopics] Error:",
+        error.message
+      );
+      console.error("Stack trace:", error.stack);
       next(error);
     }
   }

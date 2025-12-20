@@ -16,6 +16,7 @@ interface StartExamPanelProps {
   onContinueExam?: () => void;
   hasProgress?: boolean;
   onCancel: () => void;
+  isLoading?: boolean;
 }
 
 // Helper: Map màu sắc cho Section (Logic UI thuần túy)
@@ -39,6 +40,7 @@ const StartExamPanel: React.FC<StartExamPanelProps> = ({
   onContinueExam,
   hasProgress,
   onCancel,
+  isLoading = false,
 }) => {
   // 1. Lấy cấu hình tĩnh dựa trên môn học
   const config = useMemo(() => {
@@ -247,19 +249,45 @@ const StartExamPanel: React.FC<StartExamPanelProps> = ({
                   variant="secondary"
                   onClick={onCancel}
                   className="flex-1 py-3 text-sm font-medium"
+                  disabled={isLoading}
                 >
                   Hủy bỏ
                 </Button>
                 <Button
                   variant={hasProgress ? "secondary" : "primary"}
                   onClick={onStartExam}
+                  disabled={isLoading}
                   className={`flex-1 py-3 text-sm font-bold ${
                     !hasProgress
                       ? "bg-teal-600 hover:bg-teal-700 shadow-lg shadow-teal-700/20"
                       : "border-teal-600 text-teal-700 hover:bg-teal-50"
                   }`}
                 >
-                  {hasProgress ? "Làm lại từ đầu" : "Bắt đầu làm bài"}
+                  {isLoading ? (
+                    <span className="flex items-center gap-2">
+                      <svg className="animate-spin h-4 w-4" viewBox="0 0 24 24">
+                        <circle
+                          className="opacity-25"
+                          cx="12"
+                          cy="12"
+                          r="10"
+                          stroke="currentColor"
+                          strokeWidth="4"
+                          fill="none"
+                        />
+                        <path
+                          className="opacity-75"
+                          fill="currentColor"
+                          d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                        />
+                      </svg>
+                      Đang tạo bài thi...
+                    </span>
+                  ) : hasProgress ? (
+                    "Làm lại từ đầu"
+                  ) : (
+                    "Bắt đầu làm bài"
+                  )}
                 </Button>
               </div>
             </div>

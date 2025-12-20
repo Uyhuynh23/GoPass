@@ -55,7 +55,7 @@ const examSchema = new mongoose.Schema({
   },
   isPublished: {
     type: Boolean,
-    default: false,
+    default: true,
   },
  
   // --- BỔ SUNG CÁC TRƯỜNG THIẾU ---

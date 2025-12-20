@@ -1,0 +1,147 @@
+{
+    "exams":[
+         {
+      "id": "exam-001",
+      "title": "KỲ THI TỐT NGHIỆP THPT NĂM 2025 - Môn TOÁN (Mã đề 0101)",
+      "description": "Đề thi chính thức. Thời gian: 90 phút.",
+      "subject": "Toán Học",
+      "durationMinutes": 90,
+      "mode": "test",
+      "showResultsImmediately": false,
+      "totalQuestions": 22,
+      "totalPoints": 10,
+      "readingPassages": [],
+      "shuffleQuestions": false,
+      "isPublished": true,
+      "createdBy": "admin-01",
+      "createdAt": "2025-12-16T08:00:00Z",
+      "updatedAt": "2025-12-16T08:00:00Z"
+    }
+    ],
+    "questions":[
+    {
+      "id": "q-01",
+      "type": "multiple_choice",
+      "content": "The word settle in paragraph 1 mostly means _______.",
+      "options": [
+        {
+          "id": "A",
+          "content": "exchange"
+        },
+        {
+          "id": "B",
+          "content": "announce"
+        },
+        {
+          "id": "C",
+          "content": "expect"
+        },
+        {
+          "id": "D",
+          "content": "decide"
+        }
+      ],
+      "correctAnswer": "D",
+      "explanation": "<p><b>Từ settle trong đoạn 1 có nghĩa gần nhất với ________.</b></p>\n<p>\nA. exchange /ıks'tʃeindʒ/ (v): trao đổi<br/>\nB. announce /ə'nauns/ (v): thông báo, công bố<br/>\nC. expect /ık'spekt/ (v): mong đợi, kỳ vọng<br/>\nD. decide /dı'said/ (v): quyết định\n</p>\n<p><b>Căn cứ vào thông tin:</b> “Because everyone works on the same data, the team can <b>settle</b> seeding dates, determine when to spray, and track machinery in real time.”<br/>\n(<i>Bởi vì mọi người làm việc trên cùng một dữ liệu, cả nhóm có thể quyết định ngày gieo hạt, xác định thời điểm phun thuốc, và theo dõi máy móc theo thời gian thực.</i>)</p>\n<p>⇒ <b>settle</b> /'setl/ (v): dàn xếp, quyết định ~ <b>decide</b></p>\n<p><b>Do đó, D là đáp án phù hợp.</b></p>",
+      "difficulty": "medium",
+      "linkedPassageId": "passage-eng-01",
+      "subject": "Tiếng Anh",
+      "points": 0.25,
+      "isPublic": true,
+      "createdBy": "admin-01",
+      "createdAt": "2025-12-14T08:00:00Z",
+      "updatedAt": "2025-12-14T08:00:00Z",
+      "tags": [
+        "reading"
+      ]
+    },
+
+    {
+      "id": "q-math-13",
+      "type": "true_false",
+      "content": "<p class=\"mb-3 text-justify\"><b>Câu 1.</b> Cho hàm số $f(x) = x^3 - 12x - 8$.</p>",
+      "options": [
+        {
+          "id": "a",
+          "content": "Hàm số đã cho có đạo hàm là $f'(x) = 3x^2 - 12$."
+        },
+        {
+          "id": "b",
+          "content": "Phương trình $f'(x) = 0$ có tập nghiệm là $S = \\{2\\}$."
+        },
+        {
+          "id": "c",
+          "content": "$f(2) = 24$."
+        },
+        {
+          "id": "d",
+          "content": "Giá trị lớn nhất của hàm số $f(x)$ trên đoạn $[-3; 3]$ bằng 24."
+        }
+      ],
+      "correctAnswer": {
+        "a": "true",
+        "b": "false",
+        "c": "false",
+        "d": "false"
+      },
+      "explanation": "<div class=\"space-y-2\"><p class=\"mb-3 text-justify\"><b>a)</b> $f(x)=x^3-12x-8 \\Rightarrow f'(x)=3x^2-12$. Mệnh đề đúng.</p><p class=\"mb-3 text-justify\"><b>b)</b> $f'(x)=0 \\Leftrightarrow 3x^2-12=0 \\Leftrightarrow x^2=4 \\Leftrightarrow x=\\pm 2$. Tập nghiệm là $\\{-2,2\\}$ nên mệnh đề sai.</p><p class=\"mb-3 text-justify\"><b>c)</b> $f(2)=2^3-12\\cdot 2-8=8-24-8=-24$ nên mệnh đề sai.</p><p class=\"mb-3 text-justify\"><b>d)</b> Tính các giá trị: $f(-3)=1$, $f(-2)=8$, $f(2)=-24$, $f(3)=-17$. Giá trị lớn nhất trên $[-3,3]$ là $8$ tại $x=-2$, không phải $24$ nên mệnh đề sai.</p></div>",
+      "difficulty": "medium",
+      "subject": "Toán Học",
+      "points": 1,
+      "tags": [],
+      "isPublic": true,
+      "createdBy": "admin-01",
+      "createdAt": "2025-12-16T08:00:00Z",
+      "updatedAt": "2025-12-16T08:00:00Z"
+    },
+    {
+      "id": "q-math-17",
+      "type": "short_answer",
+      "content": "<p class=\"mb-3 text-justify\"><b>Câu 1.</b> Bạn Nam tham gia cuộc thi giải một mật thư. Theo quy tắc của cuộc thi, người chơi cần chọn ra sáu số từ tập $S = \\{11; 12; 13; 14; 15; 16; 17; 18; 19\\}$ và xếp mỗi số vào đúng một vị trí trong sáu vị trí $A, B, C, M, N, P$ như hình bên sao cho mỗi vị trí chỉ được xếp một số. Mật thư sẽ được giải nếu các bộ ba số xuất hiện ở những bộ ba vị trí $(A, M, B); (B, N, C); (C, P, A)$ tạo thành các cấp số cộng theo thứ tự đó. Bạn Nam chọn ngẫu nhiên sáu số trong tập $S$ và xếp ngẫu nhiên vào các vị trí được yêu cầu. Gọi xác suất để bạn Nam giải được mật thư ở lần chọn và xếp đó là $a$. Giá trị của $\\frac{1}{a}$ bằng bao nhiêu?</p>",
+      "options": [],
+      "correctAnswer": "1260",
+      "explanation": "<div class=\"space-y-2\"><p class=\"mb-3 text-justify\">Không gian mẫu có $A_9^6=60480$ cách chọn và xếp. Theo lời giải tài liệu, có 48 trường hợp thuận lợi nên $a=\\frac{48}{60480}=\\frac{1}{1260}$. Do đó $\\frac{1}{a}=1260$.</p></div>",
+      "difficulty": "medium",
+      "subject": "Toán Học",
+      "points": 0.5,
+      "tags": [],
+      "isPublic": true,
+      "createdBy": "admin-01",
+      "createdAt": "2025-12-16T08:00:00Z",
+      "updatedAt": "2025-12-16T08:00:00Z",
+      "image": {
+        "url": "https://lh3.googleusercontent.com/d/1K30sd0UjKBK9W8vP_Ij8bG4R1ssJxIy0",
+        "caption": null,
+        "position": "bottom"
+      }
+    }  
+    ],
+    "exam_questions":[
+    {
+      "id": "eq-math-01",
+      "examId": "exam-001",
+      "questionId": "q-math-01",
+      "order": 1,
+      "section": "Phần I",
+      "maxScore": 0.25,
+      "createdAt": "2025-12-16T08:00:00Z",
+      "updatedAt": "2025-12-16T08:00:00Z"
+    }
+    ],
+    "submissions":[
+        {
+      "id": "6abc",
+      "examId": "exam-002",
+      "studentId": "student-01",
+      "contestId": null,
+      "status": "graded",
+      "startedAt": "2025-12-16T12:38:12.391Z",
+      "submittedAt": "2025-12-16T13:38:12.391Z",
+      "totalScore": 0,
+      "maxScore": 10,
+      "attemptNumber": 1,
+      "answers": []
+    }
+    ]
+
+}

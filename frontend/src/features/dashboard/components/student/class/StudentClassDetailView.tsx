@@ -56,9 +56,21 @@ const StudentClassDetailView: React.FC<StudentClassDetailViewProps> = ({ classDa
   }, [classData.assignments, searchTerm, availabilityFilter, completionFilter]);
 
   // --- STATS CALCULATION ---
-  const totalAssignments = classData.stats.totalAssignments;
-  const assignmentsDone = classData.stats.assignmentsDone;
-  const assignmentsLeft = totalAssignments - assignmentsDone;
+  const totalAssignments = classData.assignments.filter((a) => {
+    const availability = getAvailability(a.startTime, a.endTime);
+    return availability === 'ongoing' || availability === 'ended';
+  }).length;
+
+  const assignmentsDone = classData.assignments.filter((a) => {
+    const availability = getAvailability(a.startTime, a.endTime);
+    return (availability === 'ongoing' || availability === 'ended') && a.status === 'completed';
+  }).length;
+
+  const assignmentsLeft = classData.assignments.filter((a) => {
+    const availability = getAvailability(a.startTime, a.endTime);
+    const isCompleted = a.status === 'completed';
+    return availability === 'ongoing' && !isCompleted;
+  }).length;
   const progressPercent = totalAssignments > 0 ? Math.round((assignmentsDone / totalAssignments) * 100) : 0;
 
   // --- HANDLERS ---

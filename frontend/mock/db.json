@@ -386,6 +386,87 @@
   ],
   "exams": [
     {
+      "id": "ex_math_01",
+      "title": "Kiểm tra 1 tiết - Hàm số",
+      "description": "Bài kiểm tra khảo sát sự biến thiên và vẽ đồ thị hàm số.",
+      "subject": "Toán học",
+      "durationMinutes": 45,
+      "totalPoints": 10,
+      "createdBy": "u_teacher_01"
+    },
+    {
+      "id": "ex_phys_01",
+      "title": "Kiểm tra chương 1 - Dao động cơ",
+      "description": "Kiểm tra kiến thức về dao động điều hòa, con lắc lò xo.",
+      "subject": "Vật Lý",
+      "durationMinutes": 60,
+      "totalPoints": 10,
+      "createdBy": "u_teacher_02"
+    },
+    {
+      "id": "ex_eng_01",
+      "title": "IELTS Reading Practice 01",
+      "description": "Bài luyện tập kỹ năng đọc hiểu format IELTS.",
+      "subject": "Tiếng Anh",
+      "durationMinutes": 60,
+      "totalPoints": 9.0,
+      "createdBy": "u_teacher_03"
+    },
+    {
+      "id": "ex_it_01",
+      "title": "Basic Python - Variables & Loops",
+      "description": "Kiểm tra trắc nghiệm cú pháp cơ bản của Python.",
+      "subject": "Tin học",
+      "durationMinutes": 30,
+      "totalPoints": 10,
+      "createdBy": "u_teacher_01"
+    },
+    {
+      "id": "ex_hist_mid",
+      "title": "Thi giữa kỳ - Lịch Sử Việt Nam",
+      "description": "Kiểm tra kiến thức giai đoạn 1945-1975.",
+      "subject": "Lịch Sử",
+      "durationMinutes": 50,
+      "totalPoints": 10,
+      "createdBy": "u_teacher_03"
+    },
+    {
+      "id": "ex_math_mock_01",
+      "title": "Thi thử THPTQG Toán - Lần 1",
+      "description": "Đề thi thử chuẩn cấu trúc bộ giáo dục.",
+      "subject": "Toán học",
+      "durationMinutes": 90,
+      "totalPoints": 10,
+      "createdBy": "u_teacher_01"
+    },
+    {
+      "id": "ex_it_basic_chk",
+      "title": "Kiểm tra nhanh: Cú pháp Python",
+      "description": "Bài quiz nhanh 15 phút.",
+      "subject": "Tin học",
+      "durationMinutes": 15,
+      "totalPoints": 10,
+      "createdBy": "u_teacher_01"
+    },
+    {
+      "id": "ex_eng_vocab",
+      "title": "Vocabulary Test: Topic Environment",
+      "description": "Kiểm tra từ vựng chủ đề môi trường.",
+      "subject": "Tiếng Anh",
+      "durationMinutes": 20,
+      "totalPoints": 10,
+      "createdBy": "u_teacher_03"
+    },
+    {
+      "id": "ex_global_iq",
+      "title": "Test IQ & Tư duy logic (Global)",
+      "description": "Bài kiểm tra đánh giá năng lực tư duy logic, tính toán nhanh và nhận diện quy luật hình ảnh.",
+      "subject": "Kỹ năng mềm",
+      "durationMinutes": 8,
+      "totalPoints": 10,
+      "createdBy": "u_admin_01"
+    },
+    {
       "id": "exam-001",
       "title": "KỲ THI TỐT NGHIỆP THPT NĂM 2025 - Môn TOÁN (Mã đề 0101)",
       "description": "Đề thi chính thức. Thời gian: 90 phút.",
@@ -472,7 +553,7 @@
   ],
   "examassignments": [
     {
-      "assignmentId": "assign_math_01_c01",
+      "assignmentID": "assign_math_01_c01",
       "examId": "ex_math_01",
       "classId": "c_math_01",
       "startTime": "2025-10-01T08:00:00Z",
@@ -480,7 +561,7 @@
       "attemptLimit": 1
     },
     {
-      "assignmentId": "assign_phys_01_c02",
+      "assignmentID": "assign_phys_01_c02",
       "examId": "ex_phys_01",
       "classId": "c_phys_02",
       "startTime": "2025-10-15T09:00:00Z",
@@ -488,7 +569,7 @@
       "attemptLimit": 2
     },
     {
-      "assignmentId": "assign_eng_01_c03",
+      "assignmentID": "assign_eng_01_c03",
       "examId": "ex_eng_01",
       "classId": "c_eng_01",
       "startTime": "2025-10-20T18:00:00Z",
@@ -496,7 +577,7 @@
       "attemptLimit": 1
     },
     {
-      "assignmentId": "assign_it_01_c14",
+      "assignmentID": "assign_it_01_c14",
       "examId": "ex_it_01",
       "classId": "c_it_01",
       "startTime": "2025-10-25T10:00:00Z",
@@ -504,7 +585,7 @@
       "attemptLimit": 3
     },
     {
-      "assignmentId": "assign_hist_ongoing",
+      "assignmentID": "assign_hist_ongoing",
       "examId": "ex_hist_mid",
       "classId": "c_hist_01",
       "startTime": "2025-12-14T00:00:00Z",
@@ -512,7 +593,7 @@
       "attemptLimit": 1
     },
     {
-      "assignmentId": "assign_math_upcoming",
+      "assignmentID": "assign_math_upcoming",
       "examId": "ex_math_mock_01",
       "classId": "c_math_01",
       "startTime": "2025-12-20T08:00:00Z",
@@ -520,7 +601,7 @@
       "attemptLimit": 1
     },
     {
-      "assignmentId": "assign_it_overdue",
+      "assignmentID": "assign_it_overdue",
       "examId": "ex_it_basic_chk",
       "classId": "c_it_01",
       "startTime": "2025-11-10T08:00:00Z",
@@ -528,7 +609,7 @@
       "attemptLimit": 1
     },
     {
-      "assignmentId": "assign_eng_retake",
+      "assignmentID": "assign_eng_retake",
       "examId": "ex_eng_vocab",
       "classId": "c_eng_01",
       "startTime": "2025-12-01T08:00:00Z",

@@ -87,6 +87,24 @@ class ClassController {
     }
   }
 
+  // GET /classes/:classId/assignments
+  async getClassAssignments(req, res) {
+    try {
+      const { classId } = req.params;
+      const currentUserId = req.user.userId;
+      const result = await ClassService.getClassAssignments(classId, currentUserId, req.query);
+      res.status(200).json({
+        success: true,
+        data: result,
+      });
+    } catch (error) {
+      res.status(400).json({
+        success: false,
+        message: error.message,
+      });
+    }
+  }
+
   // GET /classes/:classId/members
   async getClassMembers(req, res) {
     try {

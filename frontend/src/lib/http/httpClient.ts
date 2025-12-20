@@ -122,6 +122,8 @@ class HttpClient {
     const url = endpoint.startsWith('http') ? endpoint : `${this.baseURL}${endpoint}`;
     const headers = this.buildHeaders(requiresAuth, customHeaders);
 
+    console.log(`🌐 HTTP ${method} ${url}`, { requiresAuth, hasBody: !!body });
+
     // Create abort controller for timeout
     const controller = new AbortController();
     const timeoutId = setTimeout(() => controller.abort(), timeout);
