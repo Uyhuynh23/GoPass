@@ -38,6 +38,12 @@ export default function ArticleDetailPage({ params }: PageProps) {
   }>({});
   const [topicLikes, setTopicLikes] = useState<{ [key: string]: boolean }>({});
   const [newComments, setNewComments] = useState<{ [key: string]: string }>({});
+  const [topicComments, setTopicComments] = useState<{
+    [key: string]: ForumComment[];
+  }>({});
+  const [replyingTo, setReplyingTo] = useState<{
+    [key: string]: string | null;
+  }>({});
 
   // Resolve params
   useEffect(() => {
@@ -73,11 +79,26 @@ export default function ArticleDetailPage({ params }: PageProps) {
     fetchData();
   }, [articleId]);
 
-  const toggleTopic = (topicId: string) => {
+  const toggleTopic = async (topicId: string) => {
+    const isExpanding = !expandedTopics[topicId];
+
     setExpandedTopics((prev) => ({
       ...prev,
-      [topicId]: !prev[topicId],
+      [topicId]: isExpanding,
     }));
+
+    // Fetch comments when expanding
+    if (isExpanding && !topicComments[topicId]) {
+      try {
+        const comments = await ForumService.getTopicComments(topicId);
+        setTopicComments((prev) => ({
+          ...prev,
+          [topicId]: comments,
+        }));
+      } catch (error) {
+        console.error("Error fetching comments:", error);
+      }
+    }
   };
 
   const toggleTopicLike = async (topicId: string) => {
@@ -104,20 +125,145 @@ export default function ArticleDetailPage({ params }: PageProps) {
     const commentText = newComments[topicId];
     if (!commentText || !commentText.trim()) return;
 
+    const parentCommentId = replyingTo[topicId];
+
     try {
-      // createComment expects (topicId, content)
-      await ForumService.createComment(topicId, commentText);
+      if (parentCommentId) {
+        // Reply to a comment
+        await ForumService.createReply(parentCommentId, commentText);
+      } else {
+        // Top-level comment
+        await ForumService.createComment(topicId, commentText);
+      }
 
-      // Clear input
+      // Clear input and reply state
       setNewComments((prev) => ({ ...prev, [topicId]: "" }));
+      setReplyingTo((prev) => ({ ...prev, [topicId]: null }));
 
-      // Refresh topics to get new comment
+      // Refresh comments for this topic
+      const comments = await ForumService.getTopicComments(topicId);
+      setTopicComments((prev) => ({
+        ...prev,
+        [topicId]: comments,
+      }));
+
+      // Refresh topics to update counts
       const topics = await ForumService.getTopicsByPackageId(articleId);
       setForumTopics(topics);
     } catch (error) {
       console.error("Error submitting comment:", error);
       alert("Không thể gửi bình luận. Vui lòng thử lại.");
     }
+  };
+
+  const handleReplyClick = (
+    topicId: string,
+    commentId: string,
+    authorName: string
+  ) => {
+    setReplyingTo((prev) => ({ ...prev, [topicId]: commentId }));
+    setNewComments((prev) => ({
+      ...prev,
+      [topicId]: `@${authorName} `,
+    }));
+  };
+
+  const handleCancelReply = (topicId: string) => {
+    setReplyingTo((prev) => ({ ...prev, [topicId]: null }));
+    setNewComments((prev) => ({ ...prev, [topicId]: "" }));
+  };
+
+  const renderComment = (
+    comment: ForumComment,
+    topicId: string,
+    depth: number = 0
+  ) => {
+    const isAISeed = comment.isAISeed;
+    const paddingLeft = depth * 40;
+
+    return (
+      <div key={comment._id} className="space-y-3">
+        <div
+          className={`p-4 rounded-lg ${
+            isAISeed
+              ? "bg-amber-50 border-l-4 border-amber-400"
+              : "bg-white border border-gray-200"
+          }`}
+          style={{ marginLeft: `${paddingLeft}px` }}
+        >
+          <div className="flex items-start gap-3">
+            {isAISeed ? (
+              <div className="flex-shrink-0 w-8 h-8 bg-amber-200 rounded-full flex items-center justify-center">
+                <Sparkles className="w-4 h-4 text-amber-700" />
+              </div>
+            ) : (
+              <div className="flex-shrink-0 w-8 h-8 bg-teal-100 rounded-full flex items-center justify-center">
+                <span className="text-sm font-medium text-teal-700">
+                  {comment.author?.fullName?.[0]?.toUpperCase() || "U"}
+                </span>
+              </div>
+            )}
+
+            <div className="flex-1 min-w-0">
+              <div className="flex items-center gap-2 mb-1">
+                <span className="font-medium text-gray-900">
+                  {isAISeed
+                    ? "AI Assistant"
+                    : comment.author?.fullName || "Anonymous"}
+                </span>
+                {isAISeed && (
+                  <span className="px-2 py-0.5 bg-amber-100 text-amber-700 rounded text-xs font-medium">
+                    🤖 Seed Comment
+                  </span>
+                )}
+                <span className="text-xs text-gray-500">
+                  {new Date(comment.createdAt).toLocaleDateString("vi-VN", {
+                    day: "2-digit",
+                    month: "2-digit",
+                    year: "numeric",
+                    hour: "2-digit",
+                    minute: "2-digit",
+                  })}
+                </span>
+              </div>
+
+              <p className="text-gray-700 leading-relaxed mb-2">
+                {comment.content}
+              </p>
+
+              <div className="flex items-center gap-4">
+                <button
+                  onClick={() =>
+                    handleReplyClick(
+                      topicId,
+                      comment._id,
+                      comment.author?.fullName || "user"
+                    )
+                  }
+                  className="text-sm text-teal-600 hover:text-teal-700 font-medium"
+                >
+                  Trả lời
+                </button>
+                {comment.likes && comment.likes.length > 0 && (
+                  <span className="text-sm text-gray-500">
+                    {comment.likes.length} thích
+                  </span>
+                )}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Render replies recursively */}
+        {comment.replies && comment.replies.length > 0 && (
+          <div className="space-y-3">
+            {comment.replies.map((reply) =>
+              renderComment(reply, topicId, depth + 1)
+            )}
+          </div>
+        )}
+      </div>
+    );
   };
 
   if (loading) {
@@ -290,26 +436,7 @@ export default function ArticleDetailPage({ params }: PageProps) {
                       </button>
                     </div>
 
-                    {/* Seed Comment - Always visible as the starting point */}
-                    {topic.seedComment && (
-                      <div className="bg-amber-50 border-l-4 border-amber-400 p-4 rounded-r mb-3">
-                        <div className="flex items-start gap-3">
-                          <div className="flex-shrink-0 w-8 h-8 bg-amber-200 rounded-full flex items-center justify-center">
-                            <Sparkles className="w-4 h-4 text-amber-700" />
-                          </div>
-                          <div className="flex-1">
-                            <p className="text-sm font-medium text-amber-900 mb-1">
-                              AI Seed Comment
-                            </p>
-                            <p className="text-sm text-amber-800 leading-relaxed">
-                              {topic.seedComment}
-                            </p>
-                          </div>
-                        </div>
-                      </div>
-                    )}
-
-                    {/* Essay Prompt (if exists) */}
+                    {/* Essay Prompt (if exists) - shown as a hint, not part of comment thread */}
                     {topic.essayPrompt && (
                       <div className="bg-blue-50 border-l-4 border-blue-400 p-4 rounded-r mb-3">
                         <p className="text-sm font-medium text-blue-900 mb-1">
@@ -347,21 +474,50 @@ export default function ArticleDetailPage({ params }: PageProps) {
 
                   {/* Expanded Content - Comments Thread */}
                   {expandedTopics[topic._id] && (
-                    <div className="mt-6 space-y-4 pl-4 border-l-2 border-gray-200">
-                      {/* Comments placeholder - will show actual comments from backend */}
-                      <div className="text-sm text-gray-500 italic py-4">
-                        <MessageCircle className="w-5 h-5 inline-block mr-2 text-gray-400" />
-                        {topic.stats?.totalComments === 0
-                          ? "Chưa có bình luận. Hãy là người đầu tiên chia sẻ ý kiến!"
-                          : `${topic.stats?.totalComments} bình luận`}
+                    <div className="mt-6 space-y-4">
+                      {/* Comments Thread */}
+                      <div className="space-y-3">
+                        {topicComments[topic._id] &&
+                        topicComments[topic._id].length > 0 ? (
+                          topicComments[topic._id]
+                            .filter((comment) => !comment.parentComment) // Only top-level comments
+                            .map((comment) =>
+                              renderComment(comment, topic._id, 0)
+                            )
+                        ) : (
+                          <div className="text-center py-8 text-gray-500">
+                            <MessageCircle className="w-12 h-12 mx-auto mb-3 text-gray-300" />
+                            <p className="text-sm">
+                              Chưa có bình luận. Hãy là người đầu tiên chia sẻ ý
+                              kiến!
+                            </p>
+                          </div>
+                        )}
                       </div>
 
                       {/* Comment Input */}
-                      <div className="bg-gray-50 p-4 rounded-lg">
+                      <div className="bg-gray-50 p-4 rounded-lg border-t-2 border-teal-100">
+                        {replyingTo[topic._id] && (
+                          <div className="mb-3 flex items-center justify-between bg-blue-50 px-3 py-2 rounded">
+                            <span className="text-sm text-blue-700">
+                              Đang trả lời bình luận...
+                            </span>
+                            <button
+                              onClick={() => handleCancelReply(topic._id)}
+                              className="text-sm text-blue-600 hover:text-blue-800"
+                            >
+                              Hủy
+                            </button>
+                          </div>
+                        )}
                         <div className="flex gap-3">
                           <input
                             type="text"
-                            placeholder="Chia sẻ ý kiến của bạn..."
+                            placeholder={
+                              replyingTo[topic._id]
+                                ? "Nhập câu trả lời..."
+                                : "Chia sẻ ý kiến của bạn..."
+                            }
                             value={newComments[topic._id] || ""}
                             onChange={(e) =>
                               setNewComments((prev) => ({
@@ -370,7 +526,8 @@ export default function ArticleDetailPage({ params }: PageProps) {
                               }))
                             }
                             onKeyPress={(e) => {
-                              if (e.key === "Enter") {
+                              if (e.key === "Enter" && !e.shiftKey) {
+                                e.preventDefault();
                                 handleSubmitComment(topic._id);
                               }
                             }}
@@ -382,7 +539,7 @@ export default function ArticleDetailPage({ params }: PageProps) {
                             className="px-5 py-2.5 bg-teal-600 text-white rounded-lg hover:bg-teal-700 transition-colors flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed font-medium"
                           >
                             <Send className="w-4 h-4" />
-                            Gửi
+                            {replyingTo[topic._id] ? "Trả lời" : "Gửi"}
                           </button>
                         </div>
                       </div>

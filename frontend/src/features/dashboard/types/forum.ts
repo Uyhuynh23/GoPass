@@ -111,18 +111,22 @@ export interface ForumPost extends ForumArticle {
 }
 
 export interface ForumComment {
-    id: string;
-    discussionPostId: string;
+    _id: string;
+    topicId: string;
     userId: string;
-    parentId?: string; // For nested replies
-    userName: string;
-    userAvatar: string;
-    timeAgo: string;
     content: string;
-    likes: number;
-    replies: number;
-    isLiked: boolean;
+    parentComment?: string | null; // For nested replies
+    likes: string[]; // Array of user IDs who liked
+    replies: ForumComment[]; // Nested replies
+    isAISeed?: boolean; // Is this an AI-generated seed comment
+    author?: {
+        _id: string;
+        fullName: string;
+        email: string;
+    };
     createdAt: string;
+    updatedAt: string;
+    status?: string;
 }
 
 export interface DiscussionThread {

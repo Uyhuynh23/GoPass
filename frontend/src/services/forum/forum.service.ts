@@ -368,16 +368,46 @@ export class ForumService {
     }
 
     // Get comments for a topic
-    static async getTopicComments(topicId: string, page: number = 1, limit: number = 20): Promise<any> {
+    static async getTopicComments(topicId: string, page: number = 1, limit: number = 20): Promise<ForumComment[]> {
         try {
-            const response = await httpClient.get<{ success: boolean; data: any }>(
+            const response = await httpClient.get<{ success: boolean; data: { comments: any[]; total: number } }>(
                 `/forum/topics/${topicId}/comments?page=${page}&limit=${limit}`,
                 { requiresAuth: true }
             );
-            return response.data;
+            
+            // Transform comments to include nested replies
+            const comments = response.data?.comments || [];
+            const transformedComments = await Promise.all(
+                comments.map(async (comment) => {
+                    // Fetch replies if any
+                    if (comment._id) {
+                        try {
+                            const repliesResponse = await httpClient.get<{ success: boolean; data: { replies: any[] } }>(
+                                `/forum/comments/${comment._id}/replies`,
+                                { requiresAuth: true }
+                            );
+                            comment.replies = repliesResponse.data?.replies || [];
+                        } catch (err) {
+                            comment.replies = [];
+                        }
+                    }
+                    
+                    // Check if this is an AI seed comment (based on isAiGenerated field)
+                    comment.isAISeed = comment.isAiGenerated || false;
+                    
+                    // Transform author field
+                    if (comment.userId) {
+                        comment.author = comment.userId;
+                    }
+                    
+                    return comment;
+                })
+            );
+            
+            return transformedComments;
         } catch (error) {
             console.error('Error fetching comments:', error);
-            return { comments: [], total: 0 };
+            return [];
         }
     }
 
