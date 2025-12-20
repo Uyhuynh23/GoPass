@@ -47,9 +47,6 @@ export function RecommendedWidget() {
               <span className="text-[var(--gopass-text-muted)]">
                 {exam.subject}
               </span>
-              <span className="text-[var(--gopass-text-muted)]">
-                {exam.views} lượt xem
-              </span>
             </div>
           </a>
         ))}

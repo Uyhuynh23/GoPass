@@ -177,10 +177,6 @@ const ArticleDetailModal: React.FC<ArticleDetailModalProps> = ({
                               {topic.stats.totalComments} bình luận
                             </div>
                             <div className="flex items-center gap-1">
-                              <Eye className="w-4 h-4" />
-                              {topic.stats.totalViews} lượt xem
-                            </div>
-                            <div className="flex items-center gap-1">
                               ❤️ {topic.stats.totalLikes} lượt thích
                             </div>
                           </div>
@@ -263,12 +259,6 @@ const ArticleDetailModal: React.FC<ArticleDetailModalProps> = ({
         <div className="p-6 border-t border-gray-200 bg-gray-50">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4 text-sm text-gray-600">
-              <div>
-                <span className="font-medium text-gray-900">
-                  {article.views.toLocaleString()}
-                </span>{" "}
-                lượt xem
-              </div>
               <div>
                 <span className="font-medium text-gray-900">
                   {article.likes}
