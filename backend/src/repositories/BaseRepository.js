@@ -44,6 +44,10 @@ class BaseRepository {
     return await this.model.findOneAndDelete(filter);
   }
 
+  async deleteMany(filter) {
+    return await this.model.deleteMany(filter);
+  }
+
   async count(filter = {}) {
     return await this.model.countDocuments(filter);
   }

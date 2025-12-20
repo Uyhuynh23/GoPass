@@ -238,6 +238,209 @@ class ForumController {
       next(error);
     }
   }
+
+  /**
+   * Get single package
+   * GET /api/forum/packages/:id
+   */
+  async getPackageById(req, res, next) {
+    try {
+      const { id } = req.params;
+      const pkg = await ForumService.getForumPackageById(id);
+
+      res.json({
+        success: true,
+        data: pkg,
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  /**
+   * Update package (Admin only)
+   * PUT /api/forum/packages/:id
+   */
+  async updatePackage(req, res, next) {
+    try {
+      const { id } = req.params;
+      const updateData = req.body;
+
+      const pkg = await ForumService.updateForumPackage(id, updateData);
+
+      res.json({
+        success: true,
+        message: "Package updated successfully",
+        data: pkg,
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  /**
+   * Delete package (Admin only)
+   * DELETE /api/forum/packages/:id
+   */
+  async deletePackage(req, res, next) {
+    try {
+      const { id } = req.params;
+      await ForumService.deleteForumPackage(id);
+
+      res.json({
+        success: true,
+        message: "Package deleted successfully",
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  /**
+   * Update topic (Admin only)
+   * PUT /api/forum/topics/:id
+   */
+  async updateTopic(req, res, next) {
+    try {
+      const { id } = req.params;
+      const updateData = req.body;
+
+      const topic = await ForumService.updateForumTopic(id, updateData);
+
+      res.json({
+        success: true,
+        message: "Topic updated successfully",
+        data: topic,
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  /**
+   * Delete topic (Admin only)
+   * DELETE /api/forum/topics/:id
+   */
+  async deleteTopic(req, res, next) {
+    try {
+      const { id } = req.params;
+      await ForumService.deleteForumTopic(id);
+
+      res.json({
+        success: true,
+        message: "Topic deleted successfully",
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  /**
+   * Update comment
+   * PUT /api/forum/comments/:id
+   */
+  async updateComment(req, res, next) {
+    try {
+      const { id } = req.params;
+      const { content } = req.body;
+      const userId = req.user.userId;
+
+      const comment = await ForumService.updateComment(id, userId, content);
+
+      res.json({
+        success: true,
+        message: "Comment updated successfully",
+        data: comment,
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  /**
+   * Delete comment
+   * DELETE /api/forum/comments/:id
+   */
+  async deleteComment(req, res, next) {
+    try {
+      const { id } = req.params;
+      const userId = req.user.userId;
+
+      await ForumService.deleteComment(id, userId);
+
+      res.json({
+        success: true,
+        message: "Comment deleted successfully",
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  /**
+   * Like comment
+   * POST /api/forum/comments/:id/like
+   */
+  async likeComment(req, res, next) {
+    try {
+      const { id } = req.params;
+      const userId = req.user.userId;
+
+      const result = await ForumService.likeComment(id, userId);
+
+      res.json({
+        success: true,
+        message: "Comment liked successfully",
+        data: result,
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  /**
+   * Unlike comment
+   * DELETE /api/forum/comments/:id/like
+   */
+  async unlikeComment(req, res, next) {
+    try {
+      const { id } = req.params;
+      const userId = req.user.userId;
+
+      const result = await ForumService.unlikeComment(id, userId);
+
+      res.json({
+        success: true,
+        message: "Comment unliked successfully",
+        data: result,
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  /**
+   * Get comments for a topic
+   * GET /api/forum/topics/:id/comments
+   */
+  async getTopicComments(req, res, next) {
+    try {
+      const { id } = req.params;
+      const { page, limit } = req.query;
+
+      const result = await ForumService.getTopicComments(id, {
+        page: parseInt(page) || 1,
+        limit: parseInt(limit) || 20,
+      });
+
+      res.json({
+        success: true,
+        data: result,
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
 }
 
 module.exports = new ForumController();

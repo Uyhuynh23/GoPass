@@ -209,12 +209,13 @@ const GenerateArticleModal: React.FC<GenerateArticleModalProps> = ({
               type="number"
               min="2"
               max="6"
+              disabled
               value={discussionCount}
               onChange={(e) => setDiscussionCount(parseInt(e.target.value))}
-              className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-gray-900 font-medium"
+              className="w-full px-4 py-2.5 border border-gray-300 rounded-lg bg-gray-50 text-gray-900 font-medium cursor-not-allowed"
             />
             <p className="text-xs text-gray-500 mt-1">
-              Mỗi bài viết sẽ có 2-6 chủ đề thảo luận AI
+              Mặc định: <span className="font-semibold text-gray-700">3 chủ đề</span> mỗi bài viết. Tùy chọn khác sẽ có trong phiên bản tiếp theo.
             </p>
           </div>
 

@@ -101,6 +101,17 @@ class ForumTopicRepository extends BaseRepository {
       { new: true }
     );
   }
+
+  /**
+   * Giảm số lượng comments
+   */
+  async decrementCommentsCount(topicId) {
+    return await this.model.findByIdAndUpdate(
+      topicId,
+      { $inc: { "stats.totalComments": -1 } },
+      { new: true }
+    );
+  }
 }
 
 module.exports = new ForumTopicRepository();

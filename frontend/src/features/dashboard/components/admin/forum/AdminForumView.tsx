@@ -179,10 +179,25 @@ const AdminForumView: React.FC = () => {
   };
 
   const handleDeleteArticle = async (articleId: number) => {
-    if (confirm("Bạn có chắc chắn muốn xóa bài viết này?")) {
-      // TODO: Implement delete API
-      console.log("Delete article:", articleId);
-      setArticles(articles.filter((a) => a.id !== articleId));
+    if (
+      !confirm(
+        "Bạn có chắc chắn muốn xóa bài viết này? Tất cả các chủ đề thảo luận liên quan cũng sẽ bị xóa."
+      )
+    ) {
+      return;
+    }
+
+    try {
+      const success = await ForumService.deletePackage(articleId.toString());
+      if (success) {
+        setArticles(articles.filter((a) => a.id !== articleId));
+        alert("Xóa bài viết thành công!");
+      } else {
+        alert("Không thể xóa bài viết. Vui lòng thử lại.");
+      }
+    } catch (error) {
+      console.error("Error deleting article:", error);
+      alert("Đã có lỗi xảy ra khi xóa bài viết.");
     }
   };
 

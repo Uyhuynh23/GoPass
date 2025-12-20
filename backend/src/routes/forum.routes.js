@@ -52,4 +52,74 @@ router.post("/topics/:id/like", authenticate, ForumController.likeTopic);
  */
 router.delete("/topics/:id/like", authenticate, ForumController.unlikeTopic);
 
+/**
+ * Get single package
+ */
+router.get("/packages/:id", authenticate, ForumController.getPackageById);
+
+/**
+ * Update package (Admin only)
+ */
+router.put(
+  "/packages/:id",
+  authenticate,
+  authorize("admin"),
+  ForumController.updatePackage
+);
+
+/**
+ * Delete package (Admin only)
+ */
+router.delete(
+  "/packages/:id",
+  authenticate,
+  authorize("admin"),
+  ForumController.deletePackage
+);
+
+/**
+ * Update topic (Admin only)
+ */
+router.put(
+  "/topics/:id",
+  authenticate,
+  authorize("admin"),
+  ForumController.updateTopic
+);
+
+/**
+ * Delete topic (Admin only)
+ */
+router.delete(
+  "/topics/:id",
+  authenticate,
+  authorize("admin"),
+  ForumController.deleteTopic
+);
+
+/**
+ * Get comments for a topic
+ */
+router.get("/topics/:id/comments", authenticate, ForumController.getTopicComments);
+
+/**
+ * Update comment (Authenticated - owner only)
+ */
+router.put("/comments/:id", authenticate, ForumController.updateComment);
+
+/**
+ * Delete comment (Authenticated - owner only)
+ */
+router.delete("/comments/:id", authenticate, ForumController.deleteComment);
+
+/**
+ * Like comment (Authenticated)
+ */
+router.post("/comments/:id/like", authenticate, ForumController.likeComment);
+
+/**
+ * Unlike comment (Authenticated)
+ */
+router.delete("/comments/:id/like", authenticate, ForumController.unlikeComment);
+
 module.exports = router;

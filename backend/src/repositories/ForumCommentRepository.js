@@ -106,6 +106,34 @@ class ForumCommentRepository extends BaseRepository {
   async softDelete(commentId) {
     return await this.update(commentId, { status: "deleted" });
   }
+
+  /**
+   * Add like to comment
+   */
+  async addLike(commentId, userId) {
+    return await this.model.findByIdAndUpdate(
+      commentId,
+      {
+        $addToSet: { likedBy: userId },
+        $inc: { likesCount: 1 },
+      },
+      { new: true }
+    );
+  }
+
+  /**
+   * Remove like from comment
+   */
+  async removeLike(commentId, userId) {
+    return await this.model.findByIdAndUpdate(
+      commentId,
+      {
+        $pull: { likedBy: userId },
+        $inc: { likesCount: -1 },
+      },
+      { new: true }
+    );
+  }
 }
 
 module.exports = new ForumCommentRepository();

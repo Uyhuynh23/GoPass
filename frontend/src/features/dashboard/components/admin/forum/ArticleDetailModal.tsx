@@ -64,9 +64,21 @@ const ArticleDetailModal: React.FC<ArticleDetailModalProps> = ({
   };
 
   const handleDeleteTopic = async (topicId: string) => {
-    if (confirm("Bạn có chắc chắn muốn xóa chủ đề thảo luận này?")) {
-      // TODO: Implement delete API
-      setForumTopics(forumTopics.filter((t) => t._id !== topicId));
+    if (!confirm("Bạn có chắc chắn muốn xóa chủ đề thảo luận này?")) {
+      return;
+    }
+
+    try {
+      const success = await ForumService.deleteTopic(topicId);
+      if (success) {
+        setForumTopics(forumTopics.filter((t) => t._id !== topicId));
+        alert("Xóa chủ đề thành công!");
+      } else {
+        alert("Không thể xóa chủ đề. Vui lòng thử lại.");
+      }
+    } catch (error) {
+      console.error("Error deleting topic:", error);
+      alert("Đã có lỗi xảy ra khi xóa chủ đề.");
     }
   };
 

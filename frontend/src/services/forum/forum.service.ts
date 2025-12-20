@@ -230,4 +230,168 @@ export class ForumService {
             throw new Error(error?.message || 'Failed to generate articles');
         }
     }
+
+    // Get single package by ID
+    static async getPackageById(id: string): Promise<ForumPackage | null> {
+        try {
+            const response = await httpClient.get<{ success: boolean; data: ForumPackage }>(
+                `/forum/packages/${id}`,
+                { requiresAuth: true }
+            );
+            return response.data;
+        } catch (error) {
+            console.error('Error fetching package:', error);
+            return null;
+        }
+    }
+
+    // Delete package (Admin only)
+    static async deletePackage(id: string): Promise<boolean> {
+        try {
+            await httpClient.delete(`/forum/packages/${id}`, { requiresAuth: true });
+            return true;
+        } catch (error) {
+            console.error('Error deleting package:', error);
+            return false;
+        }
+    }
+
+    // Get topic detail with comments
+    static async getTopicDetail(id: string): Promise<{ topic: ForumTopic; comments: any[]; commentsTotal: number } | null> {
+        try {
+            const response = await httpClient.get<{ success: boolean; data: any }>(
+                `/forum/topics/${id}`,
+                { requiresAuth: true }
+            );
+            return response.data;
+        } catch (error) {
+            console.error('Error fetching topic detail:', error);
+            return null;
+        }
+    }
+
+    // Delete topic (Admin only)
+    static async deleteTopic(id: string): Promise<boolean> {
+        try {
+            await httpClient.delete(`/forum/topics/${id}`, { requiresAuth: true });
+            return true;
+        } catch (error) {
+            console.error('Error deleting topic:', error);
+            return false;
+        }
+    }
+
+    // Create comment for topic
+    static async createComment(topicId: string, content: string): Promise<any> {
+        try {
+            const response = await httpClient.post(
+                `/forum/topics/${topicId}/comments`,
+                { content },
+                { requiresAuth: true }
+            );
+            return response.data;
+        } catch (error) {
+            console.error('Error creating comment:', error);
+            throw error;
+        }
+    }
+
+    // Update comment
+    static async updateComment(commentId: string, content: string): Promise<any> {
+        try {
+            const response = await httpClient.put(
+                `/forum/comments/${commentId}`,
+                { content },
+                { requiresAuth: true }
+            );
+            return response.data;
+        } catch (error) {
+            console.error('Error updating comment:', error);
+            throw error;
+        }
+    }
+
+    // Delete comment
+    static async deleteComment(commentId: string): Promise<boolean> {
+        try {
+            await httpClient.delete(`/forum/comments/${commentId}`, { requiresAuth: true });
+            return true;
+        } catch (error) {
+            console.error('Error deleting comment:', error);
+            return false;
+        }
+    }
+
+    // Like topic
+    static async likeTopic(topicId: string): Promise<boolean> {
+        try {
+            await httpClient.post(`/forum/topics/${topicId}/like`, {}, { requiresAuth: true });
+            return true;
+        } catch (error) {
+            console.error('Error liking topic:', error);
+            return false;
+        }
+    }
+
+    // Unlike topic
+    static async unlikeTopic(topicId: string): Promise<boolean> {
+        try {
+            await httpClient.delete(`/forum/topics/${topicId}/like`, { requiresAuth: true });
+            return true;
+        } catch (error) {
+            console.error('Error unliking topic:', error);
+            return false;
+        }
+    }
+
+    // Like comment
+    static async likeComment(commentId: string): Promise<boolean> {
+        try {
+            await httpClient.post(`/forum/comments/${commentId}/like`, {}, { requiresAuth: true });
+            return true;
+        } catch (error) {
+            console.error('Error liking comment:', error);
+            return false;
+        }
+    }
+
+    // Unlike comment
+    static async unlikeComment(commentId: string): Promise<boolean> {
+        try {
+            await httpClient.delete(`/forum/comments/${commentId}/like`, { requiresAuth: true });
+            return true;
+        } catch (error) {
+            console.error('Error unliking comment:', error);
+            return false;
+        }
+    }
+
+    // Get comments for a topic
+    static async getTopicComments(topicId: string, page: number = 1, limit: number = 20): Promise<any> {
+        try {
+            const response = await httpClient.get<{ success: boolean; data: any }>(
+                `/forum/topics/${topicId}/comments?page=${page}&limit=${limit}`,
+                { requiresAuth: true }
+            );
+            return response.data;
+        } catch (error) {
+            console.error('Error fetching comments:', error);
+            return { comments: [], total: 0 };
+        }
+    }
+
+    // Create reply for comment
+    static async createReply(commentId: string, content: string): Promise<any> {
+        try {
+            const response = await httpClient.post(
+                `/forum/comments/${commentId}/replies`,
+                { content },
+                { requiresAuth: true }
+            );
+            return response.data;
+        } catch (error) {
+            console.error('Error creating reply:', error);
+            throw error;
+        }
+    }
 }

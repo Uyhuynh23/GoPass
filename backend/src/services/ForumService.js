@@ -441,6 +441,53 @@ class ForumService {
   }
 
   /**
+   * Lấy chi tiết forum package
+   */
+  async getForumPackageById(packageId) {
+    const pkg = await ForumPackageRepository.findById(packageId);
+    if (!pkg) {
+      throw new Error("Forum package not found");
+    }
+    return pkg;
+  }
+
+  /**
+   * Cập nhật forum package (Admin)
+   */
+  async updateForumPackage(packageId, updateData) {
+    const pkg = await ForumPackageRepository.findById(packageId);
+    if (!pkg) {
+      throw new Error("Forum package not found");
+    }
+
+    return await ForumPackageRepository.update(packageId, updateData);
+  }
+
+  /**
+   * Xóa forum package (Admin)
+   */
+  async deleteForumPackage(packageId) {
+    const pkg = await ForumPackageRepository.findById(packageId);
+    if (!pkg) {
+      throw new Error("Forum package not found");
+    }
+
+    // Get all topics for this package
+    const topics = await ForumTopicRepository.find({ packageId });
+    const topicIds = topics.map(t => t._id.toString());
+
+    // Delete all comments for all topics
+    if (topicIds.length > 0) {
+      await ForumCommentRepository.deleteMany({ topicId: { $in: topicIds } });
+    }
+
+    // Delete all related topics
+    await ForumTopicRepository.deleteMany({ packageId });
+
+    return await ForumPackageRepository.delete(packageId);
+  }
+
+  /**
    * Lấy danh sách forum topics
    */
   async getForumTopics({ status, tags, page, limit }) {
@@ -481,6 +528,40 @@ class ForumService {
       comments: commentsData.comments,
       commentsTotal: commentsData.total,
     };
+  }
+
+  /**
+   * Cập nhật forum topic (Admin)
+   */
+  async updateForumTopic(topicId, updateData) {
+    const topic = await ForumTopicRepository.findById(topicId);
+    if (!topic) {
+      throw new Error("Forum topic not found");
+    }
+
+    return await ForumTopicRepository.update(topicId, updateData);
+  }
+
+  /**
+   * Xóa forum topic (Admin)
+   */
+  async deleteForumTopic(topicId) {
+    const topic = await ForumTopicRepository.findById(topicId);
+    if (!topic) {
+      throw new Error("Forum topic not found");
+    }
+
+    // Delete all comments for this topic
+    await ForumCommentRepository.deleteMany({ topicId });
+
+    return await ForumTopicRepository.delete(topicId);
+  }
+
+  /**
+   * Lấy comments cho một topic
+   */
+  async getTopicComments(topicId, { page, limit }) {
+    return await ForumCommentRepository.getTopicComments(topicId, { page, limit });
   }
 
   /**
@@ -532,6 +613,88 @@ class ForumService {
     await ForumTopicRepository.incrementCommentsCount(parentComment.topicId);
 
     return reply;
+  }
+
+  /**
+   * Cập nhật comment
+   */
+  async updateComment(commentId, userId, content) {
+    const comment = await ForumCommentRepository.findById(commentId);
+
+    if (!comment) {
+      throw new Error("Comment not found");
+    }
+
+    // Check ownership
+    if (comment.userId.toString() !== userId.toString()) {
+      throw new Error("Not authorized to update this comment");
+    }
+
+    return await ForumCommentRepository.update(commentId, { content });
+  }
+
+  /**
+   * Xóa comment
+   */
+  async deleteComment(commentId, userId) {
+    const comment = await ForumCommentRepository.findById(commentId);
+
+    if (!comment) {
+      throw new Error("Comment not found");
+    }
+
+    // Check ownership
+    if (comment.userId.toString() !== userId.toString()) {
+      throw new Error("Not authorized to delete this comment");
+    }
+
+    // Soft delete - set status to deleted
+    await ForumCommentRepository.update(commentId, { status: "deleted" });
+
+    // Update topic stats
+    await ForumTopicRepository.decrementCommentsCount(comment.topicId);
+
+    return { success: true };
+  }
+
+  /**
+   * Like comment
+   */
+  async likeComment(commentId, userId) {
+    const comment = await ForumCommentRepository.findById(commentId);
+
+    if (!comment) {
+      throw new Error("Comment not found");
+    }
+
+    // Check if already liked
+    if (comment.likedBy && comment.likedBy.includes(userId)) {
+      throw new Error("Already liked this comment");
+    }
+
+    await ForumCommentRepository.addLike(commentId, userId);
+    return { success: true };
+  }
+
+  /**
+   * Unlike comment
+   */
+  async unlikeComment(commentId, userId) {
+    const comment = await ForumCommentRepository.findById(commentId);
+
+    if (!comment) {
+      throw new Error("Comment not found");
+    }
+
+    await ForumCommentRepository.removeLike(commentId, userId);
+    return { success: true };
+  }
+
+  /**
+   * Giảm comment count cho topic
+   */
+  async decrementCommentsCount(topicId) {
+    await ForumTopicRepository.decrementCommentsCount(topicId);
   }
 
   /**
