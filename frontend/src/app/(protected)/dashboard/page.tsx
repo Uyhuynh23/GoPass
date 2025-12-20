@@ -2,58 +2,11 @@
 
 import React from "react";
 import AdminDashboardView from "@/features/dashboard/components/admin/AdminDashboardView";
-import QuestionBankView from "@/features/dashboard/components/admin/questionbank/QuestionBankView";
-import CreateContestView from "@/features/dashboard/components/admin/contest/CreateContestView";
 import StudentDashboardView from "@/features/dashboard/components/student/overview/StudentDashboardView";
-import StudentPracticeView from "@/features/dashboard/components/student/practice/StudentPracticeView";
-import StudentContestsView from "@/features/dashboard/components/student/contest/StudentContestsView";
-import StudentHistoryView from "@/features/dashboard/components/student/history/StudentHistoryView";
 import { useDashboard } from "@/features/dashboard/context/DashboardContext";
-import AdminForumView from "@/features/dashboard/components/admin/forum/AdminForumView";
-import StudentForumView from "@/features/dashboard/components/student/forum/StudentForumView";
 
 const DashboardPage: React.FC = () => {
-  const { activeTab, userRole } = useDashboard();
-
-  const renderAdminContent = () => {
-    switch (activeTab) {
-      case "exams":
-        return <AdminDashboardView />;
-
-      case "question-bank":
-        return <QuestionBankView />;
-
-      case "contests":
-        return <CreateContestView />;
-
-      case "forum":
-        return <AdminForumView />; // TODO: Implement Forum View
-      default:
-        return <AdminDashboardView />;
-    }
-  };
-
-  const renderStudentContent = () => {
-    switch (activeTab) {
-      case "overview":
-        return <StudentDashboardView />;
-
-      case "practice":
-        return <StudentPracticeView />;
-
-      case "contests":
-        return <StudentContestsView />;
-
-      case "history":
-        return <StudentHistoryView />;
-
-      case "forum":
-        return <StudentForumView />;
-
-      default:
-        return <StudentDashboardView />;
-    }
-  };
+  const { userRole } = useDashboard();
 
   const renderTeacherContent = () => {
     return (
@@ -100,13 +53,13 @@ const DashboardPage: React.FC = () => {
   const renderDashboardByRole = () => {
     switch (userRole) {
       case "admin":
-        return renderAdminContent();
+        return <AdminDashboardView />;
 
       case "teacher":
         return renderTeacherContent();
 
       case "student":
-        return renderStudentContent();
+        return <StudentDashboardView />;
 
       default:
         return null;
