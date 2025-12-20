@@ -5,6 +5,7 @@ const ExamSubmissionRepository = require('../repositories/ExamSubmissionReposito
 const QuestionRepository = require("../repositories/QuestionRepository");
 const ClassMemberRepository = require('../repositories/ClassMemberRepository');
 const ContestParticipationRepository = require('../repositories/ContestParticipationRepository');
+const ForumTopicRepository = require('../repositories/ForumTopicRepository');
 const vnSmartBotProvider = require("../providers/VnSmartBotProvider");
 const { ESSAY_EXPLANATION_GENERATION_PROMPT } = require("../config/prompts");
 
@@ -120,12 +121,22 @@ class ExamService {
 
     console.log('📋 User submission found:', userSubmission ? { id: userSubmission._id, status: userSubmission.status } : 'None');
 
+    // Link to forum topic if this exam was generated from forum
+    const relatedForumTopic = await ForumTopicRepository.findOne({ examId });
+
     return {
       ...exam.toObject(),
       questions,
       assignment,
       userSubmission,
       readingPassages: exam.readingPassages || [],
+      relatedForumTopic: relatedForumTopic
+        ? {
+            _id: relatedForumTopic._id,
+            title: relatedForumTopic.title,
+            packageId: relatedForumTopic.packageId,
+          }
+        : null,
     };
   }
 

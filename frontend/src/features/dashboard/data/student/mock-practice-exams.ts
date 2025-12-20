@@ -2,7 +2,7 @@ import { PracticeExam } from "../../types/student";
 
 export const MOCK_PRACTICE_EXAMS: PracticeExam[] = [
   {
-    id: 1,
+    id: "1",
     title: "Đề thi thử THPT QG 2025 - Toán",
     subject: "Toán",
     duration: 90,
@@ -11,7 +11,7 @@ export const MOCK_PRACTICE_EXAMS: PracticeExam[] = [
     tags: [],
   },
   {
-    id: 2,
+    id: "2",
     title: "Đề thi thử THPT QG 2025 - Ngữ Văn",
     subject: "Ngữ Văn",
     duration: 120,
@@ -20,7 +20,7 @@ export const MOCK_PRACTICE_EXAMS: PracticeExam[] = [
     tags: [],
   },
   {
-    id: 3,
+    id: "3",
     title: "Đề thi thử Tiếng Anh - Đề 15",
     subject: "Tiếng Anh",
     duration: 60,
@@ -32,7 +32,7 @@ export const MOCK_PRACTICE_EXAMS: PracticeExam[] = [
     tags: ["Đã hoàn thành"],
   },
   {
-    id: 4,
+    id: "4",
     title: "Luyện tập Vật Lý - Dao động cơ",
     subject: "Vật Lý",
     duration: 45,
@@ -44,7 +44,7 @@ export const MOCK_PRACTICE_EXAMS: PracticeExam[] = [
     tags: ["Đã hoàn thành"],
   },
   {
-    id: 5,
+    id: "5",
     title: "Đề thi Olympic Toán 2024",
     subject: "Toán",
     duration: 90,

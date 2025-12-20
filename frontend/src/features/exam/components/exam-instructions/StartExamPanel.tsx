@@ -70,7 +70,7 @@ const StartExamPanel: React.FC<StartExamPanelProps> = ({
         <div className="bg-white rounded-xl shadow-lg overflow-hidden">
           {/* Header */}
           <div
-            className={`${config.headerGradient} text-white py-8 px-5 text-center`}
+            className={`${config.headerGradient} text-white py-8 px-5`}
           >
             <div className="flex justify-center mb-3">
               <div className="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center backdrop-blur-sm">
@@ -87,10 +87,14 @@ const StartExamPanel: React.FC<StartExamPanelProps> = ({
                 </svg>
               </div>
             </div>
-            <h1 className="text-xl font-bold mb-2">{examTitle}</h1>
-            <p className="text-white/80 text-xs font-medium uppercase tracking-wider">
-              {config.examType}
-            </p>
+            <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3 text-center md:text-left">
+              <div className="flex-1">
+                <h1 className="text-xl font-bold mb-2">{examTitle}</h1>
+                <p className="text-white/80 text-xs font-medium uppercase tracking-wider">
+                  {config.examType}
+                </p>
+              </div>
+            </div>
           </div>
 
           <div className="p-6 space-y-6">

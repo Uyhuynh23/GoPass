@@ -3,9 +3,10 @@ import { PracticeExam } from "@/features/dashboard/types/student";
 import { useRouter } from "next/navigation";
 interface PracticeExamCardProps {
   exam: PracticeExam;
-  onStart: (id: number) => void;
-  onReview: (id: number) => void;
-  onRetry: (id: number) => void;
+  onStart: (id: string) => void;
+  onReview: (id: string) => void;
+  onRetry: (id: string) => void;
+  highlight?: boolean;
 }
 
 const PracticeExamCard: React.FC<PracticeExamCardProps> = ({
@@ -13,9 +14,25 @@ const PracticeExamCard: React.FC<PracticeExamCardProps> = ({
   onStart,
   onReview,
   onRetry,
+  highlight = false,
 }) => {
+  const router = useRouter();
+
+  const handleViewForum = () => {
+    if (!exam.forumPackageId || !exam.forumTopicId) return;
+    router.push(
+      `/dashboard/forum/article/${exam.forumPackageId}?topicId=${exam.forumTopicId}`
+    );
+  };
+
   return (
-    <div className="group bg-white p-5 rounded-xl border border-gray-100 hover:border-teal-200 hover:shadow-md transition-all flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+    <div
+      className={`group bg-white p-5 rounded-xl border ${
+        highlight
+          ? "border-amber-300 ring-2 ring-amber-200 shadow-lg animate-[pulse_1.2s_ease-in-out_3]"
+          : "border-gray-100 hover:border-teal-200 hover:shadow-md"
+      } transition-all flex flex-col md:flex-row justify-between items-start md:items-center gap-4`}
+    >
       {/* Left Column: Exam Info */}
       <div className="flex-1 space-y-2">
         <div className="flex items-center gap-3 flex-wrap">
@@ -59,6 +76,27 @@ const PracticeExamCard: React.FC<PracticeExamCardProps> = ({
               </svg>
               Từ contest
             </span>
+          )}
+          {exam.forumPackageId && exam.forumTopicId && (
+            <button
+              onClick={handleViewForum}
+              className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full border border-blue-200 bg-white text-blue-700 text-[10px] font-semibold shadow-sm hover:border-blue-300 hover:bg-blue-50 hover:shadow transition-all"
+            >
+              <svg
+                className="w-3 h-3"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M13.828 10.172a4 4 0 00-5.656 0l-3 3a4 4 0 105.656 5.656l1.102-1.101m1.396-4.555a4 4 0 005.656 0l3-3a4 4 0 10-5.656-5.656l-1.1 1.1"
+                />
+              </svg>
+              {"Đến diễn đàn"}
+            </button>
           )}
         </div>
 

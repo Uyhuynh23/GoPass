@@ -50,4 +50,9 @@ export interface ExamWithDetails extends Exam {
   assignment?: ExamAssignment;
   userSubmission?: ExamSubmission;
   readingPassages?: ReadingPassage[];
+  relatedForumTopic?: {
+    _id: string;
+    title: string;
+    packageId?: string;
+  } | null;
 }

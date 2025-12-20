@@ -62,6 +62,7 @@ export interface ForumTopic {
     _id: string;
     title: string;
     packageId: string;
+    examId?: string;
     sourceArticle?: {
         articleId: string;
         title?: string;

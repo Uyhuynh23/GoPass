@@ -1,7 +1,8 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
+import { useRouter, useSearchParams } from "next/navigation";
 import { ForumService } from "@/services/forum/forum.service";
 import {
   ForumArticle,
@@ -29,6 +30,8 @@ interface PageProps {
 }
 
 export default function ArticleDetailPage({ params }: PageProps) {
+  const router = useRouter();
+  const searchParams = useSearchParams();
   const [articleId, setArticleId] = useState<string>("");
   const [article, setArticle] = useState<ForumArticle | null>(null);
   const [forumTopics, setForumTopics] = useState<ForumTopic[]>([]);
@@ -44,6 +47,8 @@ export default function ArticleDetailPage({ params }: PageProps) {
   const [replyingTo, setReplyingTo] = useState<{
     [key: string]: string | null;
   }>({});
+  const topicRefs = useRef<Record<string, HTMLDivElement | null>>({});
+  const [targetTopicId, setTargetTopicId] = useState<string | null>(null);
 
   // Resolve params
   useEffect(() => {
@@ -69,6 +74,13 @@ export default function ArticleDetailPage({ params }: PageProps) {
         // Fetch forum topics for this package
         const topics = await ForumService.getTopicsByPackageId(articleId);
         setForumTopics(topics);
+
+        // Auto-expand topic if topicId is provided via query
+        const topicIdFromQuery = searchParams?.get("topicId");
+        if (topicIdFromQuery) {
+          setExpandedTopics((prev) => ({ ...prev, [topicIdFromQuery]: true }));
+          setTargetTopicId(topicIdFromQuery);
+        }
       } catch (error) {
         console.error("Error fetching article data:", error);
       } finally {
@@ -77,7 +89,20 @@ export default function ArticleDetailPage({ params }: PageProps) {
     };
 
     fetchData();
-  }, [articleId]);
+  }, [articleId, searchParams]);
+
+  useEffect(() => {
+    if (!targetTopicId) return;
+    const node = topicRefs.current[targetTopicId];
+    if (!node) return;
+
+    // Scroll slightly after render to ensure layout is ready
+    const timer = setTimeout(() => {
+      node.scrollIntoView({ behavior: "smooth", block: "start" });
+    }, 150);
+
+    return () => clearTimeout(timer);
+  }, [targetTopicId, forumTopics]);
 
   const toggleTopic = async (topicId: string) => {
     const isExpanding = !expandedTopics[topicId];
@@ -388,6 +413,9 @@ export default function ArticleDetailPage({ params }: PageProps) {
               forumTopics.map((topic) => (
                 <div
                   key={topic._id}
+                  ref={(el) => {
+                    if (el) topicRefs.current[topic._id] = el;
+                  }}
                   className="p-6 hover:bg-gray-50 transition-colors"
                 >
                   {/* Topic Header */}
@@ -413,27 +441,45 @@ export default function ArticleDetailPage({ params }: PageProps) {
                         </div>
 
                         {/* Topic Title */}
-                        <h3 className="text-lg font-semibold text-gray-900 mb-2">
-                          {topic.title}
-                        </h3>
-                      </div>
+                        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3">
+                          <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                            {topic.title}
+                          </h3>
 
-                      <button
-                        onClick={() => toggleTopic(topic._id)}
-                        className="flex items-center gap-1 text-sm text-teal-600 hover:text-teal-700 font-medium transition-colors"
-                      >
-                        {expandedTopics[topic._id] ? (
-                          <>
-                            <ChevronUp className="w-4 h-4" />
-                            Thu gọn
-                          </>
-                        ) : (
-                          <>
-                            <ChevronDown className="w-4 h-4" />
-                            Xem thảo luận
-                          </>
-                        )}
-                      </button>
+                          <div className="flex flex-col items-start md:items-end gap-2 self-start md:self-auto">
+                            {topic.examId && (
+                              <button
+                                onClick={() =>
+                                  router.push(
+                                    `/dashboard?tab=practice&focusExamId=${topic.examId}`
+                                  )
+                                }
+                                className="inline-flex items-center gap-2 px-3 py-2 text-sm font-semibold text-teal-700 bg-teal-50 border border-teal-200 rounded-lg hover:bg-teal-100 transition-colors"
+                              >
+                                <Sparkles className="w-4 h-4" />
+                                Luyện đề liên quan
+                              </button>
+                            )}
+
+                            <button
+                              onClick={() => toggleTopic(topic._id)}
+                              className="flex items-center gap-1 text-sm text-teal-600 hover:text-teal-700 font-medium transition-colors"
+                            >
+                              {expandedTopics[topic._id] ? (
+                                <>
+                                  <ChevronUp className="w-4 h-4" />
+                                  Thu gọn
+                                </>
+                              ) : (
+                                <>
+                                  <ChevronDown className="w-4 h-4" />
+                                  Xem thảo luận
+                                </>
+                              )}
+                            </button>
+                          </div>
+                        </div>
+                      </div>
                     </div>
 
                     {/* Essay Prompt (if exists) - shown as a hint, not part of comment thread */}

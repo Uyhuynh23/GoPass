@@ -1,11 +1,11 @@
 "use client";
 
-import React, { useState, useEffect, use } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 // import { useRouter } from "next/navigation";
 import { fetchPracticeExams } from "@/services/student/studentPracticeApi";
 import { PracticeExam } from "@/features/dashboard/types/student";
 import PracticeExamCard from "./PracticeExamCard";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 const StudentPracticeView = () => {
   // const router = useRouter();
   const [filterSubject, setFilterSubject] = useState("all");
@@ -14,7 +14,9 @@ const StudentPracticeView = () => {
   const [allExams, setAllExams] = useState<PracticeExam[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [highlightExamId, setHighlightExamId] = useState<string | null>(null);
   const router = useRouter();
+  const searchParams = useSearchParams();
   // Fetch practice exams
   useEffect(() => {
     const loadExams = async () => {
@@ -44,21 +46,42 @@ const StudentPracticeView = () => {
   // Get unique subjects from ALL exams, not filtered ones
   const subjects = Array.from(new Set(allExams.map((e) => e.subject)));
 
-  // Filter exams by search term
-  const filteredExams = exams.filter((exam) =>
-    exam.title.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  const focusExamId = searchParams?.get("focusExamId");
+
+  // Filter + prioritize focused exam
+  const filteredExams = useMemo(() => {
+    const base = exams.filter((exam) =>
+      exam.title.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+
+    if (!focusExamId) return base;
+
+    const idx = base.findIndex((e) => e.id === focusExamId);
+    if (idx === -1) return base;
+
+    const [target] = base.splice(idx, 1);
+    return [target, ...base];
+  }, [exams, searchTerm, focusExamId]);
+
+  // Highlight focused exam briefly
+  useEffect(() => {
+    if (focusExamId && exams.some((e) => e.id === focusExamId)) {
+      setHighlightExamId(focusExamId);
+      const timer = setTimeout(() => setHighlightExamId(null), 2000);
+      return () => clearTimeout(timer);
+    }
+  }, [focusExamId, exams]);
 
   // Handlers
   const handleFilterChange = (e: React.ChangeEvent<HTMLSelectElement>) =>
     setFilterSubject(e.target.value);
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) =>
     setSearchTerm(e.target.value);
-  const handleStartExam = (id: number) => {
+  const handleStartExam = (id: string) => {
     router.push(`/exam/${id}`);
   };
-  const handleReviewExam = (id: number) => console.log(`Reviewing: ${id}`);
-  const handleRetryExam = (id: number) => {
+  const handleReviewExam = (id: string) => console.log(`Reviewing: ${id}`);
+  const handleRetryExam = (id: string) => {
     router.push(`/exam/${id}`);
   };
 
@@ -169,6 +192,7 @@ const StudentPracticeView = () => {
                 onStart={handleStartExam}
                 onReview={handleReviewExam}
                 onRetry={handleRetryExam}
+                highlight={highlightExamId === exam.id}
               />
             ))
           )}

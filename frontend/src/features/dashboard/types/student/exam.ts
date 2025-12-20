@@ -29,7 +29,7 @@ export interface StudentContest {
 
 // Dùng cho UI danh sách Luyện tập
 export interface PracticeExam {
-  id: number;
+  id: string;
   title: string;
   subject: string;
   duration: number; // phút
@@ -39,6 +39,9 @@ export interface PracticeExam {
   score?: number;
   maxScore?: number;
   completedDate?: string;
+  forumTopicId?: string;
+  forumPackageId?: string;
+  forumTopicTitle?: string;
 }
 
 // Dùng cho dữ liệu thô từ DB (bảng ExamSubmission)
