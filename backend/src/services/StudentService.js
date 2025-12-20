@@ -18,6 +18,9 @@ class StudentService {
       })
     ]);
 
+    console.log('Class memberships:', classMemberships.length);
+    console.log('Exam submissions:', submissions.length);
+
     const joinedClasses = classMemberships.length;
     
     // Only count submitted exams (not in_progress)
@@ -396,6 +399,64 @@ class StudentService {
       exams: practiceExams,
       total: practiceExams.length
     };
+  }
+
+  /**
+   * Get student performance by subject
+   * Aggregates exam submissions grouped by subject with average scores
+   */
+  async getSubjectPerformance(studentId) {
+    // Get all graded or submitted exam submissions for the student
+    const submissions = await ExamSubmissionRepository.find(
+      { 
+        studentUserId: studentId,
+        status: { $in: ['submitted', 'graded'] }
+      },
+      {
+        populate: 'examId'
+      }
+    );
+
+    // Group submissions by subject
+    const subjectMap = new Map();
+
+    submissions.forEach(submission => {
+      const exam = submission.examId;
+      if (!exam || !exam.subject) return;
+
+      const subject = exam.subject;
+      const score = Number(submission.totalScore || 0);
+      const maxScore = Number(submission.maxScore || exam.totalPoints || 10);
+      
+      // Normalize score to 10-point scale
+      const normalizedScore = maxScore > 0 ? (score / maxScore) * 10 : 0;
+
+      if (!subjectMap.has(subject)) {
+        subjectMap.set(subject, {
+          name: subject,
+          totalScore: 0,
+          count: 0,
+          scores: []
+        });
+      }
+
+      const subjectData = subjectMap.get(subject);
+      subjectData.totalScore += normalizedScore;
+      subjectData.count += 1;
+      subjectData.scores.push(normalizedScore);
+    });
+
+    // Calculate average and format results
+    const subjectPerformance = Array.from(subjectMap.values()).map(data => ({
+      name: data.name,
+      score: data.count > 0 ? Number((data.totalScore / data.count).toFixed(1)) : 0,
+      total: data.count
+    }));
+
+    // Sort by subject name
+    subjectPerformance.sort((a, b) => a.name.localeCompare(b.name, 'vi'));
+
+    return subjectPerformance;
   }
 }
 

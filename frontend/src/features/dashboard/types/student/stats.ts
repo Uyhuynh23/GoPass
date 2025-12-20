@@ -18,6 +18,13 @@ export interface PerformanceDataPoint {
   score: number;  
 }
 
+// Type cho hiệu suất theo môn học
+export interface SubjectPerformance {
+  name: string;    // Tên môn học (e.g., "Toán", "Ngữ Văn")
+  score: number;   // Điểm trung bình (normalized to 10-point scale)
+  total: number;   // Tổng số bài thi đã làm cho môn này
+}
+
 // Type tổng hợp cho Dashboard (nếu cần)
 export interface StudentDashboardData {
   stats: StudentStats;

@@ -11,6 +11,7 @@ router.use(authorize('student'));
 router.get('/stats', authorize('student'), StudentController.getStudentStats);
 router.get('/history', authorize('student'), StudentController.getStudentHistory);
 router.get('/activity', authorize('student'), StudentController.getStudentActivity);
+router.get('/subject-performance', authorize('student'), StudentController.getSubjectPerformance);
 
 // Student practice exams endpoint
 router.get('/practice', authorize('student'), StudentController.getPracticeExams);

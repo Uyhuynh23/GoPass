@@ -1,17 +1,28 @@
 // src/features/dashboard/components/student/SubjectPerformanceWidget.tsx
-import React from "react";
+"use client";
+import React, { useEffect, useState } from "react";
+import { fetchSubjectPerformance } from "@/services/student/studentStatsApi";
+import { SubjectPerformance } from "@/features/dashboard/types/student";
 
 const SubjectPerformanceWidget = () => {
-  // Mock data for subjects and scores
-  const subjects = [
-    { name: "Toán", score: 8.5, total: 12 },
-    { name: "Ngữ Văn", score: 7.8, total: 8 },
-    { name: "Tiếng Anh", score: 8.2, total: 15 },
-    { name: "Vật Lý", score: 7.5, total: 10 },
-    { name: "Hóa Học", score: 8.0, total: 9 },
-    { name: "Sinh Học", score: 7.2, total: 7 },
-    { name: "Lịch Sử", score: 6.0, total: 5 }, // Added example for Average score
-  ];
+  const [subjects, setSubjects] = useState<SubjectPerformance[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const loadSubjectPerformance = async () => {
+      setIsLoading(true);
+      try {
+        const data = await fetchSubjectPerformance();
+        setSubjects(data);
+      } catch (error) {
+        console.error("Failed to load subject performance:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    loadSubjectPerformance();
+  }, []);
 
   // Helper function to determine color based on score
   const getColorConfig = (score: number) => {
@@ -52,42 +63,58 @@ const SubjectPerformanceWidget = () => {
         </p>
       </div>
 
-      {/* Subject List */}
-      <div className="space-y-5 flex-1">
-        {subjects.map((sub, idx) => {
-          const colors = getColorConfig(sub.score);
-          
-          return (
-            <div key={idx}>
-              {/* Label Row */}
-              <div className="flex justify-between items-end mb-2">
-                <span className="text-sm font-semibold text-gray-700 flex items-center gap-2">
-                  {/* Dynamic colored dot */}
-                  <span className={`w-2 h-2 rounded-full ${colors.dot}`}></span> 
-                  {sub.name}
-                </span>
-                <span className="text-xs text-gray-500">
-                  {sub.total} bài thi 
-                  {/* Dynamic colored score text */}
-                  <span className={`font-bold text-sm ml-1 ${colors.text}`}>
-                    {sub.score}
+      {/* Loading State */}
+      {isLoading ? (
+        <div className="flex items-center justify-center flex-1">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-teal-500"></div>
+        </div>
+      ) : subjects.length === 0 ? (
+        /* Empty State */
+        <div className="flex flex-col items-center justify-center flex-1 text-gray-400">
+          <svg className="w-16 h-16 mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+          </svg>
+          <p className="text-sm font-medium">Chưa có dữ liệu</p>
+          <p className="text-xs mt-1">Hoàn thành bài thi để xem thống kê</p>
+        </div>
+      ) : (
+        /* Subject List */
+        <div className="space-y-5 flex-1">
+          {subjects.map((sub, idx) => {
+            const colors = getColorConfig(sub.score);
+            
+            return (
+              <div key={idx}>
+                {/* Label Row */}
+                <div className="flex justify-between items-end mb-2">
+                  <span className="text-sm font-semibold text-gray-700 flex items-center gap-2">
+                    {/* Dynamic colored dot */}
+                    <span className={`w-2 h-2 rounded-full ${colors.dot}`}></span> 
+                    {sub.name}
                   </span>
-                  /10
-                </span>
+                  <span className="text-xs text-gray-500">
+                    {sub.total} bài thi 
+                    {/* Dynamic colored score text */}
+                    <span className={`font-bold text-sm ml-1 ${colors.text}`}>
+                      {sub.score}
+                    </span>
+                    /10
+                  </span>
+                </div>
+                
+                {/* Progress Bar Background */}
+                <div className="h-2.5 bg-gray-100 rounded-full overflow-hidden">
+                  {/* Dynamic colored progress bar */}
+                  <div 
+                    className={`h-full rounded-full transition-all duration-500 ${colors.bar}`}
+                    style={{ width: `${(sub.score / 10) * 100}%` }}
+                  ></div>
+                </div>
               </div>
-              
-              {/* Progress Bar Background */}
-              <div className="h-2.5 bg-gray-100 rounded-full overflow-hidden">
-                {/* Dynamic colored progress bar */}
-                <div 
-                  className={`h-full rounded-full transition-all duration-500 ${colors.bar}`}
-                  style={{ width: `${(sub.score / 10) * 100}%` }}
-                ></div>
-              </div>
-            </div>
-          );
-        })}
-      </div>
+            );
+          })}
+        </div>
+      )}
 
       {/* Legend / Footer */}
       <div className="flex justify-center gap-4 mt-8 pt-4 border-t border-gray-50 text-[10px] text-gray-400 font-medium">

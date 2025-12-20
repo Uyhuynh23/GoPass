@@ -1,5 +1,5 @@
 // src/services/studentStatsApi.ts
-import { StudentStats, HistoryDataResponse, PerformanceDataPoint } from "@/features/dashboard/types/student/";
+import { StudentStats, HistoryDataResponse, PerformanceDataPoint, SubjectPerformance } from "@/features/dashboard/types/student/";
 import { httpClient } from "@/lib/http";
 
 /**
@@ -75,6 +75,27 @@ export const fetchStudentActivity = async (): Promise<PerformanceDataPoint[]> =>
 
   } catch (error) {
     console.error("Error fetching activity:", error);
+    return [];
+  }
+};
+
+/**
+ * Fetch student performance grouped by subject
+ * Backend calculates average scores from exam submissions
+ */
+export const fetchSubjectPerformance = async (): Promise<SubjectPerformance[]> => {
+  try {
+    const response = await httpClient.get<{ 
+      success: boolean; 
+      data: SubjectPerformance[] 
+    }>('/students/subject-performance', { requiresAuth: true });
+
+    return response.success && response.data 
+      ? response.data 
+      : [];
+
+  } catch (error) {
+    console.error("Error fetching subject performance:", error);
     return [];
   }
 };
