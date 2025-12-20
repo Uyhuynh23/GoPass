@@ -1,13 +1,44 @@
 // Global error handling middleware
+const fs = require("fs");
+const path = require("path");
+
 const errorHandler = (err, req, res, next) => {
-  console.error('Error:', err);
+  const errorLog = {
+    timestamp: new Date().toISOString(),
+    method: req.method,
+    url: req.url,
+    error: {
+      name: err.name,
+      message: err.message,
+      stack: err.stack,
+    },
+  };
+
+  // Log to console
+  console.error("❌❌❌ ERROR HANDLER ❌❌❌");
+  console.error("Error:", err);
+  console.error("Error stack:", err.stack);
+
+  // Log to file
+  try {
+    const logDir = path.join(__dirname, "../../logs");
+    if (!fs.existsSync(logDir)) {
+      fs.mkdirSync(logDir, { recursive: true });
+    }
+    fs.appendFileSync(
+      path.join(logDir, "error.log"),
+      JSON.stringify(errorLog, null, 2) + "\n---\n"
+    );
+  } catch (logError) {
+    console.error("Failed to write error log:", logError);
+  }
 
   // Mongoose validation error
-  if (err.name === 'ValidationError') {
-    const errors = Object.values(err.errors).map(e => e.message);
+  if (err.name === "ValidationError") {
+    const errors = Object.values(err.errors).map((e) => e.message);
     return res.status(400).json({
       success: false,
-      message: 'Validation Error',
+      message: "Validation Error",
       errors,
     });
   }
@@ -22,32 +53,32 @@ const errorHandler = (err, req, res, next) => {
   }
 
   // Mongoose cast error (invalid ObjectId)
-  if (err.name === 'CastError') {
+  if (err.name === "CastError") {
     return res.status(400).json({
       success: false,
-      message: 'Invalid ID format',
+      message: "Invalid ID format",
     });
   }
 
   // JWT errors
-  if (err.name === 'JsonWebTokenError') {
+  if (err.name === "JsonWebTokenError") {
     return res.status(401).json({
       success: false,
-      message: 'Invalid token',
+      message: "Invalid token",
     });
   }
 
-  if (err.name === 'TokenExpiredError') {
+  if (err.name === "TokenExpiredError") {
     return res.status(401).json({
       success: false,
-      message: 'Token expired',
+      message: "Token expired",
     });
   }
 
   // Default error
   res.status(err.statusCode || 500).json({
     success: false,
-    message: err.message || 'Internal Server Error',
+    message: err.message || "Internal Server Error",
   });
 };
 
