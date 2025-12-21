@@ -1,5 +1,7 @@
+const mongoose = require('mongoose');
 const ContestRepository = require('../repositories/ContestRepository');
 const ContestExamRepository = require('../repositories/ContestExamRepository');
+const ContestParticipationRepository = require('../repositories/ContestParticipationRepository');
 const ExamSubmissionRepository = require('../repositories/ExamSubmissionRepository');
 
 class ContestService {
@@ -31,9 +33,15 @@ class ContestService {
       populate: 'examId',
     });
 
+    // Participation of current user (if any)
+    const participation = userId
+      ? await ContestParticipationRepository.findParticipation(contestId, userId)
+      : null;
+
     return {
       ...contest.toObject(),
       exams,
+      participation,
     };
   }
 
@@ -154,6 +162,39 @@ class ContestService {
       }));
 
     return leaderboard;
+  }
+
+  // Student joins contest
+  async joinContest(contestId, userId) {
+    const contest = await ContestRepository.findById(contestId);
+    if (!contest) {
+      throw new Error('Contest not found');
+    }
+
+    // Already joined
+    const existing = await ContestParticipationRepository.findParticipation(
+      contestId,
+      userId
+    );
+    if (existing) return existing;
+
+    const participation = await ContestParticipationRepository.create({
+      contestId: new mongoose.Types.ObjectId(contestId),
+      userId: new mongoose.Types.ObjectId(userId),
+      enrolledAt: new Date(),
+      totalScore: 0,
+      rank: null,
+      percentile: null,
+      completedExams: [],
+    });
+
+    // Increment participants count (best-effort)
+    const currentCount = contest.participantsCount || 0;
+    await ContestRepository.update(contestId, {
+      participantsCount: currentCount + 1,
+    });
+
+    return participation;
   }
 }
 

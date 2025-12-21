@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import { contestService } from "@/services/contest/contest.service";
+import { useAuth } from "@/features/auth/context/AuthContext";
 import {
   Calendar,
   Clock,
@@ -30,6 +31,7 @@ interface LandingProps {
 
 export default function ContestLanding({ data }: { data: LandingProps }) {
   const router = useRouter();
+  const { user, isAuthenticated } = useAuth();
   const { userProgress } = data;
   const [isLoading, setIsLoading] = useState(false); // ✅ State xử lý loading khi bấm nút
 
@@ -37,17 +39,25 @@ export default function ContestLanding({ data }: { data: LandingProps }) {
   const handleJoin = async () => {
     try {
       setIsLoading(true);
+      // Nếu chưa đăng nhập, chuyển hướng đến trang đăng nhập
+      const userId = user?.id || (user as any)?._id;
+      console.log("Joining contest with userId:", userId, "auth user:", user);
+      if (!userId) {
+        router.push("/login");
+        return;
+      }
       // 1. Gọi API POST để đăng ký
-      const res = await contestService.joinContest(data.id, "student-01");
+      const res = await contestService.joinContest(data.id, userId);
 
       if (res.success) {
-        // 2. Refresh để Server Component tải lại data mới (số thí sinh tăng, nút đổi thành Tiếp tục)
-        router.refresh();
+        // 2. Điều hướng đến trang hub cuộc thi sau khi tham gia thành công
+        router.push(`/contest/${data.id}/hub`);
       } else {
         alert("Có lỗi xảy ra: " + (res.message || "Không thể tham gia"));
       }
     } catch (error) {
       console.error("Join error:", error);
+      alert("Lỗi khi tham gia cuộc thi");
     } finally {
       setIsLoading(false);
     }

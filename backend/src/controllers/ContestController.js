@@ -12,7 +12,8 @@ class ContestController {
 
   async getContestDetail(req, res) {
     try {
-      const contest = await ContestService.getContestDetail(req.params.contestId, req.user.userId);
+      const userId = req.user ? req.user.userId : undefined;
+      const contest = await ContestService.getContestDetail(req.params.contestId, userId);
       res.status(200).json({ success: true, data: contest });
     } catch (error) {
       res.status(404).json({ success: false, message: error.message });
@@ -67,6 +68,18 @@ class ContestController {
     try {
       const leaderboard = await ContestService.getLeaderboard(req.params.contestId);
       res.status(200).json({ success: true, data: leaderboard });
+    } catch (error) {
+      res.status(400).json({ success: false, message: error.message });
+    }
+  }
+
+  async joinContest(req, res) {
+    try {
+      const participation = await ContestService.joinContest(
+        req.params.contestId,
+        req.user.userId
+      );
+      res.status(200).json({ success: true, data: participation });
     } catch (error) {
       res.status(400).json({ success: false, message: error.message });
     }

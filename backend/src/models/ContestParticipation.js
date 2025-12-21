@@ -1,15 +1,43 @@
 const mongoose = require('mongoose');
 
-const contestParticipationSchema = new mongoose.Schema({
-  _id: { type: String },
-  contestId: { type: String }, // Khóa ngoại dạng String
-  userId: { type: String },    // Khóa ngoại dạng String
-  enrolledAt: { type: Date },
-  totalScore: { type: Number, default: 0 },
-  rank: { type: Number },
-  percentile: { type: Number },
-  completedExams: [{ type: String }] // JSON của bạn để mảng các ID Exam
-});
+const contestParticipationSchema = new mongoose.Schema(
+  {
+    contestId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Contest',
+      required: true,
+    },
+    userId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User',
+      required: true,
+    },
+    enrolledAt: {
+      type: Date,
+      default: Date.now,
+    },
+    totalScore: {
+      type: Number,
+      default: 0,
+    },
+    rank: {
+      type: Number,
+      default: null,
+    },
+    percentile: {
+      type: Number,
+      default: null,
+    },
+    completedExams: {
+      type: [mongoose.Schema.Types.ObjectId],
+      ref: 'Exam',
+      default: [],
+    },
+  },
+  {
+    timestamps: true,
+  }
+);
 
 contestParticipationSchema.index({ contestId: 1, userId: 1 }, { unique: true });
 

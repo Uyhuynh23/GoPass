@@ -457,6 +457,23 @@
       "updatedAt": "2025-12-16T08:00:00Z"
     },
     {
+      "id": "exam-0001",
+      "title": "KỲ THI TỐT NGHIỆP THPT NĂM 2025 - Môn TOÁN (Mã đề 0101)",
+      "description": "Đề thi chính thức. Thời gian: 90 phút.",
+      "subject": "Toán Học",
+      "durationMinutes": 90,
+      "mode": "contest",
+      "showResultsImmediately": false,
+      "totalQuestions": 22,
+      "totalPoints": 10,
+      "readingPassages": [],
+      "shuffleQuestions": false,
+      "isPublished": true,
+      "createdBy": "admin-01",
+      "createdAt": "2025-12-16T08:00:00Z",
+      "updatedAt": "2025-12-16T08:00:00Z"
+    },
+    {
       "id": "exam-003",
       "title": "KỲ THI TỐT NGHIỆP THPT NĂM 2025 - Môn TIẾNG ANH (Mã đề 1102)",
       "description": "Đề thi chính thức. Thời gian: 50 phút.",
@@ -500,12 +517,79 @@
       "updatedAt": "2025-12-14T08:00:00Z"
     },
     {
+      "id": "exam-0003",
+      "title": "KỲ THI TỐT NGHIỆP THPT NĂM 2025 - Môn TIẾNG ANH (Mã đề 1102)",
+      "description": "Đề thi chính thức. Thời gian: 50 phút.",
+      "subject": "Tiếng Anh",
+      "durationMinutes": 50,
+      "mode": "contest",
+      "showResultsImmediately": false,
+      "totalQuestions": 40,
+      "totalPoints": 10,
+      "readingPassages": [
+        {
+          "id": "passage-eng-01",
+          "title": "Passage 1 (Q1–Q8): Project Farming",
+          "content": "        <p class=\"mb-4 text-justify\">When several farmers merge plots into a single “project farm”, they use digital tools to make that teamwork far more effective. GPS mapping, drones, and in-field sensors build a live, shared picture of soil types, weather shifts, and plant growth. Because everyone works on the same data, the team can <b>settle</b> seeding dates, determine when to spray, and track machinery in real time. What once depended on guesswork is now driven by verifiable information.</p>\n        \n        <p class=\"mb-4 text-justify\">With GPS technology, farmers can accurately map out their fields and create customised planting plans. Seeding machines change <b>their</b> rate on the fly, drones spray pests on targeted zones, and smart spreaders apply fertiliser only where data shows a need. <b>Because inputs go exactly where they help, fields yield more while chemical runoff falls.</b> Trials report considerable savings on seed, fuel, and sprays – benefits the partners split at the season’s end.</p>\n        \n        <p class=\"mb-4 text-justify\">Water management is just as precise. Specialised equipment tracks moisture every hour, and forecast apps predict rain, wind, or heatwaves. Automated pumps deliver measured water amounts to thirsty zones and stop when a storm is coming, <b>slashing</b> waste and energy bills. The result is steadier yields in dry years, fewer nutrients washed away, and a smaller water footprint for the whole partnership. Smart irrigation also helps limit weed growth, reducing herbicide use.</p>\n        \n        <p class=\"mb-4 text-justify\">The journey from field to market is equally digital. Cloud platforms record harvest weights, storage temperatures, and shipment times the moment they change, while blockchain records freeze each entry so customers can rely on it. Analytic tools browse the records to indicate weak points in the procedure, forecast prices, and suggest better planting plans for the next season to project partners. This makes project farming both profitable and sustainable.</p>\n        \n        <p class=\"text-right italic text-sm text-gray-500\">(Adapted from https://www.consumersearch.com)</p>"
+        },
+        {
+          "id": "passage-eng-02",
+          "title": "News (Q9–Q14): DIFF 2025",
+          "content": "        <h3 class=\"font-bold text-center mb-4\">Da Nang International Fireworks Festival (DIFF) 2025</h3>\n        \n        <p class=\"mb-4 text-justify leading-relaxed\">\n          With ten teams worldwide, DIFF 2025 features the largest <span class=\"bg-amber-100 text-amber-800 font-bold px-2 py-0.5 rounded border border-amber-200\">(9) _______</span> of participating teams in its history, and is predicted to be the most thrilling <span class=\"bg-amber-100 text-amber-800 font-bold px-2 py-0.5 rounded border border-amber-200\">(10) _______</span> so far.\n        </p>\n        \n        <p class=\"mb-4 text-justify leading-relaxed\">\n          Z121 Vina Pyrotech, a company <span class=\"bg-amber-100 text-amber-800 font-bold px-2 py-0.5 rounded border border-amber-200\">(11) _______</span> by Vietnam Ministry of National Defence, is a newcomer this year. With thirty years of experience in fireworks, Z121 Vina Pyrotech is expected to deliver a breathtaking performance. It is among the <span class=\"bg-amber-100 text-amber-800 font-bold px-2 py-0.5 rounded border border-amber-200\">(12) _______</span> candidates to win the championship.\n        </p>\n        \n        <p class=\"mb-4 text-justify leading-relaxed\">\n          From May 31st to July 12th, DIFF 2025 promises a series of spectacular fireworks displays, <span class=\"bg-amber-100 text-amber-800 font-bold px-2 py-0.5 rounded border border-amber-200\">(13) _______</span> is hoped to bring spectators a world-class entertainment experience.\n        </p>\n        \n        <p class=\"mb-4 text-justify leading-relaxed\">\n          Over the past twelve years, the Da Nang International Fireworks Festival has helped the city <span class=\"bg-amber-100 text-amber-800 font-bold px-2 py-0.5 rounded border border-amber-200\">(14) _______</span> the reputation as “The City of Fireworks” and become an attractive tourist destination.\n        </p>\n        \n        <p class=\"text-right italic text-sm text-gray-500\">(Adapted from https://www.vietnamnews.vn)</p>"
+        },
+        {
+          "id": "passage-eng-03",
+          "title": "Passage 2 (Q20–Q29): Greenwashing",
+          "content": "        <p class=\"mb-4 text-justify\">We seem to be entering a boom era for greenwashing – the tactic of covering routine pollution in eco-friendly language.</p> \n        \n        <p class=\"mb-4 text-justify\"><b>[I]</b> Picture running a high-emitting corporation: meaningful decarbonisation would demand painful negotiations, huge capital outlays, and a full redesign of the business model. Hiring an expert agency to splash “carbon-neutral” or “net-zero” across products is far easier, buying time while emissions remain untouched.</p>\n        \n        <p class=\"mb-4 text-justify\">Consumers meet this sleight of hand everywhere. Airlines sell “carbon-neutral” flights, filling stations boast about “net-zero” fuel, and breakfast bacon is re-labelled as planet-safe. Advertising spin is old, yet today it is <b>manipulated</b> to conceal ongoing environmental damage. Social media influencers and glossy sustainability reports amplify these claims, broadcasting the narrative far beyond traditional marketing channels.</p>\n        \n        <p class=\"mb-4 text-justify\">The term greenwashing emerged in the 1980s, an era of oil spills and growing climate science, but <b>the practice</b> has exploded only recently. <b>[II]</b> Intensifying public anxiety over global heating and ecosystem collapse has placed companies under sharp scrutiny; many boards therefore choose eye-catching PR over the tougher route of restructuring supply chains, energy sources, and product lines. Regulators on both sides of the Atlantic are struggling to police false eco-claims, yet enforcement still lags behind corporate ingenuity. Investors, eager to protect short-term returns, frequently applaud these surface-level initiatives, reinforcing the cycle. <b>[III]</b> No sector illustrates the issue better than oil and gas. Having realised that denying climate science now backfires, the industry has swapped denial for “green” paint. Press releases trumpet potential renewable ventures while drilling plans expand unabated.</p>\n        \n        <p class=\"mb-4 text-justify\">Why does this matter? Greenwashing and climate denial share a core objective: to postpone the deep emission cuts claimed by scientists as urgent this decade. <b>[IV]</b> <u>Whereas denial disputes the crisis, greenwashing misleads the public into believing problems are solved, thereby eroding consumer advocacy of genuine environmental actions and stalling regulatory reforms.</u> In effect, it acts as a soothing lullaby, guiding society ever closer to ecological breakdown while fostering a false sense of progress. Exposing the facade – and insisting on verifiable, measurable carbon reductions – is essential if rhetoric is to give way to real action.</p>\n        \n        <p class=\"text-right italic text-sm text-gray-500\">(Adapted from https://www.greenpeace.org.uk)</p>"
+        },
+        {
+          "id": "passage-eng-04",
+          "title": "Leaflet (Q30–Q35): Money Management",
+          "content": "        <h3 class=\"font-bold text-lg mb-3 text-teal-700\">How to Manage Your Money Wisely?</h3>\n        \n        <p class=\"mb-4 text-justify leading-relaxed\">\n          Managing your finances properly is essential for a stable and secure life. <span class=\"bg-amber-100 text-amber-800 font-bold px-2 py-0.5 rounded border border-amber-200\">(30) _______</span>, many people struggle with budgeting and saving and give up their financial plans sooner or later, eventually leading <span class=\"bg-amber-100 text-amber-800 font-bold px-2 py-0.5 rounded border border-amber-200\">(31) _______</span> overspending and financial stress. Here are some tips to well manage your pocket:\n        </p>\n        \n        <ul class=\"list-disc pl-5 space-y-2 mb-4\">\n          <li>Invest some of your money if possible.</li>\n          <li>Have a bank account with an increasing amount of savings <span class=\"bg-amber-100 text-amber-800 font-bold px-2 py-0.5 rounded border border-amber-200\">(32) _______</span> month by setting realistic financial goals.</li>\n          <li>Buy <span class=\"bg-amber-100 text-amber-800 font-bold px-2 py-0.5 rounded border border-amber-200\">(33) _______</span> within your price range.</li>\n          <li>Track your spending carefully to avoid <span class=\"bg-amber-100 text-amber-800 font-bold px-2 py-0.5 rounded border border-amber-200\">(34) _______</span> expenditure on unnecessary purchases.</li>\n          <li>Prioritise things that bring you lasting happiness and financial security to get your money’s <span class=\"bg-amber-100 text-amber-800 font-bold px-2 py-0.5 rounded border border-amber-200\">(35) _______</span>!</li>\n        </ul>\n        \n        <p class=\"text-right italic text-sm text-gray-500\">(Adapted from https://www.thebalancemoney.com)</p>"
+        },
+        {
+          "id": "passage-eng-05",
+          "title": "Passage 3 (Q36–Q40): Holiday Buying Behaviour",
+          "content": "        <p class=\"mb-4 text-justify leading-relaxed\">\n          The process of sorting through the various holidays on offer and determining which is the best for you is inevitably complex and individual personality traits will determine the eventual decision. Some people undertake a process of extensive problem solving, in which information is sought about a series of products, <span class=\"bg-amber-100 text-amber-800 font-bold px-2 py-0.5 rounded border border-amber-200\">(36) _______</span>. Other consumers with no patience to explore a variety of choices <span class=\"bg-amber-100 text-amber-800 font-bold px-2 py-0.5 rounded border border-amber-200\">(37) _______</span>, for the sake of their convenience rather than trying to guarantee that they buy the best possible product. This is known as limited problem solving.\n        </p>\n        \n        <p class=\"mb-4 text-justify leading-relaxed\">\n          Many consumers engage in routinised response behaviour, in which choices change relatively little over time. <span class=\"bg-amber-100 text-amber-800 font-bold px-2 py-0.5 rounded border border-amber-200\">(38) _______</span>. Also, some holidaymakers who have been content with a particular company or destination in the past may opt for the same experience again.\n        </p>\n        \n        <p class=\"mb-4 text-justify leading-relaxed\">\n          Finally, some consumers will buy on impulse. <span class=\"bg-amber-100 text-amber-800 font-bold px-2 py-0.5 rounded border border-amber-200\">(39) _______</span>. It is, in fact, a pattern of behaviour that is becoming increasingly prevalent – to the dismay of the operators, who then have less scope for forward planning and reduced opportunities to gain from investing deposits in the short term. <span class=\"bg-amber-100 text-amber-800 font-bold px-2 py-0.5 rounded border border-amber-200\">(40) _______</span>, where ‘distressed stock’ needs to be cleared at short notice and this can be stimulated by late availability offers particularly.\n        </p>\n        \n        <p class=\"text-right italic text-sm text-gray-500\">(Adapted from The business of tourism)</p>"
+        }
+      ],
+      "shuffleQuestions": false,
+      "isPublished": true,
+      "createdBy": "admin-01",
+      "createdAt": "2025-12-14T08:00:00Z",
+      "updatedAt": "2025-12-14T08:00:00Z"
+    },
+    {
       "id": "exam-002",
       "title": "KÌ THI THỬ TỐT NGHIỆP THPT NĂM 2025 - Môn NGỮ VĂN (SỞ GD&ĐT YÊN BÁI)",
       "description": "Đề thi thử tốt nghiệp. Thời gian: 120 phút (không kể thời gian giao đề).",
       "subject": "Ngữ Văn",
       "durationMinutes": 120,
       "mode": "practice_global",
+      "shuffleQuestions": false,
+      "showResultsImmediately": false,
+      "isPublished": true,
+      "totalQuestions": 7,
+      "totalPoints": 10,
+      "createdBy": "admin-01",
+      "createdAt": "2025-12-14T08:00:00Z",
+      "updatedAt": "2025-12-14T08:00:00Z",
+      "readingPassages": [
+        {
+          "id": "passage-van-01",
+          "title": "Phần 1: Đọc hiểu (3,0 điểm)",
+          "content": "<h3 class=\"font-bold text-center mb-4\">TIỆC XÒE VUI NHẤT</h3><p class=\"text-center italic mb-4\">(Trích)</p><p class=\"mb-3 text-justify\">Hà Thị B là con gái trưởng bản Hà Văn Nó. Hiếm có người xinh đẹp như E. Lưng như lưng kiến vàng, mắt long lanh như sao Khun Lú - Nàng Ủa, tiếng nói của nàng dịu dàng. Khi nàng cười, tiếng cười trong vắt và vô tư lự. E xinh đẹp đã đành nhưng đức hạnh của nàng cũng ít có người bì kịp. Nàng là niềm tự hào của người Hua Tát. Cả bản mong nàng tìm được người chồng xứng đáng, trưởng bản Hà Văn Nó cũng muốn thế, các bô lão trong bản cũng muốn thế.</p><p class=\"mb-3 text-justify\">(Lược một đoạn: Mọi người bàn việc chọn chồng cho nàng E. Các bô lão quyết định sẽ làm một cuộc thi tài để chọn người nào có đức tính quý nhất mà khó kiếm nhất làm chồng của E.)</p><p class=\"mb-3 text-justify\">Một bữa kia có một chàng trai dáng vẻ hùng dũng đến nói với trưởng bản và các bô lão:<br/>Dũng cảm là đức tính quý nhất và khó kiếm nhất. Tôi là người có đức tính ấy!<br/>Cứ chứng minh xem!<br/>Trưởng bản trả lời</p><p class=\"mb-3 text-justify\">Chàng trai đi vào rừng. Đến chiều chàng vác về một con lợn lòi bị chàng bắn chết. Con lợn lòi đến hơn tạ thịt, lông cứng tua tủa như lông nhím, chết rồi mà hai con mắt đỏ lừ của nó vẫn ngầu sắc máu. Chàng vứt con lợn xuống sàn, mắt chàng long lanh sáng, người chàng như có hào quang. Mọi người đều khen ngợi chàng. Trưởng bản hỏi con gái:<br/>Con xem, chàng trai thực là dũng cảm. Chàng ấy đã chứng minh đức tính dũng cảm của mình.</p><p class=\"mb-3 text-justify\">E mỉm cười, trái tim nàng rung động khi nhìn thấy đôi mắt dũng cảm của người cầu hôn. Đôi mắt ấy có ánh lửa. Nhưng vốn thông minh, E biết, những người dũng cảm sẽ mải mê với sự nghiệp của mình.<br/>E trả lời:<br/>Đúng thế, thưa cha! Chàng trai đã chứng minh đức tính dũng cảm của mình... đức tính thật đáng quý... Nhưng thưa cha, đức tính ấy đáng quý nhưng chắc không khó kiếm vì mới từ sáng đến chiều chàng đã chứng minh được nó.</p><p class=\"mb-3 text-justify\">Các bô lão gật gù. Người ta đồng ý với lời E nói. Con lợn được mổ thịt. Cả bản xòe suốt đêm để mừng đức tính dũng cảm, đức tính đáng quý nhưng không khó kiếm. Nhiều người con trai chân chính ở rừng có đức tính này....</p><p class=\"mb-3 text-justify\">(Lược một đoạn: Một lần khác, có một chàng trai trông thông minh, sáng sủa đến cầu hôn nàng E nhưng nàng từ chối vì đức tính khôn ngoan đáng quý nhưng không khó kiếm. Một lần khác nữa, có một chàng trai giàu có đến nhưng cũng không được nàng E chấp nhận vì nàng cho rằng giàu có không phải là đức tính.)</p><p class=\"mb-3 text-justify\">Cuối cùng có một chàng trai trong bản Hua Tát đến tìm gặp trưởng bản và các bô lão. Đấy là Hặc, chàng trai mồ côi, người thợ săn xuất sắc nhất bản. Hặc nói với mọi người:<br/>Trung thực là đức tính đáng quý và khó kiếm nhất!<br/>Cứ chứng minh xem! – Mọi người bảo chàng.</p><p class=\"mb-3 text-justify\">Hặc trả lời:<br/>Trung thực không phải cái vòng bạc ở cổ đưa ra cho mọi người trông thấy, sờ tay vào nó.</p><p class=\"mb-3 text-justify\">Mọi người xôn xao, các bô lão bàn tán. Trưởng bản tức giận, mặt ông đỏ bừng như lửa:<br/>Phải chứng minh! – Trưởng bản hét lên, ông đã nhìn thấy đôi mắt trìu mến của E nhìn Hặc.<br/>Ai tin mày! Ai bảo mày có đức tính trung thực? – Trưởng bản hỏi.<br/>Then biết! – Hặc trả lời.<br/>Cả con cũng biết! – E nói nghiêm trang.<br/>Điên rồ! – Trưởng bản gầm lên.<br/>Ông nhìn sang các bô lão cầu cứu. Ông biết, người già bao giờ cũng tìm ra được lối thoát đơn giản cho mọi rắc rối trên đời.</p><p class=\"mb-3 text-justify\">Hãy cầu Then đi! – Một vị bô lão bảo Hặc – Trời đang hạn hán, tất cả mó nước đều đã cạn khô. Nếu con trung thực, con hãy cầu Then mưa xuống!</p><p class=\"mb-3 text-justify\">Trưa hôm sau, dân bản Hua tát lập đàn cầu đảo, không khí oi nồng ngột ngạt. Hặc bước lên đàn, chàng ngước đôi mắt trang nghiêm nhìn trời. Chàng nói:<br/>Con sống trung thực, dẫu biết từng thực bao giờ cũng chịu đau khổ thiệt thòi. Tuy nhiên nếu lòng trung thực chuộc được tội lỗi và mang tình yêu đến được cho thế gian này, xin trời mưa xuống.</p><p class=\"mb-3 text-justify\">Trời cao tĩnh lặng. Bỗng nhiên từ đâu đó xa xôi có một cơn gió mơ hồ thổi về. Tất cả ngọn cây trên rừng xào xạc. Mặt đất bắt đầu xuất hiện những cơn lốc nhỏ.<br/>Buổi chiều, bầu trời đầy mây vần vũ và khi đêm xuống thì mưa như trút.</p><p class=\"mb-3 text-justify\">Lần ấy, người ta đã xòe suốt một tuần trăng để mừng đám cưới của Hặc với con gái trưởng bản.<br/>Đấy là tiệc xòe vui nhất ở bản Hua Tát. Cả bản đều say khướt. Từng cái cột nhà, thậm chí đến từng cái cây trong vườn cũng được mời uống một sừng rượu đại.</p><p class=\"mb-3 text-justify\">(Nguyễn Huy Thiệp, Truyện ngắn Nguyễn Huy Thiệp, NXB Văn học, Hà Nội, 2021, tr.19-22)</p><p class=\"mb-3 text-justify\">Chú thích:<br/>Sao Khun Lú – nàng Ủa: sao Hôm, sao Mai<br/>Mó nước: nguồn nước chảy từ núi</p>",
+          "audioUrl": ""
+        }
+      ]
+    },
+    {
+      "id": "exam-0002",
+      "title": "KÌ THI THỬ TỐT NGHIỆP THPT NĂM 2025 - Môn NGỮ VĂN (SỞ GD&ĐT YÊN BÁI)",
+      "description": "Đề thi thử tốt nghiệp. Thời gian: 120 phút (không kể thời gian giao đề).",
+      "subject": "Ngữ Văn",
+      "durationMinutes": 120,
+      "mode": "contest",
       "shuffleQuestions": false,
       "showResultsImmediately": false,
       "isPublished": true,
@@ -787,7 +871,227 @@
     },
     {
       "id": "eq-math-22",
-      "examId": "exam-001",
+      "examId": "exam-0001",
+      "questionId": "q-math-22",
+      "order": 22,
+      "section": "Phần III",
+      "maxScore": 0.5,
+      "createdAt": "2025-12-16T08:00:00Z",
+      "updatedAt": "2025-12-16T08:00:00Z"
+    },
+    {
+      "id": "eq-math-01",
+      "examId": "exam-0001",
+      "questionId": "q-math-01",
+      "order": 1,
+      "section": "Phần I",
+      "maxScore": 0.25,
+      "createdAt": "2025-12-16T08:00:00Z",
+      "updatedAt": "2025-12-16T08:00:00Z"
+    },
+    {
+      "id": "eq-math-02",
+      "examId": "exam-0001",
+      "questionId": "q-math-02",
+      "order": 2,
+      "section": "Phần I",
+      "maxScore": 0.25,
+      "createdAt": "2025-12-16T08:00:00Z",
+      "updatedAt": "2025-12-16T08:00:00Z"
+    },
+    {
+      "id": "eq-math-03",
+      "examId": "exam-0001",
+      "questionId": "q-math-03",
+      "order": 3,
+      "section": "Phần I",
+      "maxScore": 0.25,
+      "createdAt": "2025-12-16T08:00:00Z",
+      "updatedAt": "2025-12-16T08:00:00Z"
+    },
+    {
+      "id": "eq-math-04",
+      "examId": "exam-0001",
+      "questionId": "q-math-04",
+      "order": 4,
+      "section": "Phần I",
+      "maxScore": 0.25,
+      "createdAt": "2025-12-16T08:00:00Z",
+      "updatedAt": "2025-12-16T08:00:00Z"
+    },
+    {
+      "id": "eq-math-05",
+      "examId": "exam-0001",
+      "questionId": "q-math-05",
+      "order": 5,
+      "section": "Phần I",
+      "maxScore": 0.25,
+      "createdAt": "2025-12-16T08:00:00Z",
+      "updatedAt": "2025-12-16T08:00:00Z"
+    },
+    {
+      "id": "eq-math-06",
+      "examId": "exam-0001",
+      "questionId": "q-math-06",
+      "order": 6,
+      "section": "Phần I",
+      "maxScore": 0.25,
+      "createdAt": "2025-12-16T08:00:00Z",
+      "updatedAt": "2025-12-16T08:00:00Z"
+    },
+    {
+      "id": "eq-math-07",
+      "examId": "exam-0001",
+      "questionId": "q-math-07",
+      "order": 7,
+      "section": "Phần I",
+      "maxScore": 0.25,
+      "createdAt": "2025-12-16T08:00:00Z",
+      "updatedAt": "2025-12-16T08:00:00Z"
+    },
+    {
+      "id": "eq-math-08",
+      "examId": "exam-0001",
+      "questionId": "q-math-08",
+      "order": 8,
+      "section": "Phần I",
+      "maxScore": 0.25,
+      "createdAt": "2025-12-16T08:00:00Z",
+      "updatedAt": "2025-12-16T08:00:00Z"
+    },
+    {
+      "id": "eq-math-09",
+      "examId": "exam-0001",
+      "questionId": "q-math-09",
+      "order": 9,
+      "section": "Phần I",
+      "maxScore": 0.25,
+      "createdAt": "2025-12-16T08:00:00Z",
+      "updatedAt": "2025-12-16T08:00:00Z"
+    },
+    {
+      "id": "eq-math-10",
+      "examId": "exam-0001",
+      "questionId": "q-math-10",
+      "order": 10,
+      "section": "Phần I",
+      "maxScore": 0.25,
+      "createdAt": "2025-12-16T08:00:00Z",
+      "updatedAt": "2025-12-16T08:00:00Z"
+    },
+    {
+      "id": "eq-math-11",
+      "examId": "exam-0001",
+      "questionId": "q-math-11",
+      "order": 11,
+      "section": "Phần I",
+      "maxScore": 0.25,
+      "createdAt": "2025-12-16T08:00:00Z",
+      "updatedAt": "2025-12-16T08:00:00Z"
+    },
+    {
+      "id": "eq-math-12",
+      "examId": "exam-0001",
+      "questionId": "q-math-12",
+      "order": 12,
+      "section": "Phần I",
+      "maxScore": 0.25,
+      "createdAt": "2025-12-16T08:00:00Z",
+      "updatedAt": "2025-12-16T08:00:00Z"
+    },
+    {
+      "id": "eq-math-13",
+      "examId": "exam-0001",
+      "questionId": "q-math-13",
+      "order": 13,
+      "section": "Phần II",
+      "maxScore": 1,
+      "createdAt": "2025-12-16T08:00:00Z",
+      "updatedAt": "2025-12-16T08:00:00Z"
+    },
+    {
+      "id": "eq-math-14",
+      "examId": "exam-0001",
+      "questionId": "q-math-14",
+      "order": 14,
+      "section": "Phần II",
+      "maxScore": 1,
+      "createdAt": "2025-12-16T08:00:00Z",
+      "updatedAt": "2025-12-16T08:00:00Z"
+    },
+    {
+      "id": "eq-math-15",
+      "examId": "exam-0001",
+      "questionId": "q-math-15",
+      "order": 15,
+      "section": "Phần II",
+      "maxScore": 1,
+      "createdAt": "2025-12-16T08:00:00Z",
+      "updatedAt": "2025-12-16T08:00:00Z"
+    },
+    {
+      "id": "eq-math-16",
+      "examId": "exam-0001",
+      "questionId": "q-math-16",
+      "order": 16,
+      "section": "Phần II",
+      "maxScore": 1,
+      "createdAt": "2025-12-16T08:00:00Z",
+      "updatedAt": "2025-12-16T08:00:00Z"
+    },
+    {
+      "id": "eq-math-17",
+      "examId": "exam-0001",
+      "questionId": "q-math-17",
+      "order": 17,
+      "section": "Phần III",
+      "maxScore": 0.5,
+      "createdAt": "2025-12-16T08:00:00Z",
+      "updatedAt": "2025-12-16T08:00:00Z"
+    },
+    {
+      "id": "eq-math-18",
+      "examId": "exam-0001",
+      "questionId": "q-math-18",
+      "order": 18,
+      "section": "Phần III",
+      "maxScore": 0.5,
+      "createdAt": "2025-12-16T08:00:00Z",
+      "updatedAt": "2025-12-16T08:00:00Z"
+    },
+    {
+      "id": "eq-math-19",
+      "examId": "exam-0001",
+      "questionId": "q-math-19",
+      "order": 19,
+      "section": "Phần III",
+      "maxScore": 0.5,
+      "createdAt": "2025-12-16T08:00:00Z",
+      "updatedAt": "2025-12-16T08:00:00Z"
+    },
+    {
+      "id": "eq-math-20",
+      "examId": "exam-0001",
+      "questionId": "q-math-20",
+      "order": 20,
+      "section": "Phần III",
+      "maxScore": 0.5,
+      "createdAt": "2025-12-16T08:00:00Z",
+      "updatedAt": "2025-12-16T08:00:00Z"
+    },
+    {
+      "id": "eq-math-21",
+      "examId": "exam-0001",
+      "questionId": "q-math-21",
+      "order": 21,
+      "section": "Phần III",
+      "maxScore": 0.5,
+      "createdAt": "2025-12-16T08:00:00Z",
+      "updatedAt": "2025-12-16T08:00:00Z"
+    },
+    {
+      "id": "eq-math-22",
+      "examId": "exam-0001",
       "questionId": "q-math-22",
       "order": 22,
       "section": "Phần III",
@@ -1197,7 +1501,7 @@
     },
     {
       "id": "eq-van-01",
-      "examId": "exam-002",
+      "examId": "exam-0002",
       "questionId": "q-van-01",
       "order": 1,
       "maxScore": 0.5,
@@ -1207,7 +1511,7 @@
     },
     {
       "id": "eq-van-02",
-      "examId": "exam-002",
+      "examId": "exam-0002",
       "questionId": "q-van-02",
       "order": 2,
       "maxScore": 0.5,
@@ -1217,7 +1521,7 @@
     },
     {
       "id": "eq-van-03",
-      "examId": "exam-002",
+      "examId": "exam-0002",
       "questionId": "q-van-03",
       "order": 3,
       "maxScore": 0.5,
@@ -1227,7 +1531,7 @@
     },
     {
       "id": "eq-van-04",
-      "examId": "exam-002",
+      "examId": "exam-0002",
       "questionId": "q-van-04",
       "order": 4,
       "maxScore": 0.5,
@@ -1237,7 +1541,7 @@
     },
     {
       "id": "eq-van-05",
-      "examId": "exam-002",
+      "examId": "exam-0002",
       "questionId": "q-van-05",
       "order": 5,
       "maxScore": 1,
@@ -1247,7 +1551,7 @@
     },
     {
       "id": "eq-van-06",
-      "examId": "exam-002",
+      "examId": "exam-0002",
       "questionId": "q-van-06",
       "order": 6,
       "maxScore": 2,
@@ -1257,7 +1561,77 @@
     },
     {
       "id": "eq-van-07",
-      "examId": "exam-002",
+      "examId": "exam-0002",
+      "questionId": "q-van-07",
+      "order": 7,
+      "maxScore": 5,
+      "section": "Viết",
+      "createdAt": "2025-12-14T08:00:00Z",
+      "updatedAt": "2025-12-14T08:00:00Z"
+    },
+    {
+      "id": "eq-van-01",
+      "examId": "exam-0002",
+      "questionId": "q-van-01",
+      "order": 1,
+      "maxScore": 0.5,
+      "section": "Đọc hiểu",
+      "createdAt": "2025-12-14T08:00:00Z",
+      "updatedAt": "2025-12-14T08:00:00Z"
+    },
+    {
+      "id": "eq-van-02",
+      "examId": "exam-0002",
+      "questionId": "q-van-02",
+      "order": 2,
+      "maxScore": 0.5,
+      "section": "Đọc hiểu",
+      "createdAt": "2025-12-14T08:00:00Z",
+      "updatedAt": "2025-12-14T08:00:00Z"
+    },
+    {
+      "id": "eq-van-03",
+      "examId": "exam-0002",
+      "questionId": "q-van-03",
+      "order": 3,
+      "maxScore": 0.5,
+      "section": "Đọc hiểu",
+      "createdAt": "2025-12-14T08:00:00Z",
+      "updatedAt": "2025-12-14T08:00:00Z"
+    },
+    {
+      "id": "eq-van-04",
+      "examId": "exam-0002",
+      "questionId": "q-van-04",
+      "order": 4,
+      "maxScore": 0.5,
+      "section": "Đọc hiểu",
+      "createdAt": "2025-12-14T08:00:00Z",
+      "updatedAt": "2025-12-14T08:00:00Z"
+    },
+    {
+      "id": "eq-van-05",
+      "examId": "exam-0002",
+      "questionId": "q-van-05",
+      "order": 5,
+      "maxScore": 1,
+      "section": "Đọc hiểu",
+      "createdAt": "2025-12-14T08:00:00Z",
+      "updatedAt": "2025-12-14T08:00:00Z"
+    },
+    {
+      "id": "eq-van-06",
+      "examId": "exam-0002",
+      "questionId": "q-van-06",
+      "order": 6,
+      "maxScore": 2,
+      "section": "Viết",
+      "createdAt": "2025-12-14T08:00:00Z",
+      "updatedAt": "2025-12-14T08:00:00Z"
+    },
+    {
+      "id": "eq-van-07",
+      "examId": "exam-0002",
       "questionId": "q-van-07",
       "order": 7,
       "maxScore": 5,
@@ -3666,15 +4040,6 @@
       "updatedAt": "2025-11-15T09:00:00Z"
     }
   ],
-  "contestexams": [
-    {
-      "id": "ce_01",
-      "contestId": "ct_01",
-      "examId": "ex_contest_math_final",
-      "order": 1,
-      "weight": 1
-    }
-  ],
   "contestparticipations": [
     {
       "id": "cp-student-02",
@@ -3741,6 +4106,50 @@
       "totalScore": 0,
       "rank": null,
       "percentile": null
+    }
+  ],
+  "contestexams": [
+    {
+      "id": "ce-01",
+      "contestId": "contest-olympic-2025",
+      "examId": "exam-0001",
+      "order": 2,
+      "weight": 1
+    },
+    {
+      "id": "ce-02",
+      "contestId": "contest-olympic-2025",
+      "examId": "exam-0003",
+      "order": 3,
+      "weight": 1
+    },
+    {
+      "id": "ce-03",
+      "contestId": "contest-olympic-2025",
+      "examId": "exam-0002",
+      "order": 1,
+      "weight": 1
+    },
+    {
+      "id": "ce-04",
+      "contestId": "ct_contest_testing",
+      "examId": "exam-0001",
+      "order": 1,
+      "weight": 1
+    },
+    {
+      "id": "ce-05",
+      "contestId": "ct_contest_testing",
+      "examId": "exam-0002",
+      "order": 2,
+      "weight": 1
+    },
+    {
+      "id": "ce-06",
+      "contestId": "ct_contest_testing",
+      "examId": "exam-0003",
+      "order": 3,
+      "weight": 1
     }
   ],
   "manualgradings": [],

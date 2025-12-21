@@ -1,4 +1,5 @@
 import React from "react";
+import { useRouter } from "next/navigation";
 import { StudentContest } from "@/features/dashboard/types/student";
 
 interface ContestCardProps {
@@ -8,6 +9,7 @@ interface ContestCardProps {
 }
 
 const ContestCard: React.FC<ContestCardProps> = ({ contest, onJoin, onViewResult }) => {
+  const router = useRouter();
   const isOngoing = contest.status === "ongoing";
   const isUpcoming = contest.status === "upcoming";
   const isCompleted = contest.status === "completed";
@@ -71,7 +73,7 @@ const ContestCard: React.FC<ContestCardProps> = ({ contest, onJoin, onViewResult
         <div className="shrink-0 w-full md:w-auto">
           {isOngoing && (
             <button 
-              onClick={() => onJoin(contest.id)}
+              onClick={() => router.push(`/contest/${contest.id}`)}
               className="w-full md:w-auto px-6 py-2 bg-teal-600 text-white font-bold text-sm rounded-lg hover:bg-teal-700 transition-colors shadow-sm flex items-center justify-center gap-2"
             >
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" /><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
