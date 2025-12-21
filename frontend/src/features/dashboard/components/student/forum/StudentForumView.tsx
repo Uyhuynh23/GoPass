@@ -36,17 +36,17 @@ const StudentForumView: React.FC = () => {
         const articlesData = await ForumService.getArticles();
         setArticles(articlesData);
 
-        // Calculate stats from articles
+        // Calculate stats from articles (aggregated from forum topics)
         const stats: ForumStats = {
           totalArticles: articlesData.length,
           totalDiscussionPosts: articlesData.reduce(
             (sum, a) => sum + (a.discussionPostsCount || 0),
             0
-          ),
+          ), // Sum of all forum topics
           totalComments: articlesData.reduce(
             (sum, a) => sum + (a.commentsCount || 0),
             0
-          ),
+          ), // Sum of all comments from all topics
           activeUsers: 0, // This can be calculated separately if needed
         };
         setForumStats(stats);
@@ -197,7 +197,21 @@ const StudentForumView: React.FC = () => {
               <ForumBanner />
 
               {/* Top Interactions */}
-              <TopInteractionsWidget />
+              <TopInteractionsWidget
+                topTopics={articles
+                  .sort((a, b) => b.commentsCount - a.commentsCount)
+                  .slice(0, 3)
+                  .map((article, index) => ({
+                    id: article.id,
+                    rank: index + 1,
+                    title: article.title,
+                    comments: article.commentsCount,
+                    category: article.category,
+                  }))}
+                onTopicClick={(id) =>
+                  router.push(`/dashboard/forum/article/${id}`)
+                }
+              />
 
               {/* Community Stats */}
               <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-5">
@@ -212,22 +226,15 @@ const StudentForumView: React.FC = () => {
                     </span>
                   </div>
                   <div className="flex justify-between items-center pb-3 border-b border-gray-200">
-                    <span className="text-gray-700">Thảo luận</span>
+                    <span className="text-gray-700">Chủ đề</span>
                     <span className="text-teal-600 font-semibold">
-                      {forumStats.totalDiscussionPosts}
+                      {forumStats.totalDiscussionPosts.toLocaleString()}
                     </span>
                   </div>
                   <div className="flex justify-between items-center pb-3 border-b border-gray-200">
                     <span className="text-gray-700">Bình luận</span>
                     <span className="text-teal-600 font-semibold">
                       {forumStats.totalComments.toLocaleString()}
-                    </span>
-                  </div>
-                  <div className="flex justify-between items-center">
-                    <span className="text-gray-700">Hoạt động</span>
-                    <span className="text-green-600 flex items-center gap-1">
-                      <span className="w-2 h-2 bg-green-600 rounded-full animate-pulse"></span>
-                      {forumStats.activeUsers.toLocaleString()}
                     </span>
                   </div>
                 </div>

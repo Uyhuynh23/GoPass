@@ -58,12 +58,6 @@ export const ForumTopicCard: React.FC<ForumTopicCardProps> = ({
       {/* Stats */}
       <div className="flex items-center gap-4 pt-4 border-t border-gray-100">
         <div className="flex items-center gap-1.5 text-gray-600">
-          <Eye className="w-4 h-4" />
-          <span className="text-sm font-medium">
-            {topic.views.toLocaleString()}
-          </span>
-        </div>
-        <div className="flex items-center gap-1.5 text-gray-600">
           <ThumbsUp className="w-4 h-4" />
           <span className="text-sm font-medium">
             {topic.likes.toLocaleString()}
