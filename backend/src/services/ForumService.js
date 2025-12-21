@@ -75,6 +75,9 @@ class ForumService {
         24
       );
       console.log(`📊 Used articles (24h): ${usedArticleIds.length}`);
+      if (usedArticleIds.length > 0) {
+        console.log(`📋 Used externalIds:`, usedArticleIds.slice(0, 5)); // Show first 5
+      }
 
       // 3. Fetch hot posts từ VnSocial
       console.log("📌 Step 3: Fetching hot posts from VnSocial...");
@@ -94,9 +97,21 @@ class ForumService {
       // 4. Lọc bỏ articles đã sử dụng gần đây
       const availablePosts = posts.filter((post) => {
         const docId = post.docId || post.id;
-        // Check if article exists in used list
-        return !usedArticleIds.some((usedId) => usedId === docId);
+        const isUsed = usedArticleIds.includes(docId);
+        if (isUsed) {
+          console.log(
+            `⏭️  Skipping used article: ${docId} - ${post.title?.substring(
+              0,
+              50
+            )}`
+          );
+        }
+        return !isUsed;
       });
+
+      console.log(
+        `📊 Available posts after filtering: ${availablePosts.length}/${posts.length}`
+      );
 
       if (availablePosts.length === 0) {
         throw new Error(
