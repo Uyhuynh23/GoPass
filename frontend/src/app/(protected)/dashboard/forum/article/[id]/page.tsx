@@ -220,11 +220,10 @@ export default function ArticleDetailPage({ params }: PageProps) {
       <div key={comment._id} className="space-y-2">
         <div
           onClick={() => {
-            handleReplyClick(
-              topicId,
-              comment._id,
-              comment.author?.fullName || (isAISeed ? "AI Assistant" : "user")
-            );
+            const authorName = isAISeed
+              ? "AI Assistant"
+              : comment.author?.name || "user";
+            handleReplyClick(topicId, comment._id, authorName);
           }}
           className={`p-4 rounded-lg transition-all cursor-pointer ${
             isAISeed
@@ -241,7 +240,7 @@ export default function ArticleDetailPage({ params }: PageProps) {
             ) : (
               <div className="flex-shrink-0 w-8 h-8 bg-teal-100 rounded-full flex items-center justify-center">
                 <span className="text-sm font-medium text-teal-700">
-                  {comment.author?.fullName?.[0]?.toUpperCase() || "U"}
+                  {comment.author?.name?.[0]?.toUpperCase() || "U"}
                 </span>
               </div>
             )}
@@ -251,7 +250,7 @@ export default function ArticleDetailPage({ params }: PageProps) {
                 <span className="font-medium text-gray-900">
                   {isAISeed
                     ? "AI Assistant"
-                    : comment.author?.fullName || "Anonymous"}
+                    : comment.author?.name || "Anonymous"}
                 </span>
                 {isAISeed && (
                   <span className="px-2 py-0.5 bg-amber-100 text-amber-700 rounded text-xs font-medium">
@@ -299,7 +298,7 @@ export default function ArticleDetailPage({ params }: PageProps) {
                 Đang trả lời{" "}
                 {isAISeed
                   ? "AI Assistant"
-                  : comment.author?.fullName || "người dùng"}
+                  : comment.author?.name || "người dùng"}
                 ...
               </span>
               <button

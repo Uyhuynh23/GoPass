@@ -387,13 +387,28 @@ export class ForumService {
             
             // Transform comments - replies are already nested from backend
             const comments = response.data?.comments || [];
+            
+            // Debug: Log first comment to see structure
+            if (comments.length > 0) {
+                console.log('📝 First comment structure:', JSON.stringify(comments[0], null, 2));
+            }
+            
             const transformedComments = comments.map((comment) => {
                 // Recursively transform nested replies
                 const transformComment = (c: any): any => {
+                    // userId should be populated by backend with user details
+                    const author = c.userId && typeof c.userId === 'object' ? {
+                        _id: c.userId._id,
+                        name: c.userId.name,
+                        email: c.userId.email,
+                        role: c.userId.role,
+                        avatar: c.userId.avatar,
+                    } : undefined;
+                    
                     return {
                         ...c,
                         isAISeed: c.isAiGenerated || false,
-                        author: c.userId,
+                        author,
                         replies: (c.replies || []).map(transformComment),
                     };
                 };

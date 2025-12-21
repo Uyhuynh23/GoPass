@@ -115,7 +115,13 @@ export interface ForumPost extends ForumArticle {
 export interface ForumComment {
     _id: string;
     topicId: string;
-    userId: string;
+    userId: string | {
+        _id: string;
+        name: string;
+        email: string;
+        role?: string;
+        avatar?: string;
+    };
     content: string;
     parentComment?: string | null; // For nested replies
     likes: string[]; // Array of user IDs who liked
@@ -123,8 +129,10 @@ export interface ForumComment {
     isAISeed?: boolean; // Is this an AI-generated seed comment
     author?: {
         _id: string;
-        fullName: string;
+        name: string;
         email: string;
+        role?: string;
+        avatar?: string;
     };
     createdAt: string;
     updatedAt: string;
