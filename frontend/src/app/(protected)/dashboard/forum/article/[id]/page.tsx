@@ -464,7 +464,7 @@ export default function ArticleDetailPage({ params }: PageProps) {
           </div>
 
           {/* Topics List */}
-          <div className="space-y-4 p-4">
+          <div className="space-y-6 p-6">
             {forumTopics.length === 0 ? (
               <div className="p-12 text-center text-gray-500">
                 <Sparkles className="w-12 h-12 mx-auto mb-3 text-gray-300" />
@@ -479,12 +479,12 @@ export default function ArticleDetailPage({ params }: PageProps) {
               forumTopics.map((topic) => (
                 <div
                   key={topic._id}
-                  className="p-6 hover:bg-gray-50 transition-colors"
+                  className="bg-white border-2 border-gray-300 rounded-lg shadow-sm hover:shadow-md transition-all overflow-hidden"
                 >
                   {/* Topic Header - Clickable to expand/collapse */}
                   <div
                     onClick={() => toggleTopic(topic._id)}
-                    className="p-6 hover:bg-gray-50 transition-colors cursor-pointer"
+                    className="p-6 hover:bg-gray-50 transition-colors cursor-pointer border-b-2 border-gray-200"
                   >
                     <div className="mb-3">
                       <div className="flex items-start justify-between gap-4">
@@ -507,28 +507,29 @@ export default function ArticleDetailPage({ params }: PageProps) {
                             </span>
                           </div>
 
-                        {/* Topic Title */}
-                        <h3 className="text-lg font-semibold text-gray-900 mb-2">
-                          {topic.title}
-                        </h3>
-                      </div>
+                          {/* Topic Title */}
+                          <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                            {topic.title}
+                          </h3>
+                        </div>
 
-                      <button
-                        onClick={() => toggleTopic(topic._id)}
-                        className="flex items-center gap-1 text-sm text-teal-600 hover:text-teal-700 font-medium transition-colors"
-                      >
-                        {expandedTopics[topic._id] ? (
-                          <>
-                            <ChevronUp className="w-4 h-4" />
-                            Thu gọn
-                          </>
-                        ) : (
-                          <>
-                            <ChevronDown className="w-4 h-4" />
-                            Xem thảo luận
-                          </>
-                        )}
-                      </button>
+                        <button
+                          onClick={() => toggleTopic(topic._id)}
+                          className="flex items-center gap-1 text-sm text-teal-600 hover:text-teal-700 font-medium transition-colors"
+                        >
+                          {expandedTopics[topic._id] ? (
+                            <>
+                              <ChevronUp className="w-4 h-4" />
+                              Thu gọn
+                            </>
+                          ) : (
+                            <>
+                              <ChevronDown className="w-4 h-4" />
+                              Xem thảo luận
+                            </>
+                          )}
+                        </button>
+                      </div>
                     </div>
 
                     {/* Essay Prompt (if exists) - shown as a hint, not part of comment thread */}
@@ -541,7 +542,7 @@ export default function ArticleDetailPage({ params }: PageProps) {
                           {topic.essayPrompt}
                         </p>
                       </div>
-                    </div>
+                    )}
 
                     {/* Topic Stats & Actions */}
                     <div className="flex items-center gap-4">
@@ -568,19 +569,7 @@ export default function ArticleDetailPage({ params }: PageProps) {
 
                   {/* Expanded Content - Comments Thread */}
                   {expandedTopics[topic._id] && (
-                    <div className="px-6 pb-6 bg-gray-50">
-                      {/* Essay Prompt - Full view when expanded -  */}
-                      {topic.essayPrompt && (
-                        <div className="bg-blue-50 border-l-4 border-blue-400 p-4 rounded-r mb-4">
-                          <p className="text-sm font-medium text-blue-900 mb-1">
-                            💡 Gợi ý viết bài:
-                          </p>
-                          <p className="text-sm text-blue-800 leading-relaxed">
-                            {topic.essayPrompt}
-                          </p>
-                        </div>
-                      )}
-
+                    <div className="px-6 pb-6 pt-4 bg-gray-50">
                       {/* Comment Input - At the top for new comments only */}
                       {!replyingTo[topic._id] && (
                         <div className="bg-white p-4 rounded-lg border-2 border-teal-100 mb-4 shadow-sm">
