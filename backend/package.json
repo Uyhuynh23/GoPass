@@ -7,7 +7,10 @@
     "start": "node src/server.js",
     "dev": "nodemon src/server.js",
     "seed": "node src/scripts/seed.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "vitest",
+    "test:watch": "vitest --watch",
+    "test:coverage": "vitest --coverage",
+    "test:ui": "vitest --ui"
   },
   "keywords": [
     "lms",
@@ -31,6 +34,10 @@
     "nodemailer": "^7.0.11"
   },
   "devDependencies": {
-    "nodemon": "^3.0.1"
+    "@vitest/coverage-v8": "^1.6.1",
+    "@vitest/ui": "^1.6.1",
+    "nodemon": "^3.0.1",
+    "supertest": "^6.3.4",
+    "vitest": "^1.6.1"
   }
 }
