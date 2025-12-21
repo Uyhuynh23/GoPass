@@ -432,17 +432,20 @@ class GradingService {
    * Gọi SmartBot API để chấm bài
    * @private
    */
-  async _callSmartBotGrading(payload) {
+async _callSmartBotGrading(payload) {
     const prompt = this._buildGradingPrompt(payload);
+    const cleanedPrompt = prompt.trim();
+    console.log('🤖 [Grading] Using grading bot ID:', vnSmartBotProvider.gradingBotId);
 
     const response = await vnSmartBotProvider.sendMessage({
       sender_id: "grading_system",
-      text: prompt,
+      text: cleanedPrompt,
       input_channel: "platform",
       session_id: `grading_${Date.now()}_${Math.random()
         .toString(36)
         .substr(2, 9)}`,
       metadata: payload.metadata,
+      bot_id: vnSmartBotProvider.gradingBotId, // Sử dụng bot riêng cho chấm điểm
     });
 
     // Parse response từ SmartBot
@@ -481,19 +484,34 @@ class GradingService {
     try {
       let cleanedText = aiText.trim();
 
-      // Extract JSON from markdown code block
-      const jsonBlockMatch = cleanedText.match(/```json\s*\n([\s\S]*?)\n```/);
-      if (jsonBlockMatch) {
-        cleanedText = jsonBlockMatch[1].trim();
-      } else if (cleanedText.includes("{") && cleanedText.includes("}")) {
-        const firstBrace = cleanedText.indexOf("{");
-        const lastBrace = cleanedText.lastIndexOf("}");
-        if (firstBrace !== -1 && lastBrace !== -1 && lastBrace > firstBrace) {
-          cleanedText = cleanedText.substring(firstBrace, lastBrace + 1);
+      // Remove any leading/trailing text before/after JSON
+      // Try to find JSON object boundaries
+      const jsonMatch = cleanedText.match(/\{[\s\S]*"results"[\s\S]*\}/);
+      if (jsonMatch) {
+        cleanedText = jsonMatch[0];
+      } else {
+        // Extract JSON from markdown code block
+        const jsonBlockMatch = cleanedText.match(/```json\s*\n([\s\S]*?)\n```/);
+        if (jsonBlockMatch) {
+          cleanedText = jsonBlockMatch[1].trim();
+        } else if (cleanedText.includes("{") && cleanedText.includes("}")) {
+          const firstBrace = cleanedText.indexOf("{");
+          const lastBrace = cleanedText.lastIndexOf("}");
+          if (firstBrace !== -1 && lastBrace !== -1 && lastBrace > firstBrace) {
+            cleanedText = cleanedText.substring(firstBrace, lastBrace + 1);
+          }
         }
       }
 
+      console.log("🧹 [Cleaned JSON Text]:");
+      console.log(cleanedText);
+      console.log("=".repeat(80));
+
       gradingResults = JSON.parse(cleanedText);
+      
+      console.log("📋 [Parsed Results]:");
+      console.log(JSON.stringify(gradingResults, null, 2));
+      console.log("=".repeat(80));
     } catch (parseError) {
       console.error("❌ Error parsing grading response:", parseError.message);
       console.error("Full response:", aiText);
@@ -504,8 +522,15 @@ class GradingService {
 
     // Validate response structure
     if (!gradingResults.results || !Array.isArray(gradingResults.results)) {
-      throw new Error("Invalid grading response structure");
+      console.error("❌ Invalid response structure:", JSON.stringify(gradingResults, null, 2));
+      throw new Error("Invalid grading response structure - missing or invalid 'results' array");
     }
+
+    if (gradingResults.results.length === 0) {
+      console.warn("⚠️ Grading results array is empty");
+    }
+
+    console.log(`✅ Parsed ${gradingResults.results.length} grading results successfully`);
 
     return gradingResults;
   }

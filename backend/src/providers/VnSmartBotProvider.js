@@ -12,6 +12,7 @@ class VnSmartBotProvider {
     this.tokenId = config.vnSmartBot.tokenId;
     this.tokenKey = config.vnSmartBot.tokenKey;
     this.defaultBotId = config.vnSmartBot.botId;
+    this.gradingBotId = config.vnSmartBot.gradingBotId;
   }
 
   /**

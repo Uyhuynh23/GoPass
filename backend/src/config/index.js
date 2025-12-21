@@ -37,17 +37,7 @@ module.exports = {
     tokenId: process.env.VNSMARTBOT_TOKEN_ID || "",
     tokenKey: process.env.VNSMARTBOT_TOKEN_KEY || "",
     botId: process.env.VNSMARTBOT_BOT_ID || "",
-  },
-
-  // vnSmartBot config
-  vnSmartBot: {
-    apiUrl:
-      process.env.VNSMARTBOT_API_URL ||
-      "https://assistant-stream.vnpt.vn/v1/conversation",
-    authorization: process.env.VNSMARTBOT_AUTHORIZATION || "",
-    tokenId: process.env.VNSMARTBOT_TOKEN_ID || "",
-    tokenKey: process.env.VNSMARTBOT_TOKEN_KEY || "",
-    botId: process.env.VNSMARTBOT_BOT_ID || "",
+    gradingBotId: process.env.VNSMARTBOT_GRADING_BOT_ID || process.env.VNSMARTBOT_BOT_ID || "", // Bot riêng cho chấm điểm
   },
 
   // Client URL for reset password links
