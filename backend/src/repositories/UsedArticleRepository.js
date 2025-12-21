@@ -35,17 +35,24 @@ class UsedArticleRepository extends BaseRepository {
   }
 
   /**
-   * Lấy danh sách article IDs đã sử dụng cho một topic
+   * Lấy danh sách article externalIds đã sử dụng cho một topic
+   * Returns array of externalIds (docIds from VnSocial) not internal MongoDB IDs
    */
   async getUsedArticleIds(topicId, hoursAgo = 24) {
     const cutoffTime = new Date(Date.now() - hoursAgo * 60 * 60 * 1000);
 
-    const usedArticles = await this.find({
-      topicId,
-      usedAt: { $gte: cutoffTime },
-    });
+    const usedArticles = await this.find(
+      {
+        topicId,
+        usedAt: { $gte: cutoffTime },
+      },
+      {
+        populate: "articleId", // Populate to get externalId
+      }
+    );
 
-    return usedArticles.map((ua) => ua.articleId.toString());
+    // Return externalIds (docIds from VnSocial API) for comparison
+    return usedArticles.map((ua) => ua.articleId?.externalId).filter(Boolean); // Remove null/undefined
   }
 
   /**
