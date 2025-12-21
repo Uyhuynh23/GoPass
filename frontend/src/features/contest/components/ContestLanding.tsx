@@ -206,7 +206,7 @@ export default function ContestLanding({ data }: { data: LandingProps }) {
         {/* FOOTER ACTIONS */}
         <div className="p-5 border-t border-gray-100 bg-gray-50 flex gap-3">
           <button
-            onClick={() => router.back()}
+            onClick={() => router.push("/dashboard/contests")}
             className="flex-1 py-2.5 rounded-xl border border-gray-300 bg-white text-gray-600 text-sm font-bold hover:bg-gray-50 transition-colors"
           >
             Quay lại
