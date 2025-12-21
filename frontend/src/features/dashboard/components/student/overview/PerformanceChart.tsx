@@ -60,10 +60,11 @@ const PerformanceChart: React.FC<PerformanceChartProps> = ({ data }) => {
               boxShadow: "0 4px 6px -1px rgb(0 0 0 / 0.1)",
             }}
             // Format display names in the tooltip for better UI
-            formatter={(value: number, name: string) => {
+            formatter={(value: number | undefined, name: string | undefined) => {
+               if (!value) return ["0", name || ""];
                if (name === "hours") return [`${value} giờ`, "Giờ học"];
                if (name === "exams") return [`${value} bài`, "Số bài thi"];
-               return [value, name];
+               return [value, name || ""];
             }}
             labelStyle={{ color: "#374151", fontWeight: "bold", marginBottom: "4px" }}
           />

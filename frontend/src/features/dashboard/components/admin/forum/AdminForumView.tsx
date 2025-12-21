@@ -16,7 +16,7 @@ import GenerateArticleModal from "@/features/dashboard/components/admin/forum/Ge
 // Mock data for testing
 const MOCK_ARTICLES: ForumArticle[] = [
   {
-    id: 1,
+    id: "1",
     title: "Thuỳ Tiên bị bắt 2 năm: Bài học về danh hiệu và trách nhiệm xã hội",
     content: [
       "Vụ việc Hoa hậu Thuỳ Tiên bị bắt với mức án 2 năm tù đã gây chấn động dư luận. Đây là một trong những vụ việc pháp lý nghiêm trọng liên quan đến người nổi tiếng trong thời gian gần đây, đặt ra nhiều câu hỏi về đạo đức và trách nhiệm của những người có ảnh hưởng trong xã hội.",
@@ -39,9 +39,10 @@ const MOCK_ARTICLES: ForumArticle[] = [
     updatedAt: "2025-12-19T10:00:00Z",
     tags: ["pháp luật", "xã hội", "người nổi tiếng"],
     relatedExamId: "exam_1",
+    forumTopics: [],
   },
   {
-    id: 2,
+    id: "2",
     title:
       "AI có thể thay thế giáo viên không? Quan điểm từ nghiên cứu mới nhất",
     content: [
@@ -65,9 +66,10 @@ const MOCK_ARTICLES: ForumArticle[] = [
     updatedAt: "2025-12-19T08:00:00Z",
     tags: ["AI", "giáo dục", "công nghệ"],
     relatedExamId: "exam_2",
+    forumTopics: [],
   },
   {
-    id: 3,
+    id: "3",
     title: "Văn học Việt Nam trong thời đại số: Cơ hội hay thách thức?",
     content: [
       "Sự phát triển của mạng xã hội và nền tảng số đang thay đổi cách chúng ta tiếp cận và sáng tạo văn học.",
@@ -90,9 +92,10 @@ const MOCK_ARTICLES: ForumArticle[] = [
     updatedAt: "2025-12-19T07:00:00Z",
     tags: ["văn học", "số hóa", "sáng tạo"],
     relatedExamId: "exam_3",
+    forumTopics: [],
   },
   {
-    id: 4,
+    id: "4",
     title: "Biến đổi khí hậu và giải pháp bền vững cho Việt Nam",
     content: [
       "Biến đổi khí hậu đang tác động nghiêm trọng đến Việt Nam, đặc biệt là vùng đồng bằng sông Cửu Long.",
@@ -115,9 +118,10 @@ const MOCK_ARTICLES: ForumArticle[] = [
     updatedAt: "2025-12-18T12:00:00Z",
     tags: ["khí hậu", "môi trường", "bền vững"],
     relatedExamId: "exam_4",
+    forumTopics: [],
   },
   {
-    id: 5,
+    id: "5",
     title: "Chuyển đổi số trong giáo dục: Kinh nghiệm từ các nước phát triển",
     content: [
       "Nhiều quốc gia trên thế giới đã thành công trong việc chuyển đổi số giáo dục, mang lại hiệu quả học tập cao hơn.",
@@ -140,6 +144,7 @@ const MOCK_ARTICLES: ForumArticle[] = [
     updatedAt: "2025-12-17T14:00:00Z",
     tags: ["chuyển đổi số", "giáo dục", "công nghệ"],
     relatedExamId: "exam_5",
+    forumTopics: [],
   },
 ];
 
@@ -178,7 +183,7 @@ const AdminForumView: React.FC = () => {
     setShowGenerateModal(true);
   };
 
-  const handleDeleteArticle = async (articleId: number) => {
+  const handleDeleteArticle = async (articleId: string) => {
     if (
       !confirm(
         "Bạn có chắc chắn muốn xóa bài viết này? Tất cả các chủ đề thảo luận liên quan cũng sẽ bị xóa."
@@ -188,7 +193,7 @@ const AdminForumView: React.FC = () => {
     }
 
     try {
-      const success = await ForumService.deletePackage(articleId.toString());
+      const success = await ForumService.deletePackage(articleId);
       if (success) {
         setArticles(articles.filter((a) => a.id !== articleId));
         alert("Xóa bài viết thành công!");

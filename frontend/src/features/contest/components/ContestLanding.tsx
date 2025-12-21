@@ -10,13 +10,8 @@ import {
   ArrowRight,
   PlayCircle,
   Trophy,
-  Loader2, // Thêm icon loading
+  Loader2,
 } from "lucide-react";
-import {
-  CONTEST_RULES,
-  LANDING_SUBJECTS,
-  getSubjectConfig,
-} from "../data/contest-constants";
 
 interface LandingProps {
   id: string;
@@ -169,44 +164,6 @@ export default function ContestLanding({ data }: { data: LandingProps }) {
         </div>
 
         <div className="p-6 space-y-6">
-          {/* LIST MÔN THI */}
-          <div className="space-y-3">
-            <h3 className="font-bold text-gray-800 text-sm flex items-center gap-2">
-              <span className="w-1 h-4 bg-teal-500 rounded-full"></span> Môn thi
-              đấu
-            </h3>
-            <div className="grid gap-2">
-              {LANDING_SUBJECTS.map((sub, idx) => {
-                const config = getSubjectConfig(sub.name);
-                return (
-                  <div
-                    key={idx}
-                    className="flex items-center justify-between p-3 rounded-lg border border-gray-100 hover:border-teal-200 hover:bg-teal-50/30 transition-colors"
-                  >
-                    <div className="flex items-center gap-3">
-                      <div
-                        className={`w-8 h-8 rounded-lg flex items-center justify-center text-sm ${config.bg} ${config.text}`}
-                      >
-                        {config.icon}
-                      </div>
-                      <div>
-                        <p className="text-sm font-bold text-gray-800">
-                          {sub.name}
-                        </p>
-                        <p className="text-[10px] text-gray-500">
-                          {sub.duration} phút
-                        </p>
-                      </div>
-                    </div>
-                    <span className="text-[10px] font-bold bg-gray-100 text-gray-500 px-2 py-1 rounded">
-                      Bắt buộc
-                    </span>
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-
           {/* QUY ĐỊNH */}
           <div className="space-y-3">
             <h3 className="font-bold text-gray-800 text-sm flex items-center gap-2">
@@ -215,15 +172,22 @@ export default function ContestLanding({ data }: { data: LandingProps }) {
             </h3>
             <div className="bg-blue-50/50 border border-blue-100 rounded-xl p-4">
               <ul className="space-y-2">
-                {CONTEST_RULES.map((rule, idx) => (
-                  <li
-                    key={idx}
-                    className="flex gap-2 text-xs text-slate-600 leading-snug"
-                  >
-                    <div className="mt-0.5 min-w-[4px] h-[4px] bg-blue-400 rounded-full"></div>
-                    <span>{rule}</span>
-                  </li>
-                ))}
+                <li className="flex gap-2 text-xs text-slate-600 leading-snug">
+                  <div className="mt-0.5 min-w-[4px] h-[4px] bg-blue-400 rounded-full"></div>
+                  <span>Các môn thi phải làm theo thứ tự quy định</span>
+                </li>
+                <li className="flex gap-2 text-xs text-slate-600 leading-snug">
+                  <div className="mt-0.5 min-w-[4px] h-[4px] bg-blue-400 rounded-full"></div>
+                  <span>Không được quay lại môn thi đã hoàn thành</span>
+                </li>
+                <li className="flex gap-2 text-xs text-slate-600 leading-snug">
+                  <div className="mt-0.5 min-w-[4px] h-[4px] bg-blue-400 rounded-full"></div>
+                  <span>Lưu bài thường xuyên để tránh mất dữ liệu</span>
+                </li>
+                <li className="flex gap-2 text-xs text-slate-600 leading-snug">
+                  <div className="mt-0.5 min-w-[4px] h-[4px] bg-blue-400 rounded-full"></div>
+                  <span>Nộp bài trước khi hết thời gian thi</span>
+                </li>
               </ul>
             </div>
           </div>

@@ -208,41 +208,6 @@ export default function GradingDetailPage() {
 
       {/* AI Grading Button - Show for all subjects but warn if not Ngữ Văn */}
       <div className="bg-gradient-to-r from-purple-50 to-blue-50 rounded-lg shadow-sm border border-purple-200 p-6 mb-6">
-        <div className="flex items-center justify-between">
-          <div>
-            <h3 className="text-lg font-semibold text-gray-900 mb-1">
-              🤖 Chấm điểm tự động bằng AI
-            </h3>
-            <p className="text-sm text-gray-600">
-              Sử dụng AI để chấm tự động các câu tự luận
-              {submission.examId?.subject &&
-                submission.examId.subject !== "Ngữ Văn" && (
-                  <span className="ml-2 text-orange-600 font-medium">
-                    (Môn: {submission.examId.subject})
-                  </span>
-                )}
-            </p>
-          </div>
-          <button
-            onClick={handleAiGrading}
-            disabled={aiGrading}
-            className={`px-6 py-3 rounded-lg font-medium transition-all ${
-              aiGrading
-                ? "bg-gray-300 text-gray-500 cursor-not-allowed"
-                : "bg-gradient-to-r from-purple-600 to-blue-600 text-white hover:from-purple-700 hover:to-blue-700 shadow-md hover:shadow-lg"
-            }`}
-          >
-            {aiGrading ? (
-              <span className="flex items-center gap-2">
-                <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
-                Đang chấm...
-              </span>
-            ) : (
-              "🤖 Chấm bằng AI"
-            )}
-          </button>
-        </div>
-
         {/* AI Grading Result */}
         {aiGradingResult && (
           <div

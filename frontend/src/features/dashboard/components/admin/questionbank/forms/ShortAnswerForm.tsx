@@ -1,10 +1,27 @@
 "use client";
 
 import React, { useState } from "react";
-import { ShortAnswerQuestion } from "@/features/dashboard/types/question";
+import { Question } from "@/features/exam/types/question";
 import CommonFields from "../CommonFields";
 import Button from "@/components/ui/Button";
 import Input from "@/components/ui/Input";
+
+interface ShortAnswerQuestion extends Question {
+  title?: string;
+  stem?: string;
+  answerType?: "text" | "numeric" | "regex";
+  acceptedAnswers?: string[];
+  caseSensitive?: boolean;
+  numericConfig?: {
+    min: number;
+    max: number;
+    tolerance: number;
+  };
+  regexPattern?: string;
+  autoGrading?: boolean;
+  timeLimit?: number;
+  language?: "vi" | "en";
+}
 
 interface ShortAnswerFormProps {
   initialData?: Partial<ShortAnswerQuestion>;
@@ -58,7 +75,9 @@ const ShortAnswerForm: React.FC<ShortAnswerFormProps> = ({
   const removeAcceptedAnswer = (index: number) => {
     if (!formData.acceptedAnswers || formData.acceptedAnswers.length <= 1)
       return;
-    const newAnswers = formData.acceptedAnswers.filter((_: any, i: any) => i !== index);
+    const newAnswers = formData.acceptedAnswers.filter(
+      (_: any, i: any) => i !== index
+    );
     setFormData({ ...formData, acceptedAnswers: newAnswers });
   };
 

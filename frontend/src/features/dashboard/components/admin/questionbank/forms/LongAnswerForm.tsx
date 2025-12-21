@@ -1,13 +1,27 @@
 "use client";
 
 import React, { useState } from "react";
-import {
-  LongAnswerQuestion,
-  GradingCriterion,
-} from "@/features/dashboard/types/question";
+import { Question } from "@/features/exam/types/question";
 import CommonFields from "../CommonFields";
 import Button from "@/components/ui/Button";
 import Input from "@/components/ui/Input";
+
+interface GradingCriterion {
+  id: string;
+  criterion: string;
+  description: string;
+  points: number;
+}
+
+interface LongAnswerQuestion extends Question {
+  title?: string;
+  prompt?: string;
+  wordLimit?: number;
+  timeLimit?: number;
+  language?: "vi" | "en";
+  gradingType?: "manual" | "ai_assisted";
+  rubric?: GradingCriterion[];
+}
 
 interface LongAnswerFormProps {
   initialData?: Partial<LongAnswerQuestion>;
@@ -23,7 +37,7 @@ const LongAnswerForm: React.FC<LongAnswerFormProps> = ({
   onCancel,
 }) => {
   const [formData, setFormData] = useState<Partial<LongAnswerQuestion>>({
-    type: "long_answer",
+    type: "essay",
     title: initialData?.title || "",
     tags: initialData?.tags || [],
     difficulty: initialData?.difficulty || "medium",

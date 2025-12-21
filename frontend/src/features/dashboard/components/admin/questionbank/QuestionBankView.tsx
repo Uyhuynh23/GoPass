@@ -3,7 +3,6 @@
 import React, { useState, useEffect } from "react";
 import SectionHeader from "@/components/ui/SectionHeader";
 import Button from "@/components/ui/Button";
-import { mockQuestionBankData } from "@/features/dashboard/data/mock-questionbank";
 import QuestionTopicList from "./QuestionTopicList";
 import SubjectTabs from "./SubjectTabs";
 import CreateQuestionModal from "./CreateQuestionModal";
@@ -11,6 +10,9 @@ import CreateQuestionModal from "./CreateQuestionModal";
 const QuestionBankView: React.FC = () => {
   const [activeSubject, setActiveSubject] = useState("Toán");
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+  // TODO: Fetch from API
+  const topics: any[] = [];
 
   // Keyboard shortcut: Ctrl+N to open modal
   useEffect(() => {
@@ -115,7 +117,7 @@ const QuestionBankView: React.FC = () => {
       </div>
 
       {/* Topic List */}
-      <QuestionTopicList topics={mockQuestionBankData.topics} />
+      <QuestionTopicList topics={topics} />
 
       {/* Create Question Modal */}
       {isModalOpen && (

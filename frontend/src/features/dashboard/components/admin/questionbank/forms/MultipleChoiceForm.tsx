@@ -1,10 +1,27 @@
 "use client";
 
 import React, { useState } from "react";
-import { MultipleChoiceQuestion } from "@/features/dashboard/types/question";
+import { Question, QuestionOption } from "@/features/exam/types/question";
 import CommonFields from "../CommonFields";
 import Button from "@/components/ui/Button";
 import Input from "@/components/ui/Input";
+
+interface MultipleChoiceOption {
+  id: string;
+  content: string;
+  isCorrect: boolean;
+}
+
+interface MultipleChoiceQuestion extends Question {
+  title?: string;
+  stem?: string;
+  options?: MultipleChoiceOption[];
+  allowMultipleCorrect?: boolean;
+  explanation?: string;
+  timeLimit?: number;
+  language?: "vi" | "en";
+  attachments?: string[];
+}
 
 interface MultipleChoiceFormProps {
   initialData?: Partial<MultipleChoiceQuestion>;
@@ -29,10 +46,10 @@ const MultipleChoiceForm: React.FC<MultipleChoiceFormProps> = ({
     language: initialData?.language || "vi",
     stem: initialData?.stem || "",
     options: initialData?.options || [
-      { id: "1", text: "", isCorrect: false },
-      { id: "2", text: "", isCorrect: false },
-      { id: "3", text: "", isCorrect: false },
-      { id: "4", text: "", isCorrect: false },
+      { id: "1", content: "", isCorrect: false },
+      { id: "2", content: "", isCorrect: false },
+      { id: "3", content: "", isCorrect: false },
+      { id: "4", content: "", isCorrect: false },
     ],
     allowMultipleCorrect: initialData?.allowMultipleCorrect || false,
     explanation: initialData?.explanation || "",
@@ -41,9 +58,9 @@ const MultipleChoiceForm: React.FC<MultipleChoiceFormProps> = ({
 
   const [errors, setErrors] = useState<Record<string, string>>({});
 
-  const handleOptionChange = (index: number, text: string) => {
+  const handleOptionChange = (index: number, content: string) => {
     const newOptions = [...(formData.options || [])];
-    newOptions[index] = { ...newOptions[index], text };
+    newOptions[index] = { ...newOptions[index], content };
     setFormData({ ...formData, options: newOptions });
   };
 
@@ -69,7 +86,7 @@ const MultipleChoiceForm: React.FC<MultipleChoiceFormProps> = ({
     }
 
     formData.options?.forEach((opt, idx) => {
-      if (!opt.text.trim()) {
+      if (!opt.content.trim()) {
         newErrors[`option_${idx}`] = "Đáp án không được để trống";
       }
     });
@@ -185,7 +202,7 @@ const MultipleChoiceForm: React.FC<MultipleChoiceFormProps> = ({
                     </span>
                     <input
                       type="text"
-                      value={option.text}
+                      value={option.content}
                       onChange={(e) =>
                         handleOptionChange(index, e.target.value)
                       }

@@ -17,11 +17,8 @@ interface PassageSelectorProps {
   onNewPassageChange: (passage: Partial<Passage>) => void;
 }
 
-// Mock passages from backend
-const mockPassages = [
-  { id: "1", title: "Đoạn văn về Chiến tranh Việt Nam" },
-  { id: "2", title: "Bài đọc về Hệ sinh thái rừng nhiệt đới" },
-];
+// TODO: Fetch from API
+const passages: Array<{ id: string; title: string }> = [];
 
 const PassageSelector: React.FC<PassageSelectorProps> = ({
   option,
@@ -73,7 +70,7 @@ const PassageSelector: React.FC<PassageSelectorProps> = ({
                 className="block w-full rounded-lg border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-teal-500"
               >
                 <option value="">-- Chọn passage --</option>
-                {mockPassages.map((p) => (
+                {passages.map((p) => (
                   <option key={p.id} value={p.id}>
                     {p.title}
                   </option>

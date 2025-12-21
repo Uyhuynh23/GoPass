@@ -570,7 +570,7 @@ YÊU CẦU CHẤM:
 4. Đưa ra các lỗi về ngữ pháp, chính tả (nếu có)
 5. Đưa ra lời khuyên để cải thiện bài làm
 6. Chỉ chấm theo explanation + answerText
-7. CHỈ dùng thang điểm: 0, 0.25, 0.5, 0.75, 1
+7. CHỈ dùng thang điểm làm tròn: ví dụ (5.75, 6.5, 9, 7,25,...)
 8. Điểm cuối = min(điểm_sơ_bộ, maxScore)
 9. Trả về JSON hợp lệ, KHÔNG kèm văn bản khác
 
@@ -595,7 +595,7 @@ RÀNG BUỘC:
 - Response BẮT ĐẦU bằng { và KẾT THÚC bằng }
 - Không có markdown, không có code block
 - Không có lời giải thích trước/sau JSON
-- score phải là một trong: 0, 0.25, 0.5, 0.75, 1
+- score phải làm tròn
 - score <= maxScore
 
 ==================================================

@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import { useAuth } from "../context/AuthContext";
-import type { LoginCredentials } from "../types/auth";
+import type { LoginCredentials } from "@/types/auth";
 
 const LoginForm: React.FC = () => {
   const { login } = useAuth();

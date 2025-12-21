@@ -1,12 +1,22 @@
 "use client";
 
 import React, { useState } from "react";
-import {
-  TrueFalseQuestion,
-  TrueFalseStatement,
-} from "@/features/dashboard/types/question";
+import { Question } from "@/features/exam/types/question";
 import CommonFields from "../CommonFields";
 import Button from "@/components/ui/Button";
+
+interface TrueFalseStatement {
+  id: string;
+  text: string;
+  isTrue: boolean;
+}
+
+interface TrueFalseQuestion extends Question {
+  title?: string;
+  statements?: TrueFalseStatement[];
+  timeLimit?: number;
+  language?: "vi" | "en";
+}
 
 interface TrueFalseFormProps {
   initialData?: Partial<TrueFalseQuestion>;
@@ -182,7 +192,9 @@ const TrueFalseForm: React.FC<TrueFalseFormProps> = ({
                   <div className="flex items-center gap-2">
                     <button
                       type="button"
-                      onClick={() => updateStatement(statement.id, "isTrue", true)}
+                      onClick={() =>
+                        updateStatement(statement.id, "isTrue", true)
+                      }
                       className={`flex-1 px-4 py-2 rounded-lg font-medium text-sm transition-all ${
                         statement.isTrue
                           ? "bg-green-500 text-white shadow-md"
@@ -193,7 +205,9 @@ const TrueFalseForm: React.FC<TrueFalseFormProps> = ({
                     </button>
                     <button
                       type="button"
-                      onClick={() => updateStatement(statement.id, "isTrue", false)}
+                      onClick={() =>
+                        updateStatement(statement.id, "isTrue", false)
+                      }
                       className={`flex-1 px-4 py-2 rounded-lg font-medium text-sm transition-all ${
                         !statement.isTrue
                           ? "bg-red-500 text-white shadow-md"

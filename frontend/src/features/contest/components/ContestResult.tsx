@@ -7,10 +7,10 @@ import { ContestDetail } from "../types";
 
 export default function ContestResult({ data }: { data: ContestDetail }) {
   const router = useRouter();
-  const { userResult, name } = data;
+  const { participation, name } = data;
 
   // Guard clause: Nếu chưa có kết quả thì không render
-  if (!userResult)
+  if (!participation)
     return (
       <div className="min-h-screen flex items-center justify-center text-gray-500">
         Chưa có kết quả thi.
@@ -18,7 +18,7 @@ export default function ContestResult({ data }: { data: ContestDetail }) {
     );
 
   // Logic tính Top % (Ví dụ: Percentile 85 => Top 15%)
-  const topPercentage = (100 - userResult.percentile)
+  const topPercentage = (100 - (participation.percentile || 0))
     .toFixed(1)
     .replace(/\.0$/, "");
 
@@ -47,7 +47,7 @@ export default function ContestResult({ data }: { data: ContestDetail }) {
             </div>
             <div className="flex items-end justify-center gap-2 mb-3">
               <span className="text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r from-amber-500 to-orange-600">
-                #{userResult.rank}
+                #{participation.rank || "N/A"}
               </span>
             </div>
             <div className="inline-flex items-center gap-1 px-3 py-1 bg-purple-50 text-purple-700 rounded-full text-xs font-bold border border-purple-100">
@@ -65,9 +65,9 @@ export default function ContestResult({ data }: { data: ContestDetail }) {
                 Tổng điểm đạt được
               </p>
               <p className="text-3xl font-bold text-teal-700">
-                {userResult.totalScore}
+                {participation.totalScore}
                 <span className="text-lg text-teal-400/80 font-normal">
-                  /{userResult.maxScore}
+                  /100
                 </span>
               </p>
             </div>
@@ -77,12 +77,12 @@ export default function ContestResult({ data }: { data: ContestDetail }) {
             <p className="text-sm font-bold text-gray-700 uppercase tracking-wide">
               Chi tiết điểm thành phần
             </p>
-            {userResult.breakdown.map((item, idx) => {
+            {(participation.submissions || []).map((item, idx) => {
               const subjectInfo = data.subjects.find(
                 (s) => s.examId === item.examId
               );
               const subjectName = subjectInfo?.subject || "Môn thi";
-              const maxScore = 10;
+              const maxScore = item.maxScore || 10;
 
               return (
                 <div key={idx} className="space-y-1">
@@ -91,7 +91,7 @@ export default function ContestResult({ data }: { data: ContestDetail }) {
                       {subjectName}
                     </span>
                     <span className="font-bold text-gray-800">
-                      {item.score}/{maxScore}
+                      {item.totalScore || 0}/{maxScore}
                     </span>
                   </div>
                   <div className="h-2 bg-gray-100 rounded-full overflow-hidden">
@@ -103,7 +103,9 @@ export default function ContestResult({ data }: { data: ContestDetail }) {
                           ? "bg-teal-500"
                           : "bg-pink-500"
                       }`}
-                      style={{ width: `${(item.score / maxScore) * 100}%` }}
+                      style={{
+                        width: `${((item.totalScore || 0) / maxScore) * 100}%`,
+                      }}
                     ></div>
                   </div>
                 </div>

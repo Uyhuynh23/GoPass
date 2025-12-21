@@ -5,16 +5,24 @@ import SectionHeader from "@/components/ui/SectionHeader";
 import AdminStatsGrid from "./AdminStatsGrid";
 import AdminActionToolbar from "./AdminActionToolbar";
 import ExamManagementTable from "./ExamManagementTable";
-import { mockAdminDashboardData } from "@/features/dashboard/data/mock-admin";
 import { ExamMode } from "@/features/exam/types";
 
 const AdminDashboardView: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [filterType, setFilterType] = useState<ExamMode | "all">("all");
 
+  // TODO: Fetch from API
+  const exams: any[] = [];
+  const stats = {
+    totalExams: 0,
+    contestExams: 0,
+    publicExams: 0,
+    totalParticipants: 0,
+  };
+
   // Filter exams based on search and filter
   const filteredExams = useMemo(() => {
-    let filtered = mockAdminDashboardData.exams;
+    let filtered = exams;
 
     // Filter by mode
     if (filterType !== "all") {
@@ -59,11 +67,11 @@ const AdminDashboardView: React.FC = () => {
       {/* Header */}
       <SectionHeader
         title="Quản lý đề thi"
-        subtitle={`Đề thi do Admin tạo - Tổng cộng ${mockAdminDashboardData.exams.length} đề`}
+        subtitle={`Đề thi do Admin tạo - Tổng cộng ${exams.length} đề`}
       />
 
       {/* Stats Grid */}
-      <AdminStatsGrid stats={mockAdminDashboardData.stats} />
+      <AdminStatsGrid stats={stats} />
 
       {/* Action Toolbar */}
       <AdminActionToolbar
