@@ -8,6 +8,8 @@ require('dotenv').config();
 const Contest = require('../models/Contest');
 const Exam = require('../models/Exam');
 const ContestExam = require('../models/ContestExam');
+const Question = require('../models/Question');
+const ExamQuestion = require('../models/ExamQuestion');
 
 const seedContestExams = async () => {
   try {
@@ -68,6 +70,109 @@ const seedContestExams = async () => {
     console.log(`   exam-0001 -> ${examMap['exam-0001']}`);
     console.log(`   exam-0002 -> ${examMap['exam-0002']}`);
     console.log(`   exam-0003 -> ${examMap['exam-0003']}`);
+
+    // 1.5 LOAD QUESTIONS AND EXAMQUESTIONS FROM DB.JSON
+    console.log("\n📝 Đọc câu hỏi từ mock/db.json...");
+    
+    const dbJsonPath = path.join(__dirname, '../../..', 'frontend/mock/db.json');
+    const dbData = JSON.parse(fs.readFileSync(dbJsonPath, 'utf-8'));
+    
+    const allQuestions = dbData.questions || [];
+    const allExamQuestions = dbData.examquestions || [];
+    
+    // Map questions by their string IDs
+    const questionMap = {};
+    allQuestions.forEach(q => {
+      questionMap[q.id] = q;
+    });
+
+    // Filter examquestions for exam-0001, exam-0002, exam-0003
+    const exam0001Questions = allExamQuestions.filter(eq => eq.examId === 'exam-0001');
+    const exam0002Questions = allExamQuestions.filter(eq => eq.examId === 'exam-0002');
+    const exam0003Questions = allExamQuestions.filter(eq => eq.examId === 'exam-0003');
+
+    console.log(`   ✓ Tìm thấy ${exam0001Questions.length} câu cho exam-0001`);
+    console.log(`   ✓ Tìm thấy ${exam0002Questions.length} câu cho exam-0002`);
+    console.log(`   ✓ Tìm thấy ${exam0003Questions.length} câu cho exam-0003`);
+
+    // Map existing questions in database by matching content
+    console.log("\n🔍 Tìm câu hỏi hiện có trong database...");
+    
+    // Get all unique questions for the 3 exams
+    const allExamQuestionIds = new Set();
+    [...exam0001Questions, ...exam0002Questions, ...exam0003Questions].forEach(eq => {
+      allExamQuestionIds.add(eq.questionId);
+    });
+
+    const questionStringToObjectId = {};
+    let found = 0;
+    let notFound = 0;
+    
+    for (const questionId of allExamQuestionIds) {
+      const questionData = questionMap[questionId];
+      if (!questionData) {
+        console.log(`   ⚠️  Không tìm thấy dữ liệu câu hỏi trong db.json: ${questionId}`);
+        notFound++;
+        continue;
+      }
+
+      // Find question by content (and optionally subject)
+      const existing = await Question.findOne({
+        content: questionData.content,
+        ...(questionData.subject && { subject: questionData.subject })
+      });
+
+      if (existing) {
+        questionStringToObjectId[questionId] = existing._id;
+        found++;
+      } else {
+        console.log(`   ⚠️  Không tìm thấy câu hỏi trong database: ${questionId} (content: ${questionData.content.substring(0, 50)}...)`);
+        notFound++;
+      }
+    }
+
+    console.log(`   ✓ Tìm thấy ${found} câu hỏi, thiếu ${notFound} câu`);
+
+    // Insert ExamQuestions into MongoDB using the mapping
+    console.log("\n🔗 Liên kết câu hỏi với exams...");
+    const examQuestionsToInsert = [
+      ...exam0001Questions.map(eq => ({
+        examId: examMap['exam-0001'],
+        questionId: questionStringToObjectId[eq.questionId],
+        order: eq.order,
+        section: eq.section,
+        maxScore: eq.maxScore
+      })),
+      ...exam0002Questions.map(eq => ({
+        examId: examMap['exam-0002'],
+        questionId: questionStringToObjectId[eq.questionId],
+        order: eq.order,
+        section: eq.section,
+        maxScore: eq.maxScore
+      })),
+      ...exam0003Questions.map(eq => ({
+        examId: examMap['exam-0003'],
+        questionId: questionStringToObjectId[eq.questionId],
+        order: eq.order,
+        section: eq.section,
+        maxScore: eq.maxScore
+      }))
+    ].filter(eq => eq.questionId); // Filter out any without valid questionId
+
+    await ExamQuestion.insertMany(examQuestionsToInsert, { ordered: false }).catch(err => {
+      if (err.code === 11000) {
+        console.log("   ⚠️  Một số liên kết đã tồn tại, tiếp tục...");
+      } else {
+        throw err;
+      }
+    });
+    console.log(`   ✓ Liên kết ${examQuestionsToInsert.length} câu hỏi với exams`);
+
+    // Update exam totalQuestions count
+    for (const [key, examId] of Object.entries(examMap)) {
+      const questionCount = await ExamQuestion.countDocuments({ examId });
+      await Exam.findByIdAndUpdate(examId, { totalQuestions: questionCount });
+    }
 
     // 2. XÓA CÁC CONTESTEXAM CŨ CHỈ CHO CONTEST NÀY (không ảnh hưởng đến contests khác)
     console.log("\n🗑️  Xóa ContestExams cũ của contest này...");

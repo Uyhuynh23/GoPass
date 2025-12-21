@@ -1499,6 +1499,406 @@
       "createdAt": "2025-12-14T08:00:00Z",
       "updatedAt": "2025-12-14T08:00:00Z"
     },
+     {
+      "id": "eq-eng-01",
+      "examId": "exam-0003",
+      "questionId": "q-01",
+      "order": 1,
+      "maxScore": 0.25,
+      "section": "Reading Comprehension",
+      "createdAt": "2025-12-14T08:00:00Z",
+      "updatedAt": "2025-12-14T08:00:00Z"
+    },
+    {
+      "id": "eq-eng-02",
+      "examId": "exam-0003",
+      "questionId": "q-02",
+      "order": 2,
+      "maxScore": 0.25,
+      "section": "Reading Comprehension",
+      "createdAt": "2025-12-14T08:00:00Z",
+      "updatedAt": "2025-12-14T08:00:00Z"
+    },
+    {
+      "id": "eq-eng-03",
+      "examId": "exam-0003",
+      "questionId": "q-03",
+      "order": 3,
+      "maxScore": 0.25,
+      "section": "Reading Comprehension",
+      "createdAt": "2025-12-14T08:00:00Z",
+      "updatedAt": "2025-12-14T08:00:00Z"
+    },
+    {
+      "id": "eq-eng-04",
+      "examId": "exam-0003",
+      "questionId": "q-04",
+      "order": 4,
+      "maxScore": 0.25,
+      "section": "Reading Comprehension",
+      "createdAt": "2025-12-14T08:00:00Z",
+      "updatedAt": "2025-12-14T08:00:00Z"
+    },
+    {
+      "id": "eq-eng-05",
+      "examId": "exam-0003",
+      "questionId": "q-05",
+      "order": 5,
+      "maxScore": 0.25,
+      "section": "Reading Comprehension",
+      "createdAt": "2025-12-14T08:00:00Z",
+      "updatedAt": "2025-12-14T08:00:00Z"
+    },
+    {
+      "id": "eq-eng-06",
+      "examId": "exam-0003",
+      "questionId": "q-06",
+      "order": 6,
+      "maxScore": 0.25,
+      "section": "Reading Comprehension",
+      "createdAt": "2025-12-14T08:00:00Z",
+      "updatedAt": "2025-12-14T08:00:00Z"
+    },
+    {
+      "id": "eq-eng-07",
+      "examId": "exam-0003",
+      "questionId": "q-07",
+      "order": 7,
+      "maxScore": 0.25,
+      "section": "Reading Comprehension",
+      "createdAt": "2025-12-14T08:00:00Z",
+      "updatedAt": "2025-12-14T08:00:00Z"
+    },
+    {
+      "id": "eq-eng-08",
+      "examId": "exam-0003",
+      "questionId": "q-08",
+      "order": 8,
+      "maxScore": 0.25,
+      "section": "Reading Comprehension",
+      "createdAt": "2025-12-14T08:00:00Z",
+      "updatedAt": "2025-12-14T08:00:00Z"
+    },
+    {
+      "id": "eq-eng-09",
+      "examId": "exam-0003",
+      "questionId": "q-09",
+      "order": 9,
+      "maxScore": 0.25,
+      "section": "Cloze Test",
+      "createdAt": "2025-12-14T08:00:00Z",
+      "updatedAt": "2025-12-14T08:00:00Z"
+    },
+    {
+      "id": "eq-eng-10",
+      "examId": "exam-0003",
+      "questionId": "q-10",
+      "order": 10,
+      "maxScore": 0.25,
+      "section": "Cloze Test",
+      "createdAt": "2025-12-14T08:00:00Z",
+      "updatedAt": "2025-12-14T08:00:00Z"
+    },
+    {
+      "id": "eq-eng-11",
+      "examId": "exam-0003",
+      "questionId": "q-11",
+      "order": 11,
+      "maxScore": 0.25,
+      "section": "Cloze Test",
+      "createdAt": "2025-12-14T08:00:00Z",
+      "updatedAt": "2025-12-14T08:00:00Z"
+    },
+    {
+      "id": "eq-eng-12",
+      "examId": "exam-0003",
+      "questionId": "q-12",
+      "order": 12,
+      "maxScore": 0.25,
+      "section": "Cloze Test",
+      "createdAt": "2025-12-14T08:00:00Z",
+      "updatedAt": "2025-12-14T08:00:00Z"
+    },
+    {
+      "id": "eq-eng-13",
+      "examId": "exam-0003",
+      "questionId": "q-13",
+      "order": 13,
+      "maxScore": 0.25,
+      "section": "Cloze Test",
+      "createdAt": "2025-12-14T08:00:00Z",
+      "updatedAt": "2025-12-14T08:00:00Z"
+    },
+    {
+      "id": "eq-eng-14",
+      "examId": "exam-0003",
+      "questionId": "q-14",
+      "order": 14,
+      "maxScore": 0.25,
+      "section": "Cloze Test",
+      "createdAt": "2025-12-14T08:00:00Z",
+      "updatedAt": "2025-12-14T08:00:00Z"
+    },
+    {
+      "id": "eq-eng-15",
+      "examId": "exam-0003",
+      "questionId": "q-15",
+      "order": 15,
+      "maxScore": 0.25,
+      "section": "Sentence/Utterance Arrangement",
+      "createdAt": "2025-12-14T08:00:00Z",
+      "updatedAt": "2025-12-14T08:00:00Z"
+    },
+    {
+      "id": "eq-eng-16",
+      "examId": "exam-0003",
+      "questionId": "q-16",
+      "order": 16,
+      "maxScore": 0.25,
+      "section": "Sentence/Utterance Arrangement",
+      "createdAt": "2025-12-14T08:00:00Z",
+      "updatedAt": "2025-12-14T08:00:00Z"
+    },
+    {
+      "id": "eq-eng-17",
+      "examId": "exam-0003",
+      "questionId": "q-17",
+      "order": 17,
+      "maxScore": 0.25,
+      "section": "Sentence/Utterance Arrangement",
+      "createdAt": "2025-12-14T08:00:00Z",
+      "updatedAt": "2025-12-14T08:00:00Z"
+    },
+    {
+      "id": "eq-eng-18",
+      "examId": "exam-0003",
+      "questionId": "q-18",
+      "order": 18,
+      "maxScore": 0.25,
+      "section": "Sentence/Utterance Arrangement",
+      "createdAt": "2025-12-14T08:00:00Z",
+      "updatedAt": "2025-12-14T08:00:00Z"
+    },
+    {
+      "id": "eq-eng-19",
+      "examId": "exam-0003",
+      "questionId": "q-19",
+      "order": 19,
+      "maxScore": 0.25,
+      "section": "Sentence/Utterance Arrangement",
+      "createdAt": "2025-12-14T08:00:00Z",
+      "updatedAt": "2025-12-14T08:00:00Z"
+    },
+    {
+      "id": "eq-eng-20",
+      "examId": "exam-0003",
+      "questionId": "q-20",
+      "order": 20,
+      "maxScore": 0.25,
+      "section": "Reading Comprehension",
+      "createdAt": "2025-12-14T08:00:00Z",
+      "updatedAt": "2025-12-14T08:00:00Z"
+    },
+    {
+      "id": "eq-eng-21",
+      "examId": "exam-0003",
+      "questionId": "q-21",
+      "order": 21,
+      "maxScore": 0.25,
+      "section": "Reading Comprehension",
+      "createdAt": "2025-12-14T08:00:00Z",
+      "updatedAt": "2025-12-14T08:00:00Z"
+    },
+    {
+      "id": "eq-eng-22",
+      "examId": "exam-0003",
+      "questionId": "q-22",
+      "order": 22,
+      "maxScore": 0.25,
+      "section": "Reading Comprehension",
+      "createdAt": "2025-12-14T08:00:00Z",
+      "updatedAt": "2025-12-14T08:00:00Z"
+    },
+    {
+      "id": "eq-eng-23",
+      "examId": "exam-0003",
+      "questionId": "q-23",
+      "order": 23,
+      "maxScore": 0.25,
+      "section": "Reading Comprehension",
+      "createdAt": "2025-12-14T08:00:00Z",
+      "updatedAt": "2025-12-14T08:00:00Z"
+    },
+    {
+      "id": "eq-eng-24",
+      "examId": "exam-0003",
+      "questionId": "q-24",
+      "order": 24,
+      "maxScore": 0.25,
+      "section": "Reading Comprehension",
+      "createdAt": "2025-12-14T08:00:00Z",
+      "updatedAt": "2025-12-14T08:00:00Z"
+    },
+    {
+      "id": "eq-eng-25",
+      "examId": "exam-0003",
+      "questionId": "q-25",
+      "order": 25,
+      "maxScore": 0.25,
+      "section": "Reading Comprehension",
+      "createdAt": "2025-12-14T08:00:00Z",
+      "updatedAt": "2025-12-14T08:00:00Z"
+    },
+    {
+      "id": "eq-eng-26",
+      "examId": "exam-0003",
+      "questionId": "q-26",
+      "order": 26,
+      "maxScore": 0.25,
+      "section": "Reading Comprehension",
+      "createdAt": "2025-12-14T08:00:00Z",
+      "updatedAt": "2025-12-14T08:00:00Z"
+    },
+    {
+      "id": "eq-eng-27",
+      "examId": "exam-0003",
+      "questionId": "q-27",
+      "order": 27,
+      "maxScore": 0.25,
+      "section": "Reading Comprehension",
+      "createdAt": "2025-12-14T08:00:00Z",
+      "updatedAt": "2025-12-14T08:00:00Z"
+    },
+    {
+      "id": "eq-eng-28",
+      "examId": "exam-0003",
+      "questionId": "q-28",
+      "order": 28,
+      "maxScore": 0.25,
+      "section": "Reading Comprehension",
+      "createdAt": "2025-12-14T08:00:00Z",
+      "updatedAt": "2025-12-14T08:00:00Z"
+    },
+    {
+      "id": "eq-eng-29",
+      "examId": "exam-0003",
+      "questionId": "q-29",
+      "order": 29,
+      "maxScore": 0.25,
+      "section": "Reading Comprehension",
+      "createdAt": "2025-12-14T08:00:00Z",
+      "updatedAt": "2025-12-14T08:00:00Z"
+    },
+    {
+      "id": "eq-eng-30",
+      "examId": "exam-0003",
+      "questionId": "q-30",
+      "order": 30,
+      "maxScore": 0.25,
+      "section": "Cloze Test",
+      "createdAt": "2025-12-14T08:00:00Z",
+      "updatedAt": "2025-12-14T08:00:00Z"
+    },
+    {
+      "id": "eq-eng-31",
+      "examId": "exam-0003",
+      "questionId": "q-31",
+      "order": 31,
+      "maxScore": 0.25,
+      "section": "Cloze Test",
+      "createdAt": "2025-12-14T08:00:00Z",
+      "updatedAt": "2025-12-14T08:00:00Z"
+    },
+    {
+      "id": "eq-eng-32",
+      "examId": "exam-0003",
+      "questionId": "q-32",
+      "order": 32,
+      "maxScore": 0.25,
+      "section": "Cloze Test",
+      "createdAt": "2025-12-14T08:00:00Z",
+      "updatedAt": "2025-12-14T08:00:00Z"
+    },
+    {
+      "id": "eq-eng-33",
+      "examId": "exam-0003",
+      "questionId": "q-33",
+      "order": 33,
+      "maxScore": 0.25,
+      "section": "Cloze Test",
+      "createdAt": "2025-12-14T08:00:00Z",
+      "updatedAt": "2025-12-14T08:00:00Z"
+    },
+    {
+      "id": "eq-eng-34",
+      "examId": "exam-0003",
+      "questionId": "q-34",
+      "order": 34,
+      "maxScore": 0.25,
+      "section": "Cloze Test",
+      "createdAt": "2025-12-14T08:00:00Z",
+      "updatedAt": "2025-12-14T08:00:00Z"
+    },
+    {
+      "id": "eq-eng-35",
+      "examId": "exam-0003",
+      "questionId": "q-35",
+      "order": 35,
+      "maxScore": 0.25,
+      "section": "Cloze Test",
+      "createdAt": "2025-12-14T08:00:00Z",
+      "updatedAt": "2025-12-14T08:00:00Z"
+    },
+    {
+      "id": "eq-eng-36",
+      "examId": "exam-0003",
+      "questionId": "q-36",
+      "order": 36,
+      "maxScore": 0.25,
+      "section": "Cloze Test",
+      "createdAt": "2025-12-14T08:00:00Z",
+      "updatedAt": "2025-12-14T08:00:00Z"
+    },
+    {
+      "id": "eq-eng-37",
+      "examId": "exam-0003",
+      "questionId": "q-37",
+      "order": 37,
+      "maxScore": 0.25,
+      "section": "Cloze Test",
+      "createdAt": "2025-12-14T08:00:00Z",
+      "updatedAt": "2025-12-14T08:00:00Z"
+    },
+    {
+      "id": "eq-eng-38",
+      "examId": "exam-0003",
+      "questionId": "q-38",
+      "order": 38,
+      "maxScore": 0.25,
+      "section": "Cloze Test",
+      "createdAt": "2025-12-14T08:00:00Z",
+      "updatedAt": "2025-12-14T08:00:00Z"
+    },
+    {
+      "id": "eq-eng-39",
+      "examId": "exam-0003",
+      "questionId": "q-39",
+      "order": 39,
+      "maxScore": 0.25,
+      "section": "Cloze Test",
+      "createdAt": "2025-12-14T08:00:00Z",
+      "updatedAt": "2025-12-14T08:00:00Z"
+    },
+    {
+      "id": "eq-eng-40",
+      "examId": "exam-0003",
+      "questionId": "q-40",
+      "order": 40,
+      "maxScore": 0.25,
+      "section": "Cloze Test",
+      "createdAt": "2025-12-14T08:00:00Z",
+      "updatedAt": "2025-12-14T08:00:00Z"
+    },
     {
       "id": "eq-van-01",
       "examId": "exam-0002",
